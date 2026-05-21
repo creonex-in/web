@@ -11,10 +11,8 @@ interface MobileNavProps {
 export default function MobileNav({ links }: MobileNavProps) {
   return (
     <Sheet>
-      <SheetTrigger asChild className="md:hidden">
-        <button aria-label="Open menu">
-          <Menu className="size-5" />
-        </button>
+      <SheetTrigger className="md:hidden" aria-label="Open menu">
+        <Menu className="size-5" />
       </SheetTrigger>
       <SheetContent side="right" className="w-72">
         <nav className="flex flex-col gap-6 mt-8">

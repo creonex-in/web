@@ -3,13 +3,10 @@ import { Button } from "@/components/ui/button";
 import MobileNav from "./MobileNav";
 
 const NAV_LINKS = [
-  { label: "Features", href: "#features" },
-  { label: "Discovery", href: "#discovery" },
-  { label: "Collaboration", href: "#collaboration" },
-  { label: "Monetise", href: "#monetise" },
-  { label: "Niches", href: "#niches" },
-  { label: "Payments", href: "#payments" },
-  { label: "App", href: "#app" },
+  { label: "Explore", href: "#explore" },
+  { label: "Find Experts", href: "#experts" },
+  { label: "Courses", href: "#courses" },
+  { label: "How It Works", href: "#how-it-works" },
 ];
 
 export default function Navbar() {

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,8 +18,8 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Creonex",
-  description: "Learn directly from people who've already done it.",
+  title: "Creonex — Learn from India's Best Creators",
+  description: "Discover courses and book 1-on-1 mentorship sessions with verified experts across design, tech, marketing, and more.",
 };
 
 export default function RootLayout({
@@ -30,7 +32,11 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${instrumentSerif.variable}`}
     >
-      <body>{children}</body>
+      <body className="antialiased">
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
