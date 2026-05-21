@@ -1,3 +1,5 @@
+import type { ComponentType } from "react";
+
 export interface Course {
   id: string;
   title: string;
@@ -22,7 +24,7 @@ export interface Expert {
 export interface Category {
   id: string;
   label: string;
-  icon: string;
+  Icon: ComponentType<{ className?: string }>;
   count: number;
   accent: "indigo" | "orange" | "green" | "purple";
 }

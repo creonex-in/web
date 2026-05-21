@@ -24,13 +24,15 @@ export default function FAQSection() {
             <AccordionItem
               key={i}
               value={`faq-${i}`}
-              className="card-feature rounded-xl border border-border"
+              className="rounded-2xl border border-border bg-card px-6"
             >
-              <AccordionTrigger className="text-left heading-step px-0 hover:no-underline">
+              <AccordionTrigger className="text-left text-[15px] font-semibold text-foreground hover:no-underline py-5">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="body text-muted-foreground">
-                {faq.answer}
+              <AccordionContent>
+                <p className="body pb-4">
+                  {faq.answer}
+                </p>
               </AccordionContent>
             </AccordionItem>
           ))}

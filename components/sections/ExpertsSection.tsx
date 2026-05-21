@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import ExpertCard from "@/components/shared/ExpertCard";
 import { FEATURED_EXPERTS } from "@/constants/data";
@@ -19,9 +20,9 @@ export default function ExpertsSection() {
         </div>
 
         <div className="flex justify-center">
-          <button className="btn-ghost-nav px-8 py-3 rounded-full border border-border text-base">
+          <Button variant="outline" size="md" className="rounded-full">
             View All Experts
-          </button>
+          </Button>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import CourseCard from "@/components/shared/CourseCard";
 import { FEATURED_COURSES } from "@/constants/data";
@@ -19,9 +20,9 @@ export default function CoursesSection() {
         </div>
 
         <div className="flex justify-center">
-          <button className="btn-ghost-nav px-8 py-3 rounded-full border border-border text-base">
+          <Button variant="outline" size="md" className="rounded-full">
             Browse All Courses
-          </button>
+          </Button>
         </div>
       </div>
     </section>

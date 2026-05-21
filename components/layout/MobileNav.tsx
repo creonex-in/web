@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { FaBars } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 interface MobileNavProps {
   links: { label: string; href: string }[];
@@ -12,7 +13,7 @@ export default function MobileNav({ links }: MobileNavProps) {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden" aria-label="Open menu">
-        <Menu className="size-5" />
+        <FaBars className="size-5 text-foreground" />
       </SheetTrigger>
       <SheetContent side="right" className="w-72">
         <nav className="flex flex-col gap-6 mt-8">
@@ -26,8 +27,8 @@ export default function MobileNav({ links }: MobileNavProps) {
             ))}
           </ul>
           <div className="flex flex-col gap-3 pt-4 border-t border-border">
-            <button className="btn-ghost-nav w-full">Login</button>
-            <button className="btn-primary w-full">Get Started Free</button>
+            <Button variant="ghost-nav" size="md" className="w-full">Login</Button>
+            <Button variant="brand" size="md" className="w-full">Get Started Free</Button>
           </div>
         </nav>
       </SheetContent>

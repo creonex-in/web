@@ -15,14 +15,14 @@ export default function CategoriesSection() {
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
-              className="card-feature hover:shadow-lg flex flex-col items-center gap-3 cursor-pointer group"
+              className="card-feature hover:shadow-lg flex flex-col items-center gap-4 cursor-pointer group !p-6"
             >
-              <span className={`icon-pad-${cat.accent} text-2xl group-hover:scale-110 transition-transform`}>
-                {cat.icon}
+              <span className={`icon-pad-${cat.accent} group-hover:scale-105 transition-transform duration-200`}>
+                <cat.Icon className="size-5" />
               </span>
               <div className="flex flex-col items-center gap-0.5">
-                <span className="heading-step">{cat.label}</span>
-                <span className="body-sm text-muted-foreground">{cat.count} courses</span>
+                <span className="text-sm font-semibold text-foreground">{cat.label}</span>
+                <span className="text-xs text-muted-foreground">{cat.count} courses</span>
               </div>
             </button>
           ))}

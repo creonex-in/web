@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import MobileNav from "./MobileNav";
 
@@ -15,7 +16,17 @@ export default function Navbar() {
       <nav className="container-inner flex items-center justify-between h-16 px-4 sm:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="brand-wordmark text-2xl">Creonex</span>
+          <Image
+            src="/logo.webp"
+            alt=""
+            width={32}
+            height={32}
+            className="size-8 object-contain"
+            priority
+          />
+          <span className="text-[18px] font-bold tracking-tight text-foreground">
+            Creonex
+          </span>
         </Link>
 
         {/* Desktop links */}
@@ -29,10 +40,10 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <button className="btn-ghost-nav">Login</button>
-          <button className="btn-primary">Get Started Free</button>
+        {/* Desktop CTAs */}
+        <div className="hidden md:flex items-center gap-2">
+          <Button variant="ghost-nav" size="md">Login</Button>
+          <Button variant="brand" size="md">Get Started Free</Button>
         </div>
 
         {/* Mobile */}

@@ -1,3 +1,13 @@
+import {
+  FaPaintBrush,
+  FaCode,
+  FaBullhorn,
+  FaChartPie,
+  FaPenNib,
+  FaRocket,
+  FaCamera,
+  FaMusic,
+} from "react-icons/fa";
 import type { Course, Expert, Category, Stat, Step, Testimonial, FAQ } from "@/types";
 
 export const STATS: Stat[] = [
@@ -8,14 +18,14 @@ export const STATS: Stat[] = [
 ];
 
 export const CATEGORIES: Category[] = [
-  { id: "design", label: "UI/UX Design", icon: "🎨", count: 240, accent: "indigo" },
-  { id: "dev", label: "Development", icon: "💻", count: 520, accent: "orange" },
-  { id: "marketing", label: "Marketing", icon: "📈", count: 180, accent: "green" },
-  { id: "finance", label: "Finance", icon: "💰", count: 150, accent: "purple" },
-  { id: "content", label: "Content Creation", icon: "✍️", count: 210, accent: "indigo" },
-  { id: "startup", label: "Startups", icon: "🚀", count: 130, accent: "orange" },
-  { id: "photo", label: "Photography", icon: "📷", count: 95, accent: "green" },
-  { id: "music", label: "Music", icon: "🎵", count: 88, accent: "purple" },
+  { id: "design", label: "UI/UX Design", Icon: FaPaintBrush, count: 240, accent: "indigo" },
+  { id: "dev", label: "Development", Icon: FaCode, count: 520, accent: "orange" },
+  { id: "marketing", label: "Marketing", Icon: FaBullhorn, count: 180, accent: "green" },
+  { id: "finance", label: "Finance", Icon: FaChartPie, count: 150, accent: "purple" },
+  { id: "content", label: "Content Creation", Icon: FaPenNib, count: 210, accent: "indigo" },
+  { id: "startup", label: "Startups", Icon: FaRocket, count: 130, accent: "orange" },
+  { id: "photo", label: "Photography", Icon: FaCamera, count: 95, accent: "green" },
+  { id: "music", label: "Music", Icon: FaMusic, count: 88, accent: "purple" },
 ];
 
 export const FEATURED_COURSES: Course[] = [
@@ -104,17 +114,20 @@ export const HOW_IT_WORKS_STEPS: Step[] = [
   {
     number: "01",
     title: "Discover your path",
-    description: "Browse thousands of courses and expert profiles across every creative and professional domain.",
+    description:
+      "Browse thousands of courses and expert profiles across every creative and professional domain.",
   },
   {
     number: "02",
     title: "Learn or book a session",
-    description: "Enroll in self-paced courses or book a 1-on-1 mentorship session with a verified expert.",
+    description:
+      "Enroll in self-paced courses or book a 1-on-1 mentorship session with a verified expert.",
   },
   {
     number: "03",
     title: "Grow with real guidance",
-    description: "Get feedback, build projects, and unlock your next opportunity with hands-on mentorship.",
+    description:
+      "Get feedback, build projects, and unlock your next opportunity with hands-on mentorship.",
   },
 ];
 
@@ -124,7 +137,8 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Kavya Reddy",
     role: "UI Designer, Bangalore",
     avatar: "",
-    quote: "Creonex connected me with a Razorpay designer who reviewed my portfolio in a single session. I landed my first design job within 3 weeks.",
+    quote:
+      "Creonex connected me with a Razorpay designer who reviewed my portfolio in a single session. I landed my first design job within 3 weeks.",
     rating: 5,
   },
   {
@@ -132,7 +146,8 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Aditya Nair",
     role: "Freelance Developer, Kochi",
     avatar: "",
-    quote: "The React course here is hands-down better than anything on Udemy. Real projects, real feedback, and a community that actually helps.",
+    quote:
+      "The React course here is hands-down better than anything on Udemy. Real projects, real feedback, and a community that actually helps.",
     rating: 5,
   },
   {
@@ -140,7 +155,8 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Meera Joshi",
     role: "Content Creator, Mumbai",
     avatar: "",
-    quote: "Booked three sessions with a growth marketing expert. My Instagram went from 2K to 18K followers in two months. Insane ROI.",
+    quote:
+      "Booked three sessions with a growth marketing expert. My Instagram went from 2K to 18K followers in two months. Insane ROI.",
     rating: 5,
   },
 ];
@@ -148,22 +164,27 @@ export const TESTIMONIALS: Testimonial[] = [
 export const FAQS: FAQ[] = [
   {
     question: "How is Creonex different from other learning platforms?",
-    answer: "Creonex combines self-paced courses with live 1-on-1 mentorship from verified industry professionals across India. You don't just watch videos — you get real guidance from people doing the work right now.",
+    answer:
+      "Creonex combines self-paced courses with live 1-on-1 mentorship from verified industry professionals across India. You don't just watch videos — you get real guidance from people doing the work right now.",
   },
   {
     question: "How do I book a session with an expert?",
-    answer: "Browse expert profiles, check their availability, and book a slot directly. Sessions are conducted via video call. Payment is held securely until after the session.",
+    answer:
+      "Browse expert profiles, check their availability, and book a slot directly. Sessions are conducted via video call. Payment is held securely until after the session.",
   },
   {
     question: "Are the courses and sessions available in regional languages?",
-    answer: "Yes! Many of our experts offer sessions in Hindi, Tamil, Telugu, Kannada, and other regional languages. You can filter by language on the expert search page.",
+    answer:
+      "Yes! Many of our experts offer sessions in Hindi, Tamil, Telugu, Kannada, and other regional languages. You can filter by language on the expert search page.",
   },
   {
     question: "What if I'm not satisfied with a session?",
-    answer: "We offer a full refund within 24 hours of a session if you're not satisfied. Our support team reviews each case and processes refunds within 2–3 business days.",
+    answer:
+      "We offer a full refund within 24 hours of a session if you're not satisfied. Our support team reviews each case and processes refunds within 2–3 business days.",
   },
   {
     question: "Can I become an expert on Creonex?",
-    answer: "Absolutely. If you have professional expertise and want to teach or mentor, apply through our 'Become a Creator' page. We review applications within 5–7 business days.",
+    answer:
+      "Absolutely. If you have professional expertise and want to teach or mentor, apply through our 'Become a Creator' page. We review applications within 5–7 business days.",
   },
 ];

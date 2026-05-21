@@ -44,7 +44,19 @@
 
   /* Fonts */
   --font-sans:   var(--font-inter);
-  --font-serif:  var(--font-instrument-serif);
+
+  /* ── Display typography tokens (→ text-{name} utilities) ──────── */
+  --font-size-hero:         3.25rem;   /* 52px  desktop hero h1   */
+  --font-size-hero-sm:      2.5rem;    /* 40px  mobile hero h1    */
+  --font-size-headline:     2.75rem;   /* 44px  desktop CTA h2    */
+  --font-size-headline-sm:  2.25rem;   /* 36px  mobile CTA h2     */
+
+  /* ── Content max-width tokens (→ max-w-{name} utilities) ─────── */
+  --max-width-hero-text:  47.5rem;   /* 760px  hero text block  */
+  --max-width-search:     33.75rem;  /* 540px  search bar       */
+  --max-width-copy:       31.25rem;  /* 500px  body copy block  */
+  --max-width-copy-sm:    28rem;     /* 448px  tight copy       */
+  --max-width-footer-col: 17.5rem;  /* 280px  footer columns   */
 
   /* Radius scale */
   --radius-sm:  calc(var(--radius) * 0.5);
@@ -247,10 +259,19 @@
 
   /* Full-width section — responsive horizontal padding */
   .section {
-    @apply w-full py-24 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
+    @apply w-full py-16 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
   }
   .section-sm {
-    @apply w-full py-16 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
+    @apply w-full py-10 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
+  }
+
+  /* Hero background glow — uses design token, no inline oklch needed */
+  .hero-glow {
+    background: radial-gradient(
+      ellipse 100% 70% at 50% -5%,
+      oklch(from var(--brand-ghost) l c h / 0.45) 0%,
+      transparent 65%
+    );
   }
   /* Max-width content wrapper (1100px per design) */
   .container-inner {
@@ -271,25 +292,9 @@
     border: 1px solid oklch(from var(--brand-dark) l c h / 0.25);
     color: var(--brand-dark);
   }
-  /* Flex wrapper for badge + heading + subtext */
-  .section-header {
-    @apply flex flex-col items-center gap-4 text-center;
-  }
 
   /* ── Typography ── */
 
-  /* 42px — page hero and section headings */
-  .heading-section {
-    @apply text-[42px] font-extrabold leading-[1.2] tracking-tight text-foreground;
-  }
-  /* 20px — card titles */
-  .heading-card {
-    @apply text-[20px] font-bold leading-normal text-foreground;
-  }
-  /* 18px — step titles, sub-cards (Inter only, no display font) */
-  .heading-step {
-    @apply text-[18px] font-bold leading-normal text-foreground;
-  }
   /* Standard body text — 15px (single body size, no 14px variant) */
   .body {
     @apply text-[15px] leading-[1.7];
@@ -300,12 +305,6 @@
     @apply text-[12px] leading-[1.6];
     color: var(--muted-foreground);
   }
-  /* Logo wordmark (Instrument Serif) */
-  .brand-wordmark {
-    @apply font-serif not-italic tracking-[-0.01em];
-    color: var(--brand-dim);
-  }
-
   /* ── Gradients ── */
 
   /* Always use gradient for primary brand bg — never flat brand color */
@@ -326,29 +325,10 @@
   }
 
   /* ── Icon pads (card icon backgrounds) ── */
-  .icon-pad-indigo { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-indigo); }
-  .icon-pad-orange { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-orange); }
-  .icon-pad-green  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-green); }
-  .icon-pad-purple { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-purple); }
-
-  /* ── Buttons ── */
-
-  /* Primary CTA — always gradient, never flat brand color */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2
-           px-6 py-2.5 rounded-full font-semibold text-sm text-white
-           transition-opacity duration-150 hover:opacity-90
-           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
-    background-image: linear-gradient(135deg, var(--brand-dark), var(--brand-end));
-  }
-  /* Ghost/login button (nav) */
-  .btn-ghost-nav {
-    @apply inline-flex items-center justify-center
-           px-4 py-2 rounded-full font-semibold text-sm
-           transition-colors duration-150 hover:bg-muted
-           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
-    color: var(--charcoal);
-  }
+  .icon-pad-indigo { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-indigo); }
+  .icon-pad-orange { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-orange); }
+  .icon-pad-green  { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-green); }
+  .icon-pad-purple { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-purple); }
 
   /* ── Nav links ── */
   .nav-link {
@@ -359,8 +339,4 @@
     color: var(--brand);
   }
 
-  /* ── Misc ── */
-  .divider {
-    @apply w-full border-t border-border;
-  }
 }
