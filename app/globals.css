@@ -4,127 +4,386 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   THEME MAP  —  CSS vars → Tailwind design tokens
+   All color values are OKLCH. No hex anywhere.
+───────────────────────────────────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
+  /* Core */
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+
+  /* Shadcn semantic */
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+
+  /* Brand extras */
+  --color-brand:                var(--brand);
+  --color-brand-dark:           var(--brand-dark);
+  --color-brand-end:            var(--brand-end);
+  --color-brand-dim:            var(--brand-dim);
+  --color-brand-ghost:          var(--brand-ghost);
+  --color-brand-faint:          var(--brand-faint);
+  --color-surface:              var(--surface);
+  --color-charcoal:             var(--charcoal);
+  --color-subtle:               var(--subtle);
+
+  /* Fonts */
+  --font-sans:                  var(--font-inter);
+  --font-mono:                  var(--font-geist-mono);
+  --font-serif:                 var(--font-instrument-serif);
+  --font-display:               var(--font-plus-jakarta);
+
+  /* Radius scale */
+  --radius-sm:  calc(var(--radius) * 0.5);
+  --radius-md:  calc(var(--radius) * 0.75);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 3.2);
+  --radius-full: 9999px;
+
+  /* Sidebar */
+  --color-sidebar:                    var(--sidebar);
+  --color-sidebar-foreground:         var(--sidebar-foreground);
+  --color-sidebar-primary:            var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:             var(--sidebar-accent);
+  --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
+  --color-sidebar-border:             var(--sidebar-border);
+  --color-sidebar-ring:               var(--sidebar-ring);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   LIGHT MODE
+   Source: Figma file RpnOkkAMw3S4VsZUjyIASy (Creonex Main)
+   Hex refs in comments for designer cross-reference only.
+───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* ── Brand palette ────────────────────────────────────────────── */
+  --brand:        oklch(0.566 0.237 275.8);   /* #7C5CFF  – primary CTA / buttons   */
+  --brand-dark:   oklch(0.516 0.249 271.5);   /* #5b4dff  – gradient-from            */
+  --brand-end:    oklch(0.513 0.258 289.5);   /* #7c3aed  – gradient-to              */
+  --brand-dim:    oklch(0.443 0.168 276.8);   /* #534ab7  – logo / dark brand text   */
+  --brand-ghost:  oklch(0.938 0.043 278.2);   /* #ECE9FF  – brand/100 tint           */
+  --brand-faint:  oklch(0.966 0.022 278.4);   /* #f4f3ff  – badge bg / lightest tint */
+
+  /* ── Core semantic (shadcn) ───────────────────────────────────── */
+  --background:           oklch(1 0 0);                /* #ffffff                */
+  --foreground:           oklch(0.131 0.030 264.0);    /* #0f172a  slate-900     */
+  --card:                 oklch(1 0 0);
+  --card-foreground:      oklch(0.131 0.030 264.0);
+  --popover:              oklch(1 0 0);
+  --popover-foreground:   oklch(0.131 0.030 264.0);
+  --primary:              oklch(0.566 0.237 275.8);    /* #7C5CFF                */
+  --primary-foreground:   oklch(1 0 0);
+  --secondary:            oklch(0.966 0.022 278.4);    /* #f4f3ff  brand faint   */
+  --secondary-foreground: oklch(0.443 0.168 276.8);    /* #534ab7  brand dim     */
+  --muted:                oklch(0.984 0.004 247);      /* #f8fafc  section bg    */
+  --muted-foreground:     oklch(0.532 0 0);            /* #737373  muted labels  */
+  --accent:               oklch(0.938 0.043 278.2);    /* #ECE9FF  brand ghost   */
+  --accent-foreground:    oklch(0.516 0.249 271.5);    /* #5b4dff  brand dark    */
+  --destructive:          oklch(0.577 0.245 27.325);
+  --border:               oklch(0.918 0.010 254);      /* #e2e8f0  card borders  */
+  --input:                oklch(0.796 0 0);            /* #c4c4c5  input border  */
+  --ring:                 oklch(0.566 0.237 275.8);    /* #7C5CFF                */
+  --radius:               0.625rem;
+
+  /* ── Extended text ────────────────────────────────────────────── */
+  --surface:      oklch(0.984 0.004 247);      /* #f8fafc  alt section bg        */
+  --charcoal:     oklch(0.180 0.002 247);      /* #1c1c1e  nav / charcoal text   */
+  --subtle:       oklch(0.621 0 0);            /* #8c8c8c  footer / copyright    */
+
+  /* ── Icon accent pads (card icon backgrounds) ─────────────────── */
+  --accent-indigo:  oklch(0.957 0.030 270);    /* #eef2ff */
+  --accent-orange:  oklch(0.979 0.032 75);     /* #fff7ed */
+  --accent-green:   oklch(0.984 0.030 155);    /* #f0fdf4 */
+  --accent-purple:  oklch(0.968 0.026 308);    /* #fdf4ff */
+
+  /* ── Charts (brand family) ────────────────────────────────────── */
+  --chart-1: oklch(0.566 0.237 275.8);
+  --chart-2: oklch(0.516 0.249 271.5);
+  --chart-3: oklch(0.443 0.168 276.8);
+  --chart-4: oklch(0.638 0.180 275.8);
+  --chart-5: oklch(0.938 0.043 278.2);
+
+  /* ── Sidebar ──────────────────────────────────────────────────── */
+  --sidebar:                    oklch(0.984 0.004 247);
+  --sidebar-foreground:         oklch(0.131 0.030 264.0);
+  --sidebar-primary:            oklch(0.566 0.237 275.8);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent:             oklch(0.938 0.043 278.2);
+  --sidebar-accent-foreground:  oklch(0.516 0.249 271.5);
+  --sidebar-border:             oklch(0.918 0.010 254);
+  --sidebar-ring:               oklch(0.566 0.237 275.8);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   DARK MODE
+   Designed for Creonex (not from Figma — designer left this undefined).
+   Strategy: deep navy base that complements the brand purple.
+───────────────────────────────────────────────────────────────────────────── */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* ── Brand (slightly brighter for dark-mode contrast) ─────────── */
+  --brand:        oklch(0.638 0.220 275.8);   /* #8b6dff  brightened CTA     */
+  --brand-dark:   oklch(0.580 0.240 271.5);
+  --brand-end:    oklch(0.570 0.248 289.5);
+  --brand-dim:    oklch(0.70 0.140 276.8);
+  --brand-ghost:  oklch(0.25 0.06 278.2);     /* deep tint on dark           */
+  --brand-faint:  oklch(0.20 0.04 278.4);
+
+  /* ── Core semantic ────────────────────────────────────────────── */
+  --background:           oklch(0.098 0.020 264);      /* deep navy-black        */
+  --foreground:           oklch(0.965 0.005 247);      /* near white             */
+  --card:                 oklch(0.148 0.022 268);      /* elevated dark surface  */
+  --card-foreground:      oklch(0.965 0.005 247);
+  --popover:              oklch(0.148 0.022 268);
+  --popover-foreground:   oklch(0.965 0.005 247);
+  --primary:              oklch(0.638 0.220 275.8);
+  --primary-foreground:   oklch(1 0 0);
+  --secondary:            oklch(0.210 0.030 272);      /* dark purple tint       */
+  --secondary-foreground: oklch(0.80 0.120 275.8);
+  --muted:                oklch(0.175 0.018 266);      /* slightly lifted bg     */
+  --muted-foreground:     oklch(0.60 0 0);
+  --accent:               oklch(0.245 0.065 275);      /* muted purple accent    */
+  --accent-foreground:    oklch(0.80 0.140 275);
+  --destructive:          oklch(0.704 0.191 22.216);
+  --border:               oklch(1 0 0 / 0.09);
+  --input:                oklch(1 0 0 / 0.14);
+  --ring:                 oklch(0.638 0.220 275.8);
+
+  /* ── Extended text ────────────────────────────────────────────── */
+  --surface:      oklch(0.148 0.022 268);
+  --charcoal:     oklch(0.82 0.008 247);
+  --subtle:       oklch(0.50 0 0);
+
+  /* ── Icon accent pads (dark versions) ────────────────────────── */
+  --accent-indigo:  oklch(0.22 0.055 270);
+  --accent-orange:  oklch(0.22 0.040 75);
+  --accent-green:   oklch(0.22 0.040 155);
+  --accent-purple:  oklch(0.22 0.050 308);
+
+  /* ── Charts ───────────────────────────────────────────────────── */
+  --chart-1: oklch(0.638 0.220 275.8);
+  --chart-2: oklch(0.580 0.240 271.5);
+  --chart-3: oklch(0.70 0.140 276.8);
+  --chart-4: oklch(0.75 0.100 275.8);
+  --chart-5: oklch(0.25 0.06 278.2);
+
+  /* ── Sidebar ──────────────────────────────────────────────────── */
+  --sidebar:                    oklch(0.148 0.022 268);
+  --sidebar-foreground:         oklch(0.965 0.005 247);
+  --sidebar-primary:            oklch(0.638 0.220 275.8);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent:             oklch(0.245 0.065 275);
+  --sidebar-accent-foreground:  oklch(0.80 0.140 275);
+  --sidebar-border:             oklch(1 0 0 / 0.09);
+  --sidebar-ring:               oklch(0.638 0.220 275.8);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE LAYER  —  element resets + unified heading scale
+───────────────────────────────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   html {
     @apply font-sans;
+  }
+
+  /* ── Unified heading scale (consistent across whole site) ─────── */
+  h1 {
+    @apply text-[42px] font-extrabold leading-[1.2] tracking-tight text-foreground;
+  }
+  h2 {
+    @apply text-[42px] font-extrabold leading-[1.2] tracking-tight text-foreground;
+  }
+  h3 {
+    @apply text-[20px] font-bold leading-normal text-foreground;
+  }
+  h4 {
+    @apply text-[18px] font-bold leading-normal text-foreground;
+  }
+  h5 {
+    @apply text-[16px] font-semibold leading-normal text-foreground;
+  }
+  h6 {
+    @apply text-[14px] font-semibold leading-normal text-foreground;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   COMPONENT UTILITIES
+   Use these classes to build consistent UI across the site.
+───────────────────────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* ── Layout ── */
+
+  /* Full-width section with responsive horizontal padding */
+  .section {
+    @apply w-full py-24 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
+  }
+  /* Smaller section variant */
+  .section-sm {
+    @apply w-full py-16 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
+  }
+  /* Content max-width centered wrapper (1100px as per design) */
+  .container-inner {
+    @apply max-w-[1100px] mx-auto w-full;
+  }
+
+  /* ── Section backgrounds ── */
+  /* Alternating bg: use .section-white and .section-surface */
+  .section-white {
+    @apply bg-background;
+  }
+  .section-surface {
+    background-color: var(--surface);
+  }
+
+  /* ── Section header group ── */
+  /* Pill label above section heading */
+  .section-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
+           text-[10.5px] font-bold uppercase tracking-[0.1em];
+    background-color: var(--brand-faint);
+    border: 1px solid oklch(from var(--brand-dark) l c h / 0.3);
+    color: var(--brand-dark);
+  }
+  /* Section heading+subheading wrapper */
+  .section-header {
+    @apply flex flex-col items-center gap-4 text-center;
+  }
+
+  /* ── Typography helpers ── */
+
+  /* Main section heading (h1/h2 size, 42px) */
+  .heading-section {
+    @apply text-[42px] font-extrabold leading-[1.2] tracking-tight text-foreground;
+  }
+  /* Card heading (h3 size, 20px) */
+  .heading-card {
+    @apply text-[20px] font-bold leading-normal text-foreground;
+  }
+  /* Step / sub-card heading (h4 size, 18px) – uses display font */
+  .heading-step {
+    @apply text-[18px] font-bold leading-normal text-foreground font-display;
+  }
+  /* Paragraph: large (15px) */
+  .body-lg {
+    @apply text-[15px] leading-[1.7];
+    color: var(--muted-foreground);
+  }
+  /* Paragraph: standard (14px) */
+  .body-md {
+    @apply text-[14px] leading-[1.6];
+    color: var(--muted-foreground);
+  }
+  /* Paragraph: small (12px) */
+  .body-sm {
+    @apply text-[12px] leading-[1.6];
+    color: var(--muted-foreground);
+  }
+  /* Muted label (footer columns, form hints) */
+  .label-muted {
+    @apply text-[14px] font-medium;
+    color: var(--muted-foreground);
+  }
+  /* Brand logo text (Instrument Serif) */
+  .brand-wordmark {
+    @apply font-serif not-italic tracking-[-0.01em];
+    color: var(--brand-dim);
+  }
+
+  /* ── Gradient utilities ── */
+
+  /* Brand gradient background (CTA buttons, step circles) */
+  .bg-brand-gradient {
+    background-image: linear-gradient(135deg, var(--brand-dark), var(--brand-end));
+  }
+  /* Brand gradient text */
+  .text-brand-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, var(--brand-dark), var(--brand-end));
+  }
+
+  /* ── Cards ── */
+
+  /* Standard feature card (WhyCreonex grid) */
+  .card-feature {
+    @apply bg-card border border-border rounded-[20px] p-9;
+  }
+  .card-feature-hover {
+    @apply bg-card border border-border rounded-[20px] p-9
+           transition-shadow duration-200 hover:shadow-lg;
+  }
+
+  /* ── Card icon pads ── */
+  /* Color accent squares behind icons */
+  .icon-pad-indigo  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-indigo); }
+  .icon-pad-orange  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-orange); }
+  .icon-pad-green   { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-green); }
+  .icon-pad-purple  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-purple); }
+
+  /* ── Buttons ── */
+
+  /* Primary CTA (filled brand gradient, pill shape) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-2.5 rounded-full font-semibold text-sm text-white
+           transition-opacity duration-150 hover:opacity-90
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+    background-image: linear-gradient(135deg, var(--brand-dark), var(--brand-end));
+  }
+  /* Ghost nav button */
+  .btn-ghost-nav {
+    @apply inline-flex items-center justify-center
+           px-4 py-2 rounded-full font-semibold text-sm
+           transition-colors duration-150 hover:bg-muted
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+    color: var(--charcoal);
+  }
+
+  /* ── Nav ── */
+  .nav-link {
+    @apply text-[14px] font-normal transition-colors duration-150;
+    color: var(--charcoal);
+  }
+  .nav-link:hover {
+    color: var(--brand);
+  }
+
+  /* ── Divider ── */
+  .divider {
+    @apply w-full border-t border-border;
   }
 }
