@@ -43,10 +43,8 @@
   --color-subtle:               var(--subtle);
 
   /* Fonts */
-  --font-sans:                  var(--font-inter);
-  --font-mono:                  var(--font-geist-mono);
-  --font-serif:                 var(--font-instrument-serif);
-  --font-display:               var(--font-plus-jakarta);
+  --font-sans:   var(--font-inter);
+  --font-serif:  var(--font-instrument-serif);
 
   /* Radius scale */
   --radius-sm:  calc(var(--radius) * 0.5);
@@ -55,7 +53,6 @@
   --radius-xl:  calc(var(--radius) * 1.5);
   --radius-2xl: calc(var(--radius) * 2);
   --radius-3xl: calc(var(--radius) * 3.2);
-  --radius-full: 9999px;
 
   /* Sidebar */
   --color-sidebar:                    var(--sidebar);
@@ -322,12 +319,10 @@
 
   /* ── Cards ── */
 
+  /* Add hover:shadow-lg directly when you need hover behaviour */
   .card-feature {
-    @apply bg-card border border-border rounded-[20px] p-9;
-  }
-  .card-feature-hover {
     @apply bg-card border border-border rounded-[20px] p-9
-           transition-shadow duration-200 hover:shadow-lg;
+           transition-shadow duration-200;
   }
 
   /* ── Icon pads (card icon backgrounds) ── */
