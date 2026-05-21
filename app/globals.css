@@ -242,95 +242,79 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    COMPONENT UTILITIES
-   Use these classes to build consistent UI across the site.
+   One utility per concept. No near-duplicates.
 ───────────────────────────────────────────────────────────────────────────── */
 @layer components {
 
   /* ── Layout ── */
 
-  /* Full-width section with responsive horizontal padding */
+  /* Full-width section — responsive horizontal padding */
   .section {
     @apply w-full py-24 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
   }
-  /* Smaller section variant */
   .section-sm {
     @apply w-full py-16 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
   }
-  /* Content max-width centered wrapper (1100px as per design) */
+  /* Max-width content wrapper (1100px per design) */
   .container-inner {
     @apply max-w-[1100px] mx-auto w-full;
   }
-
-  /* ── Section backgrounds ── */
-  /* Alternating bg: use .section-white and .section-surface */
-  .section-white {
-    @apply bg-background;
-  }
+  /* Alternate section bg (zebra pattern) */
   .section-surface {
     background-color: var(--surface);
   }
 
-  /* ── Section header group ── */
-  /* Pill label above section heading */
+  /* ── Section header ── */
+
+  /* Unified pill label — always uppercase, always brand-faint bg */
   .section-badge {
     @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
-           text-[10.5px] font-bold uppercase tracking-[0.1em];
+           text-[11px] font-bold uppercase tracking-[0.12em];
     background-color: var(--brand-faint);
-    border: 1px solid oklch(from var(--brand-dark) l c h / 0.3);
+    border: 1px solid oklch(from var(--brand-dark) l c h / 0.25);
     color: var(--brand-dark);
   }
-  /* Section heading+subheading wrapper */
+  /* Flex wrapper for badge + heading + subtext */
   .section-header {
     @apply flex flex-col items-center gap-4 text-center;
   }
 
-  /* ── Typography helpers ── */
+  /* ── Typography ── */
 
-  /* Main section heading (h1/h2 size, 42px) */
+  /* 42px — page hero and section headings */
   .heading-section {
     @apply text-[42px] font-extrabold leading-[1.2] tracking-tight text-foreground;
   }
-  /* Card heading (h3 size, 20px) */
+  /* 20px — card titles */
   .heading-card {
     @apply text-[20px] font-bold leading-normal text-foreground;
   }
-  /* Step / sub-card heading (h4 size, 18px) – uses display font */
+  /* 18px — step titles, sub-cards (Inter only, no display font) */
   .heading-step {
-    @apply text-[18px] font-bold leading-normal text-foreground font-display;
+    @apply text-[18px] font-bold leading-normal text-foreground;
   }
-  /* Paragraph: large (15px) */
-  .body-lg {
+  /* Standard body text — 15px (single body size, no 14px variant) */
+  .body {
     @apply text-[15px] leading-[1.7];
     color: var(--muted-foreground);
   }
-  /* Paragraph: standard (14px) */
-  .body-md {
-    @apply text-[14px] leading-[1.6];
-    color: var(--muted-foreground);
-  }
-  /* Paragraph: small (12px) */
+  /* Small body — captions, meta, badges */
   .body-sm {
     @apply text-[12px] leading-[1.6];
     color: var(--muted-foreground);
   }
-  /* Muted label (footer columns, form hints) */
-  .label-muted {
-    @apply text-[14px] font-medium;
-    color: var(--muted-foreground);
-  }
-  /* Brand logo text (Instrument Serif) */
+  /* Logo wordmark (Instrument Serif) */
   .brand-wordmark {
     @apply font-serif not-italic tracking-[-0.01em];
     color: var(--brand-dim);
   }
 
-  /* ── Gradient utilities ── */
+  /* ── Gradients ── */
 
-  /* Brand gradient background (CTA buttons, step circles) */
+  /* Always use gradient for primary brand bg — never flat brand color */
   .bg-brand-gradient {
     background-image: linear-gradient(135deg, var(--brand-dark), var(--brand-end));
   }
-  /* Brand gradient text */
   .text-brand-gradient {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, var(--brand-dark), var(--brand-end));
@@ -338,7 +322,6 @@
 
   /* ── Cards ── */
 
-  /* Standard feature card (WhyCreonex grid) */
   .card-feature {
     @apply bg-card border border-border rounded-[20px] p-9;
   }
@@ -347,16 +330,15 @@
            transition-shadow duration-200 hover:shadow-lg;
   }
 
-  /* ── Card icon pads ── */
-  /* Color accent squares behind icons */
-  .icon-pad-indigo  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-indigo); }
-  .icon-pad-orange  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-orange); }
-  .icon-pad-green   { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-green); }
-  .icon-pad-purple  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-purple); }
+  /* ── Icon pads (card icon backgrounds) ── */
+  .icon-pad-indigo { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-indigo); }
+  .icon-pad-orange { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-orange); }
+  .icon-pad-green  { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-green); }
+  .icon-pad-purple { @apply flex items-center justify-center rounded-2xl size-[52px]; background-color: var(--accent-purple); }
 
   /* ── Buttons ── */
 
-  /* Primary CTA (filled brand gradient, pill shape) */
+  /* Primary CTA — always gradient, never flat brand color */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
            px-6 py-2.5 rounded-full font-semibold text-sm text-white
@@ -364,7 +346,7 @@
            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
     background-image: linear-gradient(135deg, var(--brand-dark), var(--brand-end));
   }
-  /* Ghost nav button */
+  /* Ghost/login button (nav) */
   .btn-ghost-nav {
     @apply inline-flex items-center justify-center
            px-4 py-2 rounded-full font-semibold text-sm
@@ -373,16 +355,16 @@
     color: var(--charcoal);
   }
 
-  /* ── Nav ── */
+  /* ── Nav links ── */
   .nav-link {
-    @apply text-[14px] font-normal transition-colors duration-150;
+    @apply text-sm font-normal transition-colors duration-150;
     color: var(--charcoal);
   }
   .nav-link:hover {
     color: var(--brand);
   }
 
-  /* ── Divider ── */
+  /* ── Misc ── */
   .divider {
     @apply w-full border-t border-border;
   }
