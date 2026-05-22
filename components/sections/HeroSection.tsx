@@ -84,10 +84,10 @@ function NewLearnersCard() {
               <Avatar key={letter} className="size-7 border-2 border-card">
                 <AvatarFallback
                   className={`text-[10px] font-bold ${i === 0
-                      ? "bg-brand-ghost text-brand"
-                      : i === 1
-                        ? "bg-accent-indigo/20 text-accent-indigo"
-                        : "bg-yellow-100 text-yellow-600"
+                    ? "bg-brand-ghost text-brand"
+                    : i === 1
+                      ? "bg-accent-indigo/20 text-accent-indigo"
+                      : "bg-yellow-100 text-yellow-600"
                     }`}
                 >
                   {letter}
@@ -108,20 +108,20 @@ export default function HeroSection() {
       <div className="hero-glow pointer-events-none absolute inset-0 -z-10" aria-hidden />
 
       {/* Left — top */}
-      <div className="hidden lg:block absolute left-[3vw] xl:left-[5vw] top-[32%] -translate-y-1/2 rotate-[-4deg] z-10">
+      <div className="hidden xl:block absolute left-[3vw] xl:left-[5vw] top-[32%] -translate-y-1/2 rotate-[-4deg] z-10">
         <ExpertAvailableCard />
       </div>
       {/* Left — bottom */}
-      <div className="hidden lg:block absolute left-[3vw] xl:left-[5vw] top-[70%] -translate-y-1/2 rotate-[-3deg] z-10">
+      <div className="hidden xl:block absolute left-[3vw] xl:left-[5vw] top-[70%] -translate-y-1/2 rotate-[-3deg] z-10">
         <LiveWorkshopCard />
       </div>
 
       {/* Right — top */}
-      <div className="hidden lg:block absolute right-[3vw] xl:right-[5vw] top-[32%] -translate-y-1/2 rotate-[4deg] z-10">
+      <div className="hidden xl:block absolute right-[3vw] xl:right-[5vw] top-[32%] -translate-y-1/2 rotate-[4deg] z-10">
         <ExpertEarningsCard />
       </div>
       {/* Right — bottom */}
-      <div className="hidden lg:block absolute right-[3vw] xl:right-[5vw] top-[70%] -translate-y-1/2 rotate-[3deg] z-10">
+      <div className="hidden xl:block absolute right-[3vw] xl:right-[5vw] top-[70%] -translate-y-1/2 rotate-[3deg] z-10">
         <NewLearnersCard />
       </div>
 

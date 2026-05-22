@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import MobileNav from "./MobileNav";
 
@@ -30,7 +31,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-7">
+        <ul className="hidden lg:flex items-center gap-7">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link href={link.href} className="nav-link">
@@ -41,13 +42,27 @@ export default function Navbar() {
         </ul>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost-nav" size="md">Login</Button>
-          <Button variant="brand" size="md">Get Started Free</Button>
+        <div className="hidden lg:flex items-center gap-2">
+          <Show when="signed-out">
+            <SignInButton >
+              <Button className={"cursor-pointer"} variant="ghost-nav" size="md">Login</Button>
+            </SignInButton>
+            <SignUpButton>
+              <Button className={"cursor-pointer"} variant="brand" size="md">Get Started Free</Button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
         </div>
 
-        {/* Mobile */}
-        <MobileNav links={NAV_LINKS} />
+        {/* Mobile Actions */}
+        <div className="flex items-center gap-4 lg:hidden">
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
+          <MobileNav links={NAV_LINKS} />
+        </div>
       </nav>
     </header>
   );
