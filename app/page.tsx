@@ -1,13 +1,13 @@
-import HeroSection from "@/components/sections/HeroSection";
-import StatsSection from "@/components/sections/StatsSection";
-import CategoriesSection from "@/components/sections/CategoriesSection";
-import CoursesSection from "@/components/sections/CoursesSection";
-import ExpertsSection from "@/components/sections/ExpertsSection";
-import WhyCreonexSection from "@/components/sections/WhyCreonexSection";
-import HowItWorksSection from "@/components/sections/HowItWorksSection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
-import FAQSection from "@/components/sections/FAQSection";
-import CTASection from "@/components/sections/CTASection";
+import HeroSection from "@/components/sections/landing-sections/hero-section";
+import StatsSection from "@/components/sections/landing-sections/stats-section";
+import CategoriesSection from "@/components/sections/landing-sections/categories-section";
+import CoursesSection from "@/components/sections/landing-sections/courses-section";
+import ExpertsSection from "@/components/sections/landing-sections/experts-section";
+import WhyCreonexSection from "@/components/sections/landing-sections/why-creonex-section";
+import HowItWorksSection from "@/components/sections/landing-sections/how-it-works-section";
+import TestimonialsSection from "@/components/sections/landing-sections/testimonial-section";
+import FAQSection from "@/components/sections/landing-sections/faq-section";
+import CTASection from "@/components/sections/landing-sections/cta-section";
 
 export default function Home() {
   return (

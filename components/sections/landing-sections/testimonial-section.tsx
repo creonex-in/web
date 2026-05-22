@@ -1,5 +1,5 @@
 import { FaStar } from "react-icons/fa";
-import SectionHeader from "@/components/shared/SectionHeader";
+import SectionHeader from "@/components/shared/section-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TESTIMONIALS } from "@/constants/data";
 

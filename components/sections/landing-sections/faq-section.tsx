@@ -1,6 +1,6 @@
 "use client";
 
-import SectionHeader from "@/components/shared/SectionHeader";
+import SectionHeader from "@/components/shared/section-header";
 import {
   Accordion,
   AccordionContent,
