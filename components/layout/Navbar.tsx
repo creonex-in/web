@@ -1,19 +1,110 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import MobileNav from "./MobileNav";
+"use client";
 
-const NAV_LINKS = [
-  { label: "Explore", href: "#explore" },
-  { label: "Find Experts", href: "#experts" },
-  { label: "Courses", href: "#courses" },
-  { label: "How It Works", href: "#how-it-works" },
-];
+import { useRef, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import gsap from "gsap";
+import MobileNav from "./mobile-nav";
+import CustomButton from "../shared/custom-button";
+import { NAV_LINKS } from "@/constants/navigation";
+
+function NavItem({ label, href }: { label: string; href: string }) {
+  const lineRef = useRef<HTMLSpanElement>(null);
+
+  function onEnter() {
+    gsap.to(lineRef.current, {
+      scaleX: 1,
+      transformOrigin: "left",
+      duration: 0.4,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+  }
+
+  function onLeave() {
+    gsap.to(lineRef.current, {
+      scaleX: 0,
+      transformOrigin: "right",
+      duration: 0.3,
+      ease: "power2.in",
+      overwrite: "auto",
+    });
+  }
+
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    const id = href.replace("#", "");
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.pushState(null, "", href);
+    }
+  }
+
+  return (
+    <a
+      href={href}
+      onClick={handleClick}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="relative py-2 px-1 text-[12px] font-bold uppercase tracking-[0.13em] text-charcoal hover:text-foreground transition-colors duration-200"
+    >
+      {label}
+      <span
+        ref={lineRef}
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 w-full h-[3px] bg-primary"
+        style={{ transform: "scaleX(0)", transformOrigin: "left" }}
+      />
+    </a>
+  );
+}
 
 export default function Navbar() {
+  const headerRef = useRef<HTMLElement>(null);
+  const lastScrollY = useRef(0);
+  const isHidden = useRef(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+
+      if (Math.abs(delta) < 10) return;
+
+      const scrollingDown = delta > 0;
+
+      if (scrollingDown && currentScrollY > 150 && !isHidden.current) {
+        gsap.to(headerRef.current, {
+          yPercent: -100,
+          duration: 0.55,
+          ease: "power2.inOut",
+          overwrite: "auto",
+        });
+        isHidden.current = true;
+      } else if ((!scrollingDown || currentScrollY < 50) && isHidden.current) {
+        gsap.to(headerRef.current, {
+          yPercent: 0,
+          duration: 0.55,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
+        isHidden.current = false;
+      }
+
+      lastScrollY.current = currentScrollY;
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border">
-      <nav className="container-inner flex items-center justify-between h-16 px-4 sm:px-8">
+    <header
+      ref={headerRef}
+      className="fixed top-0 left-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-border"
+    >
+      <nav className="container-inner flex items-center justify-between h-18 px-4 sm:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image
@@ -33,17 +124,15 @@ export default function Navbar() {
         <ul className="hidden md:flex items-center gap-7">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
-              <Link href={link.href} className="nav-link">
-                {link.label}
-              </Link>
+              <NavItem label={link.label} href={link.href} />
             </li>
           ))}
         </ul>
 
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost-nav" size="md">Login</Button>
-          <Button variant="brand" size="md">Get Started Free</Button>
+          <CustomButton variant="outline">Login</CustomButton>
+          <CustomButton>Get Started Free</CustomButton>
         </div>
 
         {/* Mobile */}

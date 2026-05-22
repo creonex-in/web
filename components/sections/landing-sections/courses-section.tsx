@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import SectionHeader from "@/components/shared/SectionHeader";
-import CourseCard from "@/components/shared/CourseCard";
+import SectionHeader from "@/components/shared/section-header";
+import CourseCard from "@/components/shared/course-card";
+import CustomButton from "@/components/shared/custom-button";
 import { FEATURED_COURSES } from "@/constants/data";
 
 export default function CoursesSection() {
@@ -20,9 +20,9 @@ export default function CoursesSection() {
         </div>
 
         <div className="flex justify-center">
-          <Button variant="outline" size="md" className="rounded-full">
+          <CustomButton>
             Browse All Courses
-          </Button>
+          </CustomButton>
         </div>
       </div>
     </section>

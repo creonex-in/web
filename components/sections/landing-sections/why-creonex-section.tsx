@@ -1,5 +1,5 @@
 import { FaShieldAlt, FaCalendarCheck, FaComments, FaLock } from "react-icons/fa";
-import SectionHeader from "@/components/shared/SectionHeader";
+import SectionHeader from "@/components/shared/section-header";
 import type { ComponentType } from "react";
 
 interface Reason {

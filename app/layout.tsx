@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
+import TanstackProvider from "@/providers/tanstack";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,9 +27,11 @@ export default function RootLayout({
       className={inter.variable}
     >
       <body className="antialiased">
-        <Navbar />
-        {children}
-        <Footer />
+        <TanstackProvider>
+          <Navbar />
+          <main className="pt-18">{children}</main>
+          <Footer />
+        </TanstackProvider>
       </body>
     </html>
   );
