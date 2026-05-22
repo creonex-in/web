@@ -1,11 +1,10 @@
-"use client";
-
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 import { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import MobileNav from "./mobile-nav";
-import CustomButton from "../shared/custom-button";
 import { NAV_LINKS } from "@/constants/navigation";
 
 function NavItem({ label, href }: { label: string; href: string }) {
@@ -121,7 +120,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-7">
+        <ul className="hidden lg:flex items-center gap-7">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <NavItem label={link.label} href={link.href} />
@@ -130,13 +129,27 @@ export default function Navbar() {
         </ul>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-2">
-          <CustomButton variant="outline">Login</CustomButton>
-          <CustomButton>Get Started Free</CustomButton>
+        <div className="hidden lg:flex items-center gap-2">
+          <Show when="signed-out">
+            <SignInButton >
+              <Button className={"cursor-pointer"} variant="ghost-nav" size="md">Login</Button>
+            </SignInButton>
+            <SignUpButton>
+              <Button className={"cursor-pointer"} variant="brand" size="md">Get Started Free</Button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
         </div>
 
-        {/* Mobile */}
-        <MobileNav links={NAV_LINKS} />
+        {/* Mobile Actions */}
+        <div className="flex items-center gap-4 lg:hidden">
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
+          <MobileNav links={NAV_LINKS} />
+        </div>
       </nav>
     </header>
   );

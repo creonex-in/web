@@ -131,13 +131,9 @@ export const queryKeys = {
   },
 
   // ─── Auth ─────────────────────────────────────────────────────────────────
-
-  auth: {
-    /**
-     * Currently authenticated user profile.
-     * Fetched once on mount via GET /auth/me.
-     * Invalidate on logout or profile update.
-     */
-    me: () => ["auth", "me"] as const,
+  users: {
+    all: ["users"] as const,
+    // Nested under users.all so invalidating all users also invalidates "me".
+    me: () => [...queryKeys.users.all, "me"] as const,
   },
 } as const;

@@ -11,37 +11,37 @@
 
 @theme inline {
   /* Core */
-  --color-background:           var(--background);
-  --color-foreground:           var(--foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 
   /* Shadcn semantic */
-  --color-card:                 var(--card);
-  --color-card-foreground:      var(--card-foreground);
-  --color-popover:              var(--popover);
-  --color-popover-foreground:   var(--popover-foreground);
-  --color-primary:              var(--primary);
-  --color-primary-foreground:   var(--primary-foreground);
-  --color-secondary:            var(--secondary);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted:                var(--muted);
-  --color-muted-foreground:     var(--muted-foreground);
-  --color-accent:               var(--accent);
-  --color-accent-foreground:    var(--accent-foreground);
-  --color-destructive:          var(--destructive);
-  --color-border:               var(--border);
-  --color-input:                var(--input);
-  --color-ring:                 var(--ring);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
   /* Brand extras */
-  --color-brand:                var(--brand);
-  --color-brand-dark:           var(--brand-dark);
-  --color-brand-end:            var(--brand-end);
-  --color-brand-dim:            var(--brand-dim);
-  --color-brand-ghost:          var(--brand-ghost);
-  --color-brand-faint:          var(--brand-faint);
-  --color-surface:              var(--surface);
-  --color-charcoal:             var(--charcoal);
-  --color-subtle:               var(--subtle);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-end: var(--brand-end);
+  --color-brand-dim: var(--brand-dim);
+  --color-brand-ghost: var(--brand-ghost);
+  --color-brand-faint: var(--brand-faint);
+  --color-surface: var(--surface);
+  --color-charcoal: var(--charcoal);
+  --color-subtle: var(--subtle);
 
   /* Fonts */
   --font-sans: var(--font-inter);
@@ -60,22 +60,22 @@
   --max-width-footer-col: 17.5rem;   /* 280px  footer columns   */
 
   /* Radius scale */
-  --radius-sm:  calc(var(--radius) * 0.5);
-  --radius-md:  calc(var(--radius) * 0.75);
-  --radius-lg:  var(--radius);
-  --radius-xl:  calc(var(--radius) * 1.5);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
   --radius-2xl: calc(var(--radius) * 2);
   --radius-3xl: calc(var(--radius) * 3.2);
 
   /* Sidebar */
-  --color-sidebar:                    var(--sidebar);
-  --color-sidebar-foreground:         var(--sidebar-foreground);
-  --color-sidebar-primary:            var(--sidebar-primary);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent:             var(--sidebar-accent);
-  --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
-  --color-sidebar-border:             var(--sidebar-border);
-  --color-sidebar-ring:               var(--sidebar-ring);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 
   /* Charts */
   --color-chart-1: var(--chart-1);
@@ -219,12 +219,14 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
   html {
     @apply font-sans;
   }
@@ -249,6 +251,7 @@
   .section {
     @apply w-full py-16 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
   }
+
   .section-sm {
     @apply w-full py-10 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
   }
@@ -271,8 +274,7 @@
   /* ── Section header ── */
 
   .section-badge {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
-           text-[11px] font-bold uppercase tracking-[0.12em];
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.12em];
     background-color: var(--brand-faint);
     border: 1px solid oklch(from var(--brand-dark) l c h / 0.25);
     color: var(--brand-dark);
@@ -304,15 +306,27 @@
   /* ── Cards ── */
 
   .card-feature {
-    @apply bg-card border border-border rounded-[20px] p-9
-           transition-shadow duration-200;
+    @apply bg-card border border-border rounded-[20px] p-9 transition-shadow duration-200;
   }
 
   /* ── Icon pads (card icon backgrounds) ── */
-  .icon-pad-indigo { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-indigo); }
-  .icon-pad-orange { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-orange); }
-  .icon-pad-green  { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-green); }
-  .icon-pad-purple { @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0; background-color: var(--accent-purple); }
+  .icon-pad-indigo {
+    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
+    background-color: var(--accent-indigo);
+  }
 
+  .icon-pad-orange {
+    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
+    background-color: var(--accent-orange);
+  }
 
+  .icon-pad-green {
+    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
+    background-color: var(--accent-green);
+  }
+
+  .icon-pad-purple {
+    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
+    background-color: var(--accent-purple);
+  }
 }
