@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import SectionHeader from "@/components/shared/SectionHeader";
-import ExpertCard from "@/components/shared/ExpertCard";
+import SectionHeader from "@/components/shared/section-header";
+import ExpertCard from "@/components/shared/expert-card";
 import { FEATURED_EXPERTS } from "@/constants/data";
 
 export default function ExpertsSection() {

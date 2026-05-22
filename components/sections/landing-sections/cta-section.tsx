@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import CustomButton from "../../shared/custom-button";
 
 export default function CTASection() {
   return (
@@ -15,19 +15,12 @@ export default function CTASection() {
             Join 50,000+ learners already growing faster with Creonex. No credit card required.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-2">
-            <Button
-              size="pill"
-              className="bg-white text-brand-dark rounded-full hover:bg-white/90 border-transparent font-semibold"
-            >
+            <CustomButton variant="outline">
               Start for Free
-            </Button>
-            <Button
-              variant="outline"
-              size="pill"
-              className="rounded-full border-white/30 text-white bg-transparent hover:bg-white/10 hover:text-white"
-            >
+            </CustomButton>
+            <CustomButton variant="primary">
               Explore Courses
-            </Button>
+            </CustomButton>
           </div>
         </div>
       </div>

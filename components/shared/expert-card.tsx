@@ -2,6 +2,7 @@ import { FaStar } from "react-icons/fa";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import CustomButton from "./custom-button";
 
 export interface ExpertCardProps {
   name: string;
@@ -40,9 +41,9 @@ export default function ExpertCard({
         </span>
         <span>{sessions} sessions</span>
       </div>
-      <Button variant="brand" size="md" className="w-full mt-1">
+      <CustomButton className="w-full mt-1">
         Book Session
-      </Button>
+      </CustomButton>
     </div>
   );
 }

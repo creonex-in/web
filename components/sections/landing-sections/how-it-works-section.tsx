@@ -1,5 +1,5 @@
 import { FaCompass, FaBookOpen, FaTrophy } from "react-icons/fa";
-import SectionHeader from "@/components/shared/SectionHeader";
+import SectionHeader from "@/components/shared/section-header";
 import { HOW_IT_WORKS_STEPS } from "@/constants/data";
 import type { ComponentType } from "react";
 

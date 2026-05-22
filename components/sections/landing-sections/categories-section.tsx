@@ -1,4 +1,4 @@
-import SectionHeader from "@/components/shared/SectionHeader";
+import SectionHeader from "@/components/shared/section-header";
 import { CATEGORIES } from "@/constants/data";
 
 export default function CategoriesSection() {
