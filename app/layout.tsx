@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { QueryProvider } from "@/providers/QueryProvider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,9 +28,13 @@ export default function RootLayout({
       className={inter.variable}
     >
       <body className="antialiased">
-        <Navbar />
-        {children}
-        <Footer />
+        <ClerkProvider>
+          <QueryProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </QueryProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

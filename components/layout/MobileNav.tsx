@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FaBars } from "react-icons/fa";
+import { Show, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +13,7 @@ interface MobileNavProps {
 export default function MobileNav({ links }: MobileNavProps) {
   return (
     <Sheet>
-      <SheetTrigger className="md:hidden" aria-label="Open menu">
+      <SheetTrigger className="lg:hidden" aria-label="Open menu">
         <FaBars className="size-5 text-foreground" />
       </SheetTrigger>
       <SheetContent side="right" className="w-72">
@@ -26,10 +27,16 @@ export default function MobileNav({ links }: MobileNavProps) {
               </li>
             ))}
           </ul>
-          <div className="flex flex-col gap-3 pt-4 border-t border-border">
-            <Button variant="ghost-nav" size="md" className="w-full">Login</Button>
-            <Button variant="brand" size="md" className="w-full">Get Started Free</Button>
-          </div>
+          <Show when="signed-out">
+            <div className="flex flex-col gap-3 pt-4 border-t border-border">
+              <SignInButton>
+                <Button variant="ghost-nav" size="md" className="w-full">Login</Button>
+              </SignInButton>
+              <SignUpButton>
+                <Button variant="brand" size="md" className="w-full">Get Started Free</Button>
+              </SignUpButton>
+            </div>
+          </Show>
         </nav>
       </SheetContent>
     </Sheet>
