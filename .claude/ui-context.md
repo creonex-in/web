@@ -1,26 +1,17 @@
 # UI Context — Creonex Component Patterns
 
 Component patterns, utility class usage, and Tailwind conventions.
-Design tokens (colors, typography, spacing) → see `style-guide.md`.
-
----
-
-## Design Philosophy
-
-- White-dominant, flat solid colors, no gradients
-- All sections: `.section > .container-inner > content`
-- WCAG AA contrast on every text/background pair
-- Dark mode via `.dark` on `<html>` — never `prefers-color-scheme`
+Token values → `style-guide.md`. Icon imports → `code-standards.md`.
 
 ---
 
 ## Using Design Tokens in Tailwind
 
 ```tsx
-<div className="bg-[var(--brand)]">        // brand blue background
-<span className="text-[var(--brand)]">     // brand blue text
-<div className="border-[var(--brand)]">    // brand blue border
-<div className="bg-[var(--surface)]">      // surface gray background
+<div className="bg-[var(--brand)]">
+<span className="text-[var(--brand)]">
+<div className="border-[var(--brand)]">
+<div className="bg-[var(--surface)]">
 ```
 
 ---
@@ -30,13 +21,11 @@ Design tokens (colors, typography, spacing) → see `style-guide.md`.
 Every page section must follow this wrapper:
 
 ```tsx
-<section className="section">              // white bg
-<section className="section section-surface"> // gray bg
-
+<section className="section">               {/* white bg */}
+<section className="section section-surface"> {/* gray bg */}
   <div className="container-inner">
     {/* content */}
   </div>
-
 </section>
 ```
 
@@ -55,10 +44,7 @@ Every page section must follow this wrapper:
 ## Buttons
 
 ```tsx
-// Primary CTA — solid brand blue
 <button className="btn-primary">Get Started Free</button>
-
-// Outlined secondary
 <button className="btn-outline">Browse Courses</button>
 ```
 
@@ -66,10 +52,12 @@ Every page section must follow this wrapper:
 
 ## Feature Cards
 
+Icon import pattern → `code-standards.md`.
+
 ```tsx
 <div className="card-feature-hover">
-  <div className="icon-pad-indigo mb-6">   // or: icon-pad-orange / green / purple
-    <Icon className="size-8" />
+  <div className="icon-pad-indigo mb-6">  {/* or: icon-pad-orange / green / purple */}
+    <FontAwesomeIcon icon={faPenNib} className="size-8 text-[var(--brand)]" />
   </div>
   <h3 className="mb-3">Card Title</h3>
   <p className="body-lg">Description.</p>
@@ -117,8 +105,10 @@ Every page section must follow this wrapper:
 
 ---
 
-## shadcn Components
+## shadcn Components Base UI
 
-Located in `components/ui/` — never edit directly. Add with `npx shadcn add <name>`.
+Located in `components/ui/` — never edit generated files directly. Add with `npx shadcn add <name>`.
 
 Installed: Accordion, Avatar, Badge, Button, Card, Input, ScrollArea, Separator, Sheet, Tabs
+
+Custom wrappers go in `components/shared/` — not in `components/ui/`.

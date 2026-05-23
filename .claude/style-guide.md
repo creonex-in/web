@@ -1,6 +1,6 @@
 # Creonex Style Guide
 
-Source: Figma `RpnOkkAMw3S4VsZUjyIASy`. Brand migrated from purple to **blue `#337DEB`** (2026-05-22). All gradients removed — flat solid colors only.
+Source: Figma `RpnOkkAMw3S4VsZUjyIASy`. Brand is **blue `#337DEB`** — all gradients removed, flat solid colors only.
 
 ---
 
@@ -79,11 +79,10 @@ Source: Figma `RpnOkkAMw3S4VsZUjyIASy`. Brand migrated from purple to **blue `#3
 
 ### Section Zebra
 
-```
-Navbar / Hero     → bg-background
-Stats / WhyCreonex / HowItWorks / Testimonials  → bg-surface
-Courses / Experts / FAQ / CTA / Footer          → bg-background
-```
+| Background | Sections |
+|-----------|---------|
+| `bg-background` | Navbar, Hero, Courses, Experts, FAQ, CTA, Footer |
+| `bg-surface` | Stats, Categories, WhyCreonex, HowItWorks, Testimonials |
 
 ---
 
