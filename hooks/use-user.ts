@@ -1,7 +1,7 @@
 "use client";
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import { http, HttpError } from "@/lib/http";
-import { queryKeys } from "@/lib/queryKeys";
+import { queryKeys } from "@/lib/tanstack/query-keys";
 import { endpoints } from "@/lib/endpoints";
 import { isRetryable } from "@/lib/errors";
 import type { User } from "@/types";

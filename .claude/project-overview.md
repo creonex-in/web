@@ -74,16 +74,6 @@ Think of it as the intersection of:
 
 ---
 
-## Design Direction
-
-- **Color**: Blue (`#337DEB`) as the single brand color — trustworthy, professional, stands out in the warm-color-dominated Indian ed-tech space
-- **Style**: Clean white surfaces, generous whitespace, flat colors (no gradients)
-- **Typography**: Inter for everything; Instrument Serif for the logo only
-- **Tone**: Premium but approachable — not elitist, not cheap-looking
-- **Motion**: Subtle entrance animations (tw-animate-css), no gratuitous motion
-
----
-
 ## Competitive Positioning
 
 | Platform | Problem | Creonex Advantage |

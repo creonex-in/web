@@ -1,3 +1,5 @@
+"use client";
+
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useRef, useEffect } from "react";
@@ -6,6 +8,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import MobileNav from "./mobile-nav";
 import { NAV_LINKS } from "@/constants/navigation";
+import CustomButton from "../shared/custom-button";
 
 function NavItem({ label, href }: { label: string; href: string }) {
   const lineRef = useRef<HTMLSpanElement>(null);
@@ -132,10 +135,10 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-2">
           <Show when="signed-out">
             <SignInButton >
-              <Button className={"cursor-pointer"} variant="ghost-nav" size="md">Login</Button>
+              <CustomButton className={"cursor-pointer"} variant="outline">Login</CustomButton>
             </SignInButton>
             <SignUpButton>
-              <Button className={"cursor-pointer"} variant="brand" size="md">Get Started Free</Button>
+              <CustomButton className={"cursor-pointer"} variant="primary">Get Started Free</CustomButton>
             </SignUpButton>
           </Show>
           <Show when="signed-in">

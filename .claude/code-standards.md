@@ -1,6 +1,6 @@
 # Code Standards — Creonex Frontend
 
-Specific rules for TypeScript, React, Next.js, and Tailwind CSS in this codebase.
+TypeScript, React, Next.js, Icons, and Tailwind rules with examples.
 
 ---
 
@@ -8,18 +8,12 @@ Specific rules for TypeScript, React, Next.js, and Tailwind CSS in this codebase
 
 ### Strictness
 
-`tsconfig.json` has `"strict": true`. All the following are enforced:
-- `noImplicitAny`
-- `strictNullChecks`
-- `strictFunctionTypes`
-- `strictPropertyInitialization`
-
-**No exceptions.** Never add `// @ts-ignore` or `// @ts-expect-error` without a comment explaining the exact limitation.
+`tsconfig.json` has `"strict": true` — `noImplicitAny`, `strictNullChecks`, `strictFunctionTypes`, `strictPropertyInitialization`. No exceptions. Never add `// @ts-ignore` without a comment explaining the exact limitation.
 
 ### Type vs Interface
 
 ```ts
-// ✅ Use interface for object shapes
+// ✅ interface for object shapes
 interface Course {
   id: string;
   title: string;
@@ -27,7 +21,7 @@ interface Course {
   instructor: Instructor;
 }
 
-// ✅ Use type for unions, mapped types, utility types
+// ✅ type for unions, mapped types, utility types
 type CourseStatus = "draft" | "published" | "archived";
 type CourseFilters = Partial<Pick<Course, "category" | "level">>;
 ```
@@ -35,14 +29,14 @@ type CourseFilters = Partial<Pick<Course, "category" | "level">>;
 ### No `any`
 
 ```ts
-// ❌ never
+// ❌
 const data: any = await fetchCourses();
 
-// ✅ use unknown + type guard, or type it correctly
+// ✅ unknown + type guard
 const data: unknown = await response.json();
 if (isCourse(data)) { ... }
 
-// ✅ or use your typed fetch wrapper
+// ✅ typed fetch wrapper
 const data = await apiGet<Course[]>("/courses");
 ```
 
@@ -54,7 +48,7 @@ export function formatPrice(cents: number): string {
   return `₹${(cents / 100).toFixed(0)}`;
 }
 
-// ✅ async functions
+// ✅ async
 export async function fetchCourse(slug: string): Promise<Course> {
   return apiGet<Course>(`/courses/${slug}`);
 }
@@ -62,7 +56,7 @@ export async function fetchCourse(slug: string): Promise<Course> {
 // ❌ never React.FC
 const Card: React.FC<CardProps> = () => {};
 
-// ✅ plain function signature
+// ✅ plain function
 function Card({ title }: CardProps): JSX.Element {
   return <div>{title}</div>;
 }
@@ -74,10 +68,9 @@ function Card({ title }: CardProps): JSX.Element {
 
 ### Component Files
 
-Each component file exports exactly **one default export** (the component) and may have named type exports.
+One default export per file (the component). Named exports for types only.
 
 ```ts
-// CourseCard.tsx
 export interface CourseCardProps {
   course: Course;
   onWishlist?: (id: string) => void;
@@ -96,63 +89,109 @@ Add `"use client"` only when the component uses:
 - Browser APIs (`window`, `document`, `localStorage`)
 - Event handlers that trigger state changes
 - TanStack Query hooks
+- `react-hook-form`
 
 ```tsx
-// ✅ Server Component (no directive needed)
+// ✅ Server Component — no directive
 export default function CourseCard({ course }: CourseCardProps) {
-  return (
-    <div className="card-feature-hover">
-      <h3>{course.title}</h3>
-    </div>
-  );
+  return <div className="card-feature-hover"><h3>{course.title}</h3></div>;
 }
 
-// ✅ Client Component (only when needed)
+// ✅ Client Component — only when needed
 "use client";
-import { useState } from "react";
-
 export default function WishlistButton({ courseId }: { courseId: string }) {
   const [saved, setSaved] = useState(false);
   return <button onClick={() => setSaved(!saved)}>...</button>;
 }
 ```
 
-### Hooks Rules
+### Hooks
 
-- Custom hooks go in `lib/hooks/` (generic) or `features/{domain}/hooks/` (domain-specific).
-- Never define a hook inside a component file.
-- Always prefix with `use`.
-- Custom hooks must be pure — no side effects beyond what React allows.
+- Live in `lib/hooks/` (generic) or `features/{domain}/hooks/` (domain-specific). Never inside a component file.
+- Always prefix with `use`. Must be pure — no side effects beyond what React allows.
 
 ### Key Props
 
-Always provide a stable `key` when rendering lists. Never use array index as key when items can be reordered or filtered.
-
 ```tsx
-// ✅
-{courses.map((course) => (
-  <CourseCard key={course.id} course={course} />
-))}
+// ✅ stable key
+{courses.map((course) => <CourseCard key={course.id} course={course} />)}
 
-// ❌
-{courses.map((course, i) => (
-  <CourseCard key={i} course={course} />
-))}
+// ❌ index as key (breaks on reorder/filter)
+{courses.map((course, i) => <CourseCard key={i} course={course} />)}
 ```
 
 ### Conditional Rendering
 
 ```tsx
-// ✅ for single condition
 {isLoading && <Spinner />}
-
-// ✅ for if/else
 {isLoading ? <Spinner /> : <CourseGrid courses={data} />}
 
-// ✅ for complex conditions — extract to a variable
+// complex — extract to variable
 const content = error ? <ErrorState /> : isLoading ? <Spinner /> : <CourseGrid />;
 return <section>{content}</section>;
 ```
+
+---
+
+## Icons
+
+**Font Awesome only.** Never `lucide-react` or `react-icons`. Import named icons individually — never the full icon set.
+
+```tsx
+// ✅ Solid
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+<FontAwesomeIcon icon={faArrowRight} className="size-4" />
+
+// ✅ Brand / social
+import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
+<FontAwesomeIcon icon={faGithub} className="size-5 text-[var(--charcoal)]" />
+
+// ✅ Regular (outline)
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+<FontAwesomeIcon icon={faBookmark} className="size-4" />
+
+// ❌ never
+import { ArrowRight } from "lucide-react";
+import { FaArrowRight } from "react-icons/fa";
+```
+
+---
+
+## Forms
+
+Forms use **react-hook-form** for state and **zod** for schema validation. Only use forms in Client Components.
+
+```tsx
+"use client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const schema = z.object({
+  email: z.string().email("Invalid email"),
+  password: z.string().min(8, "Min 8 characters"),
+});
+
+type FormValues = z.infer<typeof schema>;
+
+export default function LoginForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: FormValues) => { /* call API */ };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("email")} />
+      {errors.email && <p className="body-sm text-red-500">{errors.email.message}</p>}
+    </form>
+  );
+}
+```
+
+Define zod schemas in `features/{domain}/schemas/` and reuse across form + API validation.
 
 ---
 
@@ -161,18 +200,12 @@ return <section>{content}</section>;
 ### Image
 
 ```tsx
-// ✅ always next/image
 import Image from "next/image";
 
-<Image
-  src={course.thumbnailUrl}
-  alt={course.title}
-  width={400}
-  height={225}
-  className="rounded-xl object-cover"
-/>
+<Image src={course.thumbnailUrl} alt={course.title} width={400} height={225}
+       className="rounded-xl object-cover" />
 
-// For fill (responsive container)
+// fill (responsive container)
 <div className="relative aspect-video">
   <Image src={url} alt={alt} fill className="object-cover" />
 </div>
@@ -181,17 +214,15 @@ import Image from "next/image";
 ### Link
 
 ```tsx
-// ✅ always next/link
 import Link from "next/link";
 <Link href={`/courses/${course.slug}`}>View Course</Link>
 
-// ❌ never bare <a> for internal nav
-<a href="/courses">Courses</a>
+// ❌ never bare <a> for internal navigation
 ```
 
 ### Metadata
 
-Every `page.tsx` must export a `Metadata` object:
+Every `page.tsx` must export `Metadata`:
 
 ```ts
 import type { Metadata } from "next";
@@ -205,99 +236,196 @@ export const metadata: Metadata = {
     images: [{ url: "/og/courses.jpg" }],
   },
 };
-```
 
-For dynamic routes, use `generateMetadata`:
-
-```ts
+// Dynamic routes
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const course = await fetchCourse(params.slug);
   return { title: `${course.title} — Creonex` };
 }
 ```
 
-### Suspense Boundaries
+### Server-First Data Fetching
 
-Wrap Client Components that use TanStack Query in `<Suspense>`:
+**This project is server-first.** The default for any data need is an `async` Server Component fetching directly via the DAL. Never reach for TanStack Query unless the data must change in response to client interaction (filters, pagination, user actions).
+
+```
+Need data for render?
+  └── Does it change based on user interaction (filters, tabs, load-more, live updates)?
+        ├── NO  → async Server Component + DAL directly (no TanStack, no "use client")
+        └── YES → Server prefetch + HydrationBoundary → Client Component with useQuery
+```
+
+Direct Server Component fetch — the default for all non-interactive data:
 
 ```tsx
-// In a Server Component page
-import { Suspense } from "react";
-import CourseGrid from "@/features/courses/components/CourseGrid";
+// app/(marketing)/courses/[slug]/page.tsx
+// No TanStack. No "use client". Just async + DAL.
+export default async function CourseDetailPage({ params }: { params: { slug: string } }) {
+  const course = await getCourse(params.slug);
+  return <CourseDetail course={course} />;
+}
+```
 
-export default function CoursesPage() {
+### Parallel Fetching with `Promise.all`
+
+When a page needs multiple independent data sources, always fetch them in parallel. Sequential `await` chains add latency equal to the sum of all requests; `Promise.all` reduces it to the slowest one.
+
+```tsx
+// ✅ Parallel — total wait = max(getCourse, getRelated, getInstructor)
+export default async function CourseDetailPage({ params }: { params: { slug: string } }) {
+  const [course, relatedCourses, instructor] = await Promise.all([
+    getCourse(params.slug),
+    getRelatedCourses(params.slug),
+    getInstructor(params.slug),
+  ]);
+  return <CourseDetail course={course} related={relatedCourses} instructor={instructor} />;
+}
+
+
+Use `Promise.all` whenever two or more DAL calls in the same Server Component or layout have no dependency on each other's results.
+
+For sections that can load independently and stream, split into child Server Components each wrapped in `<Suspense>` — Next.js fetches them in parallel and streams each as it resolves:
+
+```tsx
+// Streaming — shell renders immediately, each section streams in when its data resolves
+export default async function ExpertPage({ params }: { params: { username: string } }) {
   return (
-    <section className="section">
-      <div className="container-inner">
-        <Suspense fallback={<CourseGridSkeleton />}>
-          <CourseGrid />
-        </Suspense>
-      </div>
-    </section>
+    <>
+      <ExpertHeader username={params.username} />        {/* fetches inline, blocks shell */}
+      <Suspense fallback={<CoursesSkeleton />}>
+        <ExpertCourses username={params.username} />     {/* streams independently */}
+      </Suspense>
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <ExpertReviews username={params.username} />     {/* streams independently */}
+      </Suspense>
+    </>
   );
 }
 ```
 
----
+### Rendering Patterns
 
-## Tailwind CSS
+Route-to-strategy table → `CLAUDE.md`. Implementation below.
 
-### Class Order
-
-Follow this order for readability (not enforced by linter, but follow the convention):
-
-1. Layout (`flex`, `grid`, `block`)
-2. Sizing (`w-`, `h-`, `size-`)
-3. Positioning (`relative`, `absolute`, `inset-`)
-4. Spacing (`p-`, `m-`, `gap-`)
-5. Typography (`text-`, `font-`, `leading-`)
-6. Visual (`bg-`, `border-`, `rounded-`, `shadow-`)
-7. State (`hover:`, `focus:`, `active:`)
-8. Responsive (`sm:`, `md:`, `lg:`)
-
-### `cn()` for Conditional Classes
+**SSG** — static at build, no dynamic data:
 
 ```tsx
+// app/(auth)/login/page.tsx
+export default function LoginPage() {
+  return <SignIn />;
+}
+```
+
+**ISR** — cached at first request, regenerated after `revalidate` seconds. Use `Promise.all` when multiple sources needed:
+
+```tsx
+// app/(marketing)/courses/[slug]/page.tsx
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const courses = await getCourses();
+  return courses.map((c) => ({ slug: c.slug }));
+}
+
+export default async function CourseDetailPage({ params }: { params: { slug: string } }) {
+  const [course, relatedCourses] = await Promise.all([
+    getCourse(params.slug),
+    getRelatedCourses(params.slug),
+  ]);
+  return <CourseDetail course={course} related={relatedCourses} />;
+}
+```
+
+**SSR + TanStack prefetch** — only when a section must re-fetch based on client interaction (e.g. filter changes the course list). Not for pages that just need fresh data on every request — use a plain `async` Server Component for that:
+
+```tsx
+// app/(marketing)/courses/page.tsx
+// FilterBar is a Client Component — changing it must re-fetch the grid on the client.
+// TanStack is justified here; it would not be justified on a page with no interactive data.
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getQueryClient } from "@/lib/tanstack/query-client";
+import { getCourses } from "@/dal/courses.dal";
+import { queryKeys } from "@/lib/tanstack/query-keys";
+
+export const dynamic = "force-dynamic";
+
+export default async function CoursesPage() {
+  const queryClient = getQueryClient();
+  // Prefetch gives the client an immediate cache hit — no loading state on first render
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.courses.list(),
+    queryFn: getCourses,
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <FilterBar />                              {/* "use client" — drives URL params */}
+      <Suspense fallback={<CourseGridSkeleton />}>
+        <CourseGrid />                           {/* "use client" — useQuery, re-fetches on filter change */}
+      </Suspense>
+    </HydrationBoundary>
+  );
+}
+```
+
+**CSR** — client-only, behind Clerk auth, no server prefetch:
+
+```tsx
+// app/(dashboard)/dashboard/page.tsx — useQuery runs on mount, no SSR needed
+```
+
+### TanStack Query — Client Hook
+
+DAL functions are `server-only` — client `queryFn` must hit the `/api` proxy, not import from `dal/`:
+
+```tsx
+// features/courses/components/CourseGrid.tsx
+"use client";
+import { useQuery } from "@tanstack/react-query";
+
+export default function CourseGrid() {
+  const { data: courses, isLoading, error } = useQuery({
+    queryKey: queryKeys.courses.list(),
+    queryFn: () => fetch("/api/courses").then((r) => r.json()),
+    // If HydrationBoundary was used on the server, this hits the dehydrated cache — no network request on first render
+  });
+}
+```
+
+### Suspense Boundaries
+
+Wrap every Client Component that uses TanStack Query in `<Suspense>`. Also use `<Suspense>` on Server Components to enable streaming (each boundary renders independently):
+
+```tsx
+// Client: TanStack + HydrationBoundary
+<HydrationBoundary state={dehydrate(queryClient)}>
+  <Suspense fallback={<CourseGridSkeleton />}>
+    <CourseGrid />
+  </Suspense>
+</HydrationBoundary>
+
+// Server: streaming — no HydrationBoundary needed
+<Suspense fallback={<ReviewsSkeleton />}>
+  <ExpertReviews username={username} />
+</Suspense>
+```
+
+## File Exports & Imports
+
+### Import Paths
+
+Always use the `@/` alias. Never `../../` across feature boundaries.
+
+```ts
 import { cn } from "@/lib/utils";
-
-// ✅
-<div className={cn(
-  "card-feature-hover p-6",
-  isActive && "ring-2 ring-[var(--brand)]",
-  className,
-)}>
+import { CourseCard } from "@/components/shared/CourseCard";
+import { useCourses } from "@/features/courses/hooks/useCourses";
+import type { Course } from "@/types/course.types";
 ```
-
-### No Inline Styles
-
-```tsx
-// ❌ never
-<div style={{ color: "#337DEB" }}>
-
-// ✅
-<div className="text-[var(--brand)]">
-
-// ✅ or for one-off dynamic values
-<div className={`text-[${dynamicColor}]`}>  // only if truly dynamic
-```
-
-### Responsive Values
-
-```tsx
-// ✅ mobile-first
-<h2 className="text-3xl lg:text-5xl font-extrabold">
-
-// ✅ grid columns
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-```
-
----
-
-## File Exports
 
 ### Barrel Exports
 
-Use barrel `index.ts` only for `features/{domain}/` public APIs. Never create barrel files in `components/` — import directly to avoid bundler issues.
+Barrel `index.ts` only for `features/{domain}/` public APIs. Never in `components/`.
 
 ```ts
 // features/courses/index.ts
@@ -306,13 +434,10 @@ export { useCourses } from "./hooks/useCourses";
 export type { Course } from "./types/course.types";
 ```
 
-### Avoid Re-exporting UI Primitives
+Never re-export shadcn primitives — import them directly at the use site:
 
 ```ts
-// ❌ don't re-export shadcn
-export { Button } from "@/components/ui/button"; // in some barrel
-
-// ✅ import directly at use site
+// ✅
 import { Button } from "@/components/ui/button";
 ```
 
@@ -320,19 +445,10 @@ import { Button } from "@/components/ui/button";
 
 ## Linting
 
-The project uses ESLint with `eslint-config-next`. Run before committing:
-
 ```bash
-npm run lint
+npm run lint   # run before every commit
 ```
 
-Key rules enforced by `eslint-config-next`:
-- No `<img>` without `next/image`
-- No `<a>` without `next/link` for internal hrefs
-- No unused variables
-- No missing `key` props in lists
+ESLint (`eslint-config-next`) enforces: no `<img>` without `next/image`, no `<a>` without `next/link`, no unused variables, no missing `key` props.
 
-The `@apply` rule in VS Code CSS lint will flag Tailwind directives with "Unknown at rule". This is a **VS Code IDE warning only** — not a real error. It does not affect `npm run build`. Configure VS Code to ignore with:
-```json
-{ "css.lint.unknownAtRules": "ignore" }
-```
+VS Code `@apply` warnings in `globals.css` are IDE-only — not build errors. Suppress with `{ "css.lint.unknownAtRules": "ignore" }` in VS Code settings.
