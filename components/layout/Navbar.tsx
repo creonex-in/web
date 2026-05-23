@@ -166,15 +166,11 @@ export default function Navbar() {
         {/* Desktop right actions */}
         <div className="hidden lg:flex items-center gap-2">
           <Show when="signed-out">
-            <SignInButton>
-              <CustomButton className="cursor-pointer" variant="outline">
-                Login
-              </CustomButton>
+            <SignInButton >
+              <CustomButton className={"cursor-pointer"} variant="outline">Login</CustomButton>
             </SignInButton>
             <SignUpButton>
-              <CustomButton className="cursor-pointer" variant="primary">
-                Get Started Free
-              </CustomButton>
+              <CustomButton className={"cursor-pointer"} variant="primary">Get Started Free</CustomButton>
             </SignUpButton>
           </Show>
 
