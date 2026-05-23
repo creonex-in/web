@@ -380,4 +380,97 @@
     @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
     background-color: var(--accent-purple);
   }
+
+  /* ── Auth page animations ── */
+  .animate-float {
+    animation: auth-float 6s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: auth-float 8s ease-in-out 1.5s infinite;
+  }
+  .animate-float-slow {
+    animation: auth-float 10s ease-in-out 3s infinite;
+  }
+  .animate-fade-up {
+    animation: auth-fade-up 0.6s ease both;
+  }
+  .animate-fade-up-1 {
+    animation: auth-fade-up 0.6s ease 0.1s both;
+  }
+  .animate-fade-up-2 {
+    animation: auth-fade-up 0.6s ease 0.2s both;
+  }
+  .animate-fade-up-3 {
+    animation: auth-fade-up 0.6s ease 0.3s both;
+  }
+  .animate-fade-right {
+    animation: auth-fade-right 0.6s ease 0.15s both;
+  }
+}
+
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes auth-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes auth-fade-right {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CLERK OVERRIDES
+   Use both specific cl- class names and broad attribute selectors to
+   guarantee styles apply regardless of Clerk's internal class naming.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Input wrapper (specific class name) */
+.cl-formFieldInputGroup {
+  border: 1px solid var(--input) !important;
+  border-radius: 4px !important;
+  background-color: var(--muted) !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+/* Broad fallback: any email / password / text input inside a Clerk element */
+[class*="cl-"] input[type="email"],
+[class*="cl-"] input[type="password"],
+[class*="cl-"] input[type="text"],
+[class*="cl-"] input[type="tel"] {
+  border: 1px solid var(--input) !important;
+  border-radius: 4px !important;
+  background-color: var(--muted) !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: var(--foreground) !important;
+}
+
+/* Strip border from the raw <input> when it sits inside the group wrapper */
+.cl-formFieldInput {
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: var(--foreground) !important;
+}
+
+/* Focus ring — brand blue */
+.cl-formFieldInputGroup:focus-within {
+  border-color: var(--brand) !important;
+  box-shadow: 0 0 0 3px oklch(0.582 0.165 249.0 / 0.15) !important;
+}
+
+[class*="cl-"] input[type="email"]:focus,
+[class*="cl-"] input[type="password"]:focus,
+[class*="cl-"] input[type="text"]:focus,
+[class*="cl-"] input[type="tel"]:focus {
+  border-color: var(--brand) !important;
+  box-shadow: 0 0 0 3px oklch(0.582 0.165 249.0 / 0.15) !important;
+  outline: none !important;
 }
