@@ -9,7 +9,11 @@
 
 ## Hard Rules
 
+<<<<<<< HEAD
+- **Icons**: Font Awesome only (`@fontawesome/react-fontawesome`). Never `lucide-react` or `react-icons`. → `code-standards.md`
+=======
 - **Icons**: Font Awesome only (`@fortawesome/react-fontawesome`). Never `lucide-react` or `react-icons`. → `code-standards.md`
+>>>>>>> ff40b28876c675063ec45a50f2ad979c2a48cf25
 - **UI components**: shadcn only (`components/ui/`). Add via `npx shadcn add <name>`. Never MUI, Chakra, or any third-party library.
 - **Styling**: Tailwind classes only. No `style={{}}`. Use `cn()` for conditionals.
 - **Images / Links**: `next/image` and `next/link` always. No bare `<img>` or `<a>` for internal navigation.
