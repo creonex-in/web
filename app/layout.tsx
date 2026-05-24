@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@/components/clerk-provider";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ClerkProvider } from "@/providers/clerk-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
 
 const inter = Inter({
