@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
+import { ClerkProvider } from "@/components/clerk-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
-import { ClerkProvider } from "@clerk/nextjs";
-import Footer from "@/components/layout/footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,17 +22,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={inter.variable}
-    >
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="antialiased">
         <ClerkProvider>
-          <QueryProvider>
-            <Navbar />
-            {children}
-            <Footer />
-          </QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            // defaultTheme="light"
+            // enableSystem
+            disableTransitionOnChange
+          >
+            <QueryProvider>{children}</QueryProvider>
+          </ThemeProvider>
         </ClerkProvider>
       </body>
     </html>

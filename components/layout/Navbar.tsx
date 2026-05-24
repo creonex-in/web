@@ -1,11 +1,20 @@
+"use client";
+
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBell,
+  faGraduationCap,
+  faCalendarCheck,
+  faGauge,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import MobileNav from "./mobile-nav";
 import { NAV_LINKS } from "@/constants/navigation";
+import CustomButton from "../shared/custom-button";
 
 function NavItem({ label, href }: { label: string; href: string }) {
   const lineRef = useRef<HTMLSpanElement>(null);
@@ -59,6 +68,32 @@ function NavItem({ label, href }: { label: string; href: string }) {
   );
 }
 
+function NotificationBell() {
+  return (
+    <button
+      aria-label="Notifications"
+      className="relative p-2 rounded-full hover:bg-[var(--surface)] transition-colors duration-200 group"
+    >
+      <FontAwesomeIcon
+        icon={faBell}
+        className="size-4 text-[var(--muted-foreground)] group-hover:text-[var(--brand)] transition-colors duration-200"
+      />
+      {/* unread indicator */}
+      <span
+        aria-hidden="true"
+        className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-[var(--brand)] ring-1 ring-background"
+      />
+    </button>
+  );
+}
+
+const userButtonAppearance = {
+  elements: {
+    avatarBox:
+      "size-8 ring-2 ring-[#EBF2FD] hover:ring-[#337DEB] transition-all duration-200 cursor-pointer",
+  },
+} as const;
+
 export default function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
   const lastScrollY = useRef(0);
@@ -111,7 +146,7 @@ export default function Navbar() {
             alt=""
             width={32}
             height={32}
-            className="size-8 object-contain"
+            className="size-8 object-contain dark:invert"
             priority
           />
           <span className="text-[18px] font-bold tracking-tight text-foreground">
@@ -119,7 +154,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop links */}
+        {/* Desktop nav links */}
         <ul className="hidden lg:flex items-center gap-7">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
@@ -128,25 +163,101 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop CTAs */}
+        {/* Desktop right actions */}
         <div className="hidden lg:flex items-center gap-2">
           <Show when="signed-out">
             <SignInButton >
-              <Button className={"cursor-pointer"} variant="ghost-nav" size="md">Login</Button>
+              <CustomButton className={"cursor-pointer"} variant="outline">Login</CustomButton>
             </SignInButton>
             <SignUpButton>
-              <Button className={"cursor-pointer"} variant="brand" size="md">Get Started Free</Button>
+              <CustomButton className={"cursor-pointer"} variant="primary">Get Started Free</CustomButton>
             </SignUpButton>
           </Show>
+
           <Show when="signed-in">
-            <UserButton />
+            <NotificationBell />
+
+            {/* My Learning shortcut — visible only at xl+ to avoid crowding */}
+            <Link
+              href="/my-courses"
+              className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+                         text-[11px] font-bold uppercase tracking-[0.08em]
+                         text-[var(--charcoal)] hover:bg-[var(--surface)] hover:text-[var(--brand)]
+                         transition-all duration-200"
+            >
+              <FontAwesomeIcon icon={faGraduationCap} className="size-3.5" />
+              My Learning
+            </Link>
+
+            <UserButton appearance={userButtonAppearance}>
+              <UserButton.MenuItems>
+                <UserButton.Link
+                  label="Dashboard"
+                  labelIcon={
+                    <FontAwesomeIcon icon={faGauge} className="size-4" />
+                  }
+                  href="/dashboard"
+                />
+                <UserButton.Link
+                  label="My Courses"
+                  labelIcon={
+                    <FontAwesomeIcon
+                      icon={faGraduationCap}
+                      className="size-4"
+                    />
+                  }
+                  href="/my-courses"
+                />
+                <UserButton.Link
+                  label="Bookings"
+                  labelIcon={
+                    <FontAwesomeIcon
+                      icon={faCalendarCheck}
+                      className="size-4"
+                    />
+                  }
+                  href="/bookings"
+                />
+              </UserButton.MenuItems>
+            </UserButton>
           </Show>
         </div>
 
-        {/* Mobile Actions */}
-        <div className="flex items-center gap-4 lg:hidden">
+        {/* Mobile right actions */}
+        <div className="flex items-center gap-3 lg:hidden">
           <Show when="signed-in">
-            <UserButton />
+            <NotificationBell />
+            <UserButton appearance={userButtonAppearance}>
+              <UserButton.MenuItems>
+                <UserButton.Link
+                  label="Dashboard"
+                  labelIcon={
+                    <FontAwesomeIcon icon={faGauge} className="size-4" />
+                  }
+                  href="/dashboard"
+                />
+                <UserButton.Link
+                  label="My Courses"
+                  labelIcon={
+                    <FontAwesomeIcon
+                      icon={faGraduationCap}
+                      className="size-4"
+                    />
+                  }
+                  href="/my-courses"
+                />
+                <UserButton.Link
+                  label="Bookings"
+                  labelIcon={
+                    <FontAwesomeIcon
+                      icon={faCalendarCheck}
+                      className="size-4"
+                    />
+                  }
+                  href="/bookings"
+                />
+              </UserButton.MenuItems>
+            </UserButton>
           </Show>
           <MobileNav links={NAV_LINKS} />
         </div>
