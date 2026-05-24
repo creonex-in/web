@@ -5,17 +5,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   THEME MAP  —  CSS vars → Tailwind design tokens
-   All color values are OKLCH. No hex anywhere in token declarations.
-───────────────────────────────────────────────────────────────────────────── */
-
 @theme inline {
-  /* Core */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
-  /* Shadcn semantic */
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -32,52 +24,11 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-
-  /* Brand extras */
-  --color-brand: var(--brand);
-  --color-brand-dark: var(--brand-dark);
-  --color-brand-end: var(--brand-end);
-  --color-brand-dim: var(--brand-dim);
-  --color-brand-ghost: var(--brand-ghost);
-  --color-brand-faint: var(--brand-faint);
-  --color-surface: var(--surface);
-  --color-charcoal: var(--charcoal);
-  --color-subtle: var(--subtle);
-
-  /* Fonts */
-  --font-sans: var(--font-inter);
-
-  /* Display typography tokens (→ text-{name} utilities) */
-  --font-size-hero: 3.25rem;
-  /* 52px  desktop hero h1   */
-  --font-size-hero-sm: 2.5rem;
-  /* 40px  mobile hero h1    */
-  --font-size-headline: 2.75rem;
-  /* 44px  desktop CTA h2    */
-  --font-size-headline-sm: 2.25rem;
-  /* 36px  mobile CTA h2     */
-
-  /* Content max-width tokens (→ max-w-{name} utilities) */
-  --max-width-hero-text: 47.5rem;
-  /* 760px  hero text block  */
-  --max-width-search: 33.75rem;
-  /* 540px  search bar       */
-  --max-width-copy: 31.25rem;
-  /* 500px  body copy block  */
-  --max-width-copy-sm: 28rem;
-  /* 448px  tight copy       */
-  --max-width-footer-col: 17.5rem;
-  /* 280px  footer columns   */
-
-  /* Radius scale */
-  --radius-sm: calc(var(--radius) * 0.5);
-  --radius-md: calc(var(--radius) * 0.75);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.5);
-  --radius-2xl: calc(var(--radius) * 2);
-  --radius-3xl: calc(var(--radius) * 3.2);
-
-  /* Sidebar */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -86,392 +37,86 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-
-  /* Charts */
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   LIGHT MODE
-   Primary brand: #337DEB (blue)
-   All hex refs in comments are for designer cross-reference only.
-───────────────────────────────────────────────────────────────────────────── */
 :root {
-  /* ── Brand palette — Primary Blue ────────────────────────────────── */
-  --brand: oklch(0.582 0.165 249.0);
-  /* #337DEB  – primary CTA / buttons   */
-  --brand-dark: oklch(0.516 0.160 249.5);
-  /* #2466CC  – hover state             */
-  --brand-end: oklch(0.470 0.155 250.0);
-  /* #1A5BC4  – active / pressed        */
-  --brand-dim: oklch(0.443 0.140 250.0);
-  /* #2B5FAA  – logo / dark brand text  */
-  --brand-ghost: oklch(0.953 0.030 249.0);
-  /* #EBF2FD  – brand/100 tint          */
-  --brand-faint: oklch(0.972 0.015 249.0);
-  /* #F0F6FF  – badge bg / lightest tint */
-
-  /* ── Core semantic (shadcn) ───────────────────────────────────────── */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.131 0.030 264.0);
-  /* #0f172a  slate-900     */
+  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.131 0.030 264.0);
+  --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.131 0.030 264.0);
-  --primary: oklch(0.582 0.165 249.0);
-  /* #337DEB                */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.972 0.015 249.0);
-  /* brand-faint            */
-  --secondary-foreground: oklch(0.443 0.140 250.0);
-  /* brand-dim              */
-  --muted: oklch(0.984 0.004 247);
-  /* #f8fafc  section bg    */
-  --muted-foreground: oklch(0.532 0 0);
-  /* #737373  muted labels  */
-  --accent: oklch(0.953 0.030 249.0);
-  /* brand-ghost            */
-  --accent-foreground: oklch(0.516 0.160 249.5);
-  /* brand-dark             */
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.918 0.010 254);
-  /* #e2e8f0  card borders  */
-  --input: oklch(0.796 0 0);
-  /* #c4c4c5  input border  */
-  --ring: oklch(0.582 0.165 249.0);
-  /* #337DEB                */
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-
-  /* ── Extended text ────────────────────────────────────────────────── */
-  --surface: oklch(0.984 0.004 247);
-  /* #f8fafc  alt section bg        */
-  --charcoal: oklch(0.180 0.002 247);
-  /* #1c1c1e  nav / charcoal text   */
-  --subtle: oklch(0.621 0 0);
-  /* #8c8c8c  footer / copyright    */
-
-  /* ── Icon accent pads (card icon backgrounds) ──────────────────────── */
-  --accent-indigo: oklch(0.957 0.025 249);
-  /* #EBF2FD – blue tint   */
-  --accent-orange: oklch(0.979 0.032 75);
-  /* #fff7ed               */
-  --accent-green: oklch(0.984 0.030 155);
-  /* #f0fdf4               */
-  --accent-purple: oklch(0.968 0.026 308);
-  /* #fdf4ff               */
-
-  /* ── Charts (blue family) ─────────────────────────────────────────── */
-  --chart-1: oklch(0.582 0.165 249.0);
-  --chart-2: oklch(0.516 0.160 249.5);
-  --chart-3: oklch(0.443 0.140 250.0);
-  --chart-4: oklch(0.638 0.130 249.0);
-  --chart-5: oklch(0.953 0.030 249.0);
-
-  /* ── Sidebar ──────────────────────────────────────────────────────── */
-  --sidebar: oklch(0.984 0.004 247);
-  --sidebar-foreground: oklch(0.131 0.030 264.0);
-  --sidebar-primary: oklch(0.582 0.165 249.0);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.953 0.030 249.0);
-  --sidebar-accent-foreground: oklch(0.516 0.160 249.5);
-  --sidebar-border: oklch(0.918 0.010 254);
-  --sidebar-ring: oklch(0.582 0.165 249.0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   DARK MODE
-   Strategy: deep navy base that complements the brand blue.
-───────────────────────────────────────────────────────────────────────────── */
 
 .dark {
-  /* ── Brand (brightened for dark-mode contrast) ────────────────────── */
-  --brand: oklch(0.650 0.155 249.0);
-  --brand-dark: oklch(0.590 0.155 249.5);
-  --brand-end: oklch(0.550 0.150 250.0);
-  --brand-dim: oklch(0.720 0.110 249.0);
-  --brand-ghost: oklch(0.250 0.055 249.0);
-  --brand-faint: oklch(0.200 0.035 249.0);
-
-  /* ── Core semantic ────────────────────────────────────────────────── */
-  --background: oklch(0.098 0.020 264);
-  --foreground: oklch(0.965 0.005 247);
-  --card: oklch(0.148 0.022 268);
-  --card-foreground: oklch(0.965 0.005 247);
-  --popover: oklch(0.148 0.022 268);
-  --popover-foreground: oklch(0.965 0.005 247);
-  --primary: oklch(0.650 0.155 249.0);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.210 0.030 249);
-  --secondary-foreground: oklch(0.800 0.110 249.0);
-  --muted: oklch(0.175 0.018 266);
-  --muted-foreground: oklch(0.600 0 0);
-  --accent: oklch(0.245 0.055 249);
-  --accent-foreground: oklch(0.800 0.130 249);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 0.09);
-  --input: oklch(1 0 0 / 0.14);
-  --ring: oklch(0.650 0.155 249.0);
-
-  /* ── Extended text ────────────────────────────────────────────────── */
-  --surface: oklch(0.148 0.022 268);
-  --charcoal: oklch(0.820 0.008 247);
-  --subtle: oklch(0.500 0 0);
-
-  /* ── Icon accent pads (dark versions) ──────────────────────────────── */
-  --accent-indigo: oklch(0.220 0.045 249);
-  --accent-orange: oklch(0.220 0.040 75);
-  --accent-green: oklch(0.220 0.040 155);
-  --accent-purple: oklch(0.220 0.050 308);
-
-  /* ── Charts ───────────────────────────────────────────────────────── */
-  --chart-1: oklch(0.650 0.155 249.0);
-  --chart-2: oklch(0.590 0.155 249.5);
-  --chart-3: oklch(0.720 0.110 249.0);
-  --chart-4: oklch(0.750 0.090 249.0);
-  --chart-5: oklch(0.250 0.055 249.0);
-
-  /* ── Sidebar ──────────────────────────────────────────────────────── */
-  --sidebar: oklch(0.148 0.022 268);
-  --sidebar-foreground: oklch(0.965 0.005 247);
-  --sidebar-primary: oklch(0.650 0.155 249.0);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.245 0.055 249);
-  --sidebar-accent-foreground: oklch(0.800 0.130 249);
-  --sidebar-border: oklch(1 0 0 / 0.09);
-  --sidebar-ring: oklch(0.650 0.155 249.0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   BASE LAYER  —  element resets + unified heading scale
-───────────────────────────────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
-
-  html {
-    @apply font-sans;
-  }
-
-  /* Unified heading scale */
-  h1 {
-    @apply text-[42px] font-extrabold leading-[1.2] tracking-tight text-foreground;
-  }
-
-  h2 {
-    @apply text-[42px] font-extrabold leading-[1.2] tracking-tight text-foreground;
-  }
-
-  h3 {
-    @apply text-[20px] font-bold leading-normal text-foreground;
-  }
-
-  h4 {
-    @apply text-[18px] font-bold leading-normal text-foreground;
-  }
-
-  h5 {
-    @apply text-[16px] font-semibold leading-normal text-foreground;
-  }
-
-  h6 {
-    @apply text-[14px] font-semibold leading-normal text-foreground;
-  }
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   COMPONENT UTILITIES
-   One utility per concept. No near-duplicates. No hardcoded values.
-───────────────────────────────────────────────────────────────────────────── */
-@layer components {
-
-  /* ── Layout ── */
-
-  .section {
-    @apply w-full py-16 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
-  }
-
-  .section-sm {
-    @apply w-full py-10 px-4 sm:px-8 md:px-16 lg:px-[11vw] xl:px-[13.8vw];
-  }
-
-  /* Subtle hero background tint — flat color, no gradient */
-  .hero-glow {
-    background-color: var(--brand-faint);
-  }
-
-  /* Max-width content wrapper (1100px per design) */
-  .container-inner {
-    @apply max-w-7xl mx-auto w-full;
-  }
-
-  /* Alternate section bg (zebra pattern) */
-  .section-surface {
-    background-color: var(--surface);
-  }
-
-  /* ── Section header ── */
-
-  .section-badge {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.12em];
-    background-color: var(--brand-faint);
-    border: 1px solid oklch(from var(--brand-dark) l c h / 0.25);
-    color: var(--brand-dark);
-  }
-
-  /* ── Typography ── */
-
-  .body {
-    @apply text-[15px] leading-[1.7];
-    color: var(--muted-foreground);
-  }
-
-  .body-sm {
-    @apply text-[12px] leading-[1.6];
-    color: var(--muted-foreground);
-  }
-
-  /* ── Brand utilities ── */
-
-  /* Solid brand blue background — no gradient */
-  .bg-brand-gradient {
-    background-color: var(--brand);
-  }
-
-  /* Solid brand blue text — no clip-text */
-  .text-brand-gradient {
-    color: var(--brand);
-  }
-
-  /* ── Cards ── */
-
-  .card-feature {
-    @apply bg-card border border-border rounded-[20px] p-9 transition-shadow duration-200;
-  }
-
-  /* ── Icon pads (card icon backgrounds) ── */
-  .icon-pad-indigo {
-    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
-    background-color: var(--accent-indigo);
-  }
-
-  .icon-pad-orange {
-    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
-    background-color: var(--accent-orange);
-  }
-
-  .icon-pad-green {
-    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
-    background-color: var(--accent-green);
-  }
-
-  .icon-pad-purple {
-    @apply flex items-center justify-center rounded-2xl size-[48px] shrink-0;
-    background-color: var(--accent-purple);
-  }
-
-  /* ── Auth page animations ── */
-  .animate-float {
-    animation: auth-float 6s ease-in-out infinite;
-  }
-  .animate-float-delayed {
-    animation: auth-float 8s ease-in-out 1.5s infinite;
-  }
-  .animate-float-slow {
-    animation: auth-float 10s ease-in-out 3s infinite;
-  }
-  .animate-fade-up {
-    animation: auth-fade-up 0.6s ease both;
-  }
-  .animate-fade-up-1 {
-    animation: auth-fade-up 0.6s ease 0.1s both;
-  }
-  .animate-fade-up-2 {
-    animation: auth-fade-up 0.6s ease 0.2s both;
-  }
-  .animate-fade-up-3 {
-    animation: auth-fade-up 0.6s ease 0.3s both;
-  }
-  .animate-fade-right {
-    animation: auth-fade-right 0.6s ease 0.15s both;
-  }
-}
-
-@keyframes auth-float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes auth-fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes auth-fade-right {
-  from { opacity: 0; transform: translateX(-16px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   CLERK OVERRIDES
-   Use both specific cl- class names and broad attribute selectors to
-   guarantee styles apply regardless of Clerk's internal class naming.
-───────────────────────────────────────────────────────────────────────────── */
-
-/* Input wrapper (specific class name) */
-.cl-formFieldInputGroup {
-  border: 1px solid var(--input) !important;
-  border-radius: 4px !important;
-  background-color: var(--muted) !important;
-  box-shadow: none !important;
-  overflow: hidden;
-}
-
-/* Broad fallback: any email / password / text input inside a Clerk element */
-[class*="cl-"] input[type="email"],
-[class*="cl-"] input[type="password"],
-[class*="cl-"] input[type="text"],
-[class*="cl-"] input[type="tel"] {
-  border: 1px solid var(--input) !important;
-  border-radius: 4px !important;
-  background-color: var(--muted) !important;
-  box-shadow: none !important;
-  outline: none !important;
-  color: var(--foreground) !important;
-}
-
-/* Strip border from the raw <input> when it sits inside the group wrapper */
-.cl-formFieldInput {
-  border: none !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  outline: none !important;
-  color: var(--foreground) !important;
-}
-
-/* Focus ring — brand blue */
-.cl-formFieldInputGroup:focus-within {
-  border-color: var(--brand) !important;
-  box-shadow: 0 0 0 3px oklch(0.582 0.165 249.0 / 0.15) !important;
-}
-
-[class*="cl-"] input[type="email"]:focus,
-[class*="cl-"] input[type="password"]:focus,
-[class*="cl-"] input[type="text"]:focus,
-[class*="cl-"] input[type="tel"]:focus {
-  border-color: var(--brand) !important;
-  box-shadow: 0 0 0 3px oklch(0.582 0.165 249.0 / 0.15) !important;
-  outline: none !important;
 }
