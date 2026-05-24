@@ -9,11 +9,7 @@
 
 ## Hard Rules
 
-<<<<<<< HEAD
-- **Icons**: Font Awesome only (`@fontawesome/react-fontawesome`). Never `lucide-react` or `react-icons`. → `code-standards.md`
-=======
 - **Icons**: Font Awesome only (`@fortawesome/react-fontawesome`). Never `lucide-react` or `react-icons`. → `code-standards.md`
->>>>>>> ff40b28876c675063ec45a50f2ad979c2a48cf25
 - **UI components**: shadcn only (`components/ui/`). Add via `npx shadcn add <name>`. Never MUI, Chakra, or any third-party library.
 - **Styling**: Tailwind classes only. No `style={{}}`. Use `cn()` for conditionals.
 - **Images / Links**: `next/image` and `next/link` always. No bare `<img>` or `<a>` for internal navigation.
@@ -32,14 +28,14 @@
 
 ## Rendering Strategy
 
-| Route | Strategy |
-|-------|----------|
-| `/` | SSG |
-| `/courses` | SSR + `force-dynamic` + TanStack prefetch |
-| `/courses/[slug]` | ISR `revalidate: 3600` |
-| `/experts/[username]` | ISR `revalidate: 1800` |
-| `/dashboard`, `/my-courses`, `/bookings` | CSR — client-only, behind Clerk auth |
-| `/login`, `/signup` | SSG |
+| Route                                    | Strategy                                  |
+| ---------------------------------------- | ----------------------------------------- |
+| `/`                                      | SSG                                       |
+| `/courses`                               | SSR + `force-dynamic` + TanStack prefetch |
+| `/courses/[slug]`                        | ISR `revalidate: 3600`                    |
+| `/experts/[username]`                    | ISR `revalidate: 1800`                    |
+| `/dashboard`, `/my-courses`, `/bookings` | CSR — client-only, behind Clerk auth      |
+| `/login`, `/signup`                      | SSG                                       |
 
 Implementation patterns with code → `architecture.md`.
 
@@ -63,14 +59,14 @@ types/               Global TypeScript interfaces
 
 ## When to Read Detail Files
 
-| Task involves... | Read |
-|-----------------|------|
-| Colors, typography, spacing, tokens | `style-guide.md` |
-| Component patterns, section structure, Tailwind utilities | `ui-context.md` |
-| Routing, auth, data flow, DAL patterns, dependencies | `architecture.md` |
-| TypeScript, React, Next.js, icons, Tailwind rules + examples | `code-standards.md` |
-| What's built, what's planned, open questions | `progress-tracker.md` |
-| Product scope, feature list, business context | `project-overview.md` |
+| Task involves...                                             | Read                  |
+| ------------------------------------------------------------ | --------------------- |
+| Colors, typography, spacing, tokens                          | `style-guide.md`      |
+| Component patterns, section structure, Tailwind utilities    | `ui-context.md`       |
+| Routing, auth, data flow, DAL patterns, dependencies         | `architecture.md`     |
+| TypeScript, React, Next.js, icons, Tailwind rules + examples | `code-standards.md`   |
+| What's built, what's planned, open questions                 | `progress-tracker.md` |
+| Product scope, feature list, business context                | `project-overview.md` |
 
 ---
 

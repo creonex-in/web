@@ -146,7 +146,7 @@ export default function Navbar() {
             alt=""
             width={32}
             height={32}
-            className="size-8 object-contain"
+            className="size-8 object-contain dark:invert"
             priority
           />
           <span className="text-[18px] font-bold tracking-tight text-foreground">
