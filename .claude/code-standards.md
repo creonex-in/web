@@ -4,6 +4,31 @@ TypeScript, React, Next.js, Icons, and Tailwind rules with examples.
 
 ---
 
+## File Naming
+
+**kebab-case only** — every file in the entire codebase. No exceptions.
+
+```
+# ✅ correct
+components/shared/course-card.tsx
+components/layout/navbar.tsx
+features/courses/hooks/use-courses.ts
+features/courses/types/course.types.ts
+features/auth/components/auth-guard.tsx
+lib/query-client.ts
+dal/courses.dal.ts
+
+# ❌ never
+CourseCard.tsx          ← PascalCase
+courseCard.tsx          ← camelCase
+course_card.tsx         ← snake_case
+useCourses.ts           ← camelCase
+```
+
+This applies to: components, hooks, types, utils, dal, lib, pages, layouts — everything.
+
+---
+
 ## TypeScript
 
 ### Strictness
@@ -409,6 +434,89 @@ Wrap every Client Component that uses TanStack Query in `<Suspense>`. Also use `
   <ExpertReviews username={username} />
 </Suspense>
 ```
+
+## Global CSS Utilities
+
+Defined in `app/globals.css`. Use these — don't reinvent with raw Tailwind where a class already exists.
+
+### Layout
+| Class | Use |
+|---|---|
+| `.page-container` | Every page's root content wrapper. 1280px max, responsive px. |
+| `.section-py` | Standard section vertical spacing (`py-16 md:py-24`). |
+| `.section-py-sm` | Tighter section spacing (`py-10 md:py-16`). |
+
+### Typography
+| Class | Use |
+|---|---|
+| `.text-display` | Hero / marketing headline. 48px → 60px. |
+| `.text-h1` | Page title. 36px → 48px. |
+| `.text-h2` | Section title. 24px → 30px. |
+| `.text-h3` | Card / subsection title. 20px → 24px. |
+| `.text-h4` | Small header. 16px → 18px. |
+| `.text-body` | Standard body copy. 16px, relaxed leading. |
+| `.text-body-sm` | Secondary body / meta. 14px, relaxed leading. |
+| `.text-label` | Badge / tag / overline text. 12px, uppercase, tracked. |
+
+Pair `.text-balance` utility on any heading to fix awkward line breaks.
+
+### Surfaces
+| Class | Use |
+|---|---|
+| `.card-base` | Base card: rounded-xl, border, bg-card, p-6. |
+
+### Utilities
+| Class | Use |
+|---|---|
+| `.text-balance` | `text-wrap: balance` — use on all headings. |
+| `.scrollbar-hide` | Hide scrollbar on horizontal carousels. |
+
+---
+
+## Component Placement
+
+Folder structure is physically configured. Follow these rules to place every component:
+
+| Where to put it | Condition |
+|-----------------|-----------|
+| `features/{domain}/components/` | Used only within that domain |
+| `components/shared/` | Used across 3+ features or pages |
+| `components/layout/` | Global layout shells (Navbar, Footer, Sidebar) |
+| `components/sections/` | Homepage-only section blocks (Hero, CTA, etc.) |
+| `components/ui/` | shadcn primitives — CLI only, never hand-written |
+
+**Decision tree:**
+```
+New component?
+  └── Is it a shadcn primitive?
+        ├── YES → npx shadcn add <name> → components/ui/
+        └── NO → Is it a global layout shell?
+                  ├── YES → components/layout/
+                  └── NO → Is it a homepage section?
+                            ├── YES → components/sections/
+                            └── NO → Is it used in only 1 domain?
+                                      ├── YES → features/{domain}/components/
+                                      └── NO (3+ places) → components/shared/
+```
+
+```ts
+// ✅ domain-specific
+// features/courses/components/CourseCard.tsx
+
+// ✅ shared across features
+// components/shared/Avatar.tsx
+// components/shared/RatingStars.tsx
+
+// ✅ layout
+// components/layout/Navbar.tsx
+// components/layout/Footer.tsx
+
+// ✅ homepage section
+// components/sections/HeroSection.tsx
+// components/sections/FeaturedCourses.tsx
+```
+
+---
 
 ## File Exports & Imports
 
