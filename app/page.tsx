@@ -1,7 +1,18 @@
+import type { Metadata } from "next";
+import HeroSection from "@/components/sections/hero-section";
+import TickerWall from "@/components/sections/ticker-wall";
+
+export const metadata: Metadata = {
+  title: "Creonex — The Platform for Serious Creators",
+  description:
+    "Sell courses, host sessions, and build your community. One platform built for micro-creators across India.",
+};
+
 export default function Page() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold tracking-tight">Creonex</h1>
-    </div>
+    <main>
+      <HeroSection />
+      <TickerWall />
+    </main>
   );
 }

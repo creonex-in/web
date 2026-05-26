@@ -22,7 +22,8 @@
 - **Comments**: Write only when the WHY is non-obvious. Never explain what the code does.
 - **Metadata**: Every `page.tsx` exports a `Metadata` object or `generateMetadata`. → `code-standards.md`
 - **Barrel exports**: Only inside `features/{domain}/`. Never in `components/`.
-- **Brand color**: `--brand: #337DEB`. Full token table → `style-guide.md`.
+- **File naming**: kebab-case only across entire codebase. `course-card.tsx`, `use-courses.ts`, `auth-guard.tsx`. Never PascalCase, camelCase, or snake_case filenames.
+- **Brand color**: `--primary: #00897B` (teal). Full token table → `style-guide.md`.
 
 ---
 
@@ -43,17 +44,45 @@ Implementation patterns with code → `architecture.md`.
 
 ## File Structure
 
+Folders are **physically created** — use them, don't invent new top-level directories.
+
 ```
-app/                 Pages and layouts (App Router)
-components/ui/       shadcn primitives (never edit directly)
-components/shared/   Custom reusable components
-components/layout/   Navbar, Footer
-components/sections/ Homepage section components
-features/{domain}/   Domain slice: components/, hooks/, types/
-dal/                 Server-only data access (import "server-only")
-lib/                 http, endpoints, errors, tanstack utilities
-types/               Global TypeScript interfaces
+app/                    Pages and layouts (App Router)
+components/
+  ui/                   shadcn primitives — never edit directly, add via `npx shadcn add`
+  shared/               Custom reusable components used across 3+ pages/features
+  layout/               Navbar, Footer, Sidebar — global layout shells
+  sections/             Homepage section components (Hero, Features, CTA, etc.)
+features/
+  auth/
+    components/         Auth-specific UI (profile forms, etc.)
+    hooks/              useCurrentUser, useAuthState, etc.
+    types/              AuthUser, SessionPayload, etc.
+  courses/
+    components/         CourseCard, CourseGrid, CourseDetail, etc.
+    hooks/              useCourses, useCourseDetail, etc.
+    types/              Course, CourseFilters, etc.
+  mentorship/
+    components/         ExpertCard, BookingModal, etc.
+    hooks/              useExperts, useBooking, etc.
+    types/              Expert, Booking, TimeSlot, etc.
+  dashboard/
+    components/         DashboardStats, ActivityFeed, etc.
+    hooks/              useDashboard, useMyCourses, etc.
+    types/              DashboardData, etc.
+dal/                    Server-only data access (import
+"server-only")
+lib/                    http, endpoints, errors, tanstack utilities
+types/                  Global TypeScript interfaces shared across features
 ```
+
+**Placement rules** (detail + examples → `code-standards.md`):
+
+- Used in 1 feature → `features/{domain}/components/`
+- Used in 3+ features/pages → `components/shared/`
+- shadcn primitive → `components/ui/` (via CLI only)
+- Global layout shell → `components/layout/`
+- Homepage section → `components/sections/`
 
 ---
 
