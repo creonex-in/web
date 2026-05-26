@@ -44,8 +44,6 @@ const VEL_GATE   = 0.50;
 
 // ── 3-D coefficients (per slot, 1 slot = 1 stride away from center) ───────────
 
-const ROT_Y_PER   = 22;
-const SKEW_Y_PER  = 2.5;
 const SCALE_Y_PER = 0.09;
 const SCALE_X_PER = 0.03;
 const OPACITY_PER = 0.15;
@@ -151,8 +149,6 @@ export default function CinematicGallery(): React.ReactElement {
         gsap.set(card, {
           x:             offset,
           z:             -absSlots * Z_PER,
-          rotateY:       slots * ROT_Y_PER,
-          skewY:         slots * SKEW_Y_PER,
           scaleY:        Math.max(1 - absSlots * SCALE_Y_PER, 0.52),
           scaleX:        Math.max(1 - absSlots * SCALE_X_PER, 0.83),
           opacity:       Math.max(1 - absSlots * OPACITY_PER, 0.10),
@@ -218,7 +214,7 @@ export default function CinematicGallery(): React.ReactElement {
       globals.css — background: oklch(0.103 0.006 148), foreground: oklch(0.906…)
       etc. — regardless of the page's current theme.
     */
-    <section className="dark relative overflow-hidden py-16 md:py-24 bg-background">
+    <section className="dark section-py relative overflow-hidden bg-background">
 
       {/* ── Heading ─────────────────────────────────────────────────────────── */}
       <div className="page-container mb-12 text-center">

@@ -5,6 +5,7 @@ import { ClerkProvider } from "@/providers/clerk-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -52,6 +53,7 @@ export default function RootLayout({
             <QueryProvider>
               <Navbar />
               {children}
+              <Footer />
             </QueryProvider>
           </ThemeProvider>
         </ClerkProvider>

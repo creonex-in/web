@@ -4,6 +4,9 @@ import CreonexIdeology from "@/components/sections/creonex-ideology";
 import CinematicGallery from "@/components/sections/creators-gallery";
 import CreatorTimeline from "@/components/sections/creator-timeline";
 import ProductWalkthrough from "@/components/sections/product-walkthrough";
+import HowItWorks from "@/components/sections/how-it-works";
+import Faqs from "@/components/sections/faqs";
+import Testimonials from "@/components/sections/testimonials";
 
 export const metadata: Metadata = {
   title: "Creonex — The Platform for Serious Creators",
@@ -19,6 +22,9 @@ export default function Page() {
       <CinematicGallery />
       <CreatorTimeline />
       <ProductWalkthrough />
+      <HowItWorks />
+      <Faqs />
+      <Testimonials />
     </main>
   );
 }

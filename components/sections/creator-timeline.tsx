@@ -25,7 +25,7 @@ const CREATOR = {
   name: "Arjun Sharma",
   niche: "Productivity & UX Design",
   location: "Pune, Maharashtra",
-  src: "/creator-profiles/raj.png",
+  src: "/creator-profiles/himesh.jpeg",
   quote: "I stopped waiting to feel ready. The first workshop changed everything.",
 };
 
@@ -77,17 +77,17 @@ const MILESTONES: Milestone[] = [
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function CreatorTimeline(): React.ReactElement {
-  const sectionRef   = useRef<HTMLElement>(null);
-  const timelineRef  = useRef<HTMLDivElement>(null);
-  const lineRef      = useRef<HTMLDivElement>(null);
-  const imageRef     = useRef<HTMLDivElement>(null);
-  const endingRef    = useRef<HTMLDivElement>(null);
-  const endCardRef   = useRef<HTMLDivElement>(null);
-  const svgRef       = useRef<SVGSVGElement>(null);
-  const leftPathRef  = useRef<SVGPathElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const endingRef = useRef<HTMLDivElement>(null);
+  const endCardRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const leftPathRef = useRef<SVGPathElement>(null);
   const rightPathRef = useRef<SVGPathElement>(null);
-  const cardRefs     = useRef<(HTMLDivElement | null)[]>([]);
-  const dotRefs      = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const isMobile = window.innerWidth < 1024;
@@ -133,12 +133,10 @@ export default function CreatorTimeline(): React.ReactElement {
           {
             opacity: 0,
             y: isMobile ? 16 : 28,
-            rotateX: isMobile ? 0 : 3,
           },
           {
             opacity: 1,
             y: 0,
-            rotateX: 0,
             duration: 0.75,
             ease: "power2.out",
             scrollTrigger: {
@@ -209,17 +207,17 @@ export default function CreatorTimeline(): React.ReactElement {
       }
 
       // ── 5. Teal border trace — scrub-linked, reverses with scroll like the line
-      const lp   = leftPathRef.current;
-      const rp   = rightPathRef.current;
+      const lp = leftPathRef.current;
+      const rp = rightPathRef.current;
       const card = endCardRef.current;
       if (card && lp && rp) {
         const pad = isMobile ? 20 : 48;
-        const r   = 16;
-        const w   = card.offsetWidth;
-        const h   = card.offsetHeight;
-        const W   = w + pad * 2;
-        const H   = h + pad * 2;
-        const cr  = r + pad;
+        const r = 16;
+        const w = card.offsetWidth;
+        const h = card.offsetHeight;
+        const W = w + pad * 2;
+        const H = h + pad * 2;
+        const cr = r + pad;
 
         svgRef.current?.setAttribute("viewBox", `0 0 ${W} ${H}`);
 
@@ -263,7 +261,7 @@ export default function CreatorTimeline(): React.ReactElement {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-card py-20 md:py-32"
+      className="section-py relative overflow-hidden bg-card"
     >
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-border" />
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-border" />
@@ -271,7 +269,7 @@ export default function CreatorTimeline(): React.ReactElement {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12 xl:px-16">
 
         {/* ── Section heading ──────────────────────────────────────────────────── */}
-        <div className="mb-20 max-w-2xl">
+        <div className="mb-20 max-w-2xl mx-auto text-center">
           <p className="text-label text-primary mb-5">The Creonex Path</p>
           <h2 className="text-h1 text-foreground text-balance">
             One idea.{" "}
@@ -279,13 +277,13 @@ export default function CreatorTimeline(): React.ReactElement {
             <br className="hidden sm:block" />
             {" "}Yours to build.
           </h2>
-          <p className="text-body text-muted-foreground mt-6 max-w-lg text-balance leading-relaxed">
+          <p className="text-body text-muted-foreground mt-6 max-w-lg mx-auto text-balance leading-relaxed">
             Every serious creator starts from zero. This is what the journey looks like — built on knowledge, consistency, and a platform designed for it.
           </p>
         </div>
 
         {/* ── Two-column grid — items-center vertically centers the image ──────── */}
-        <div className="grid items-center lg:grid-cols-[380px_1fr] xl:grid-cols-[440px_1fr] lg:gap-16 xl:gap-34">
+        <div className="grid items-center lg:grid-cols-[380px_1fr] xl:grid-cols-[440px_1fr] lg:gap-24 xl:gap-34">
 
           {/* ──────────────── LEFT: creator image (centered by grid) ─────────── */}
           <div className="hidden lg:block">
@@ -416,13 +414,13 @@ export default function CreatorTimeline(): React.ReactElement {
         {/* end grid */}
 
         {/* ── Ending — centered below the full grid ────────────────────────────── */}
-        <div ref={endingRef} className="mt-20 md:mt-28 flex justify-center">
+        <div ref={endingRef} className="dark mt-20 md:mt-28 flex justify-center">
           <div className="relative w-full max-w-2xl">
 
             {/* Card */}
             <div
               ref={endCardRef}
-              className="group/card relative w-full overflow-hidden rounded-2xl border border-white/[0.06] bg-[oklch(0.103_0.006_148)] px-10 py-12 text-center transition-colors duration-300 md:py-16"
+              className="group/card relative w-full overflow-hidden rounded-2xl border border-border bg-background px-10 py-12 text-center transition-colors duration-300 md:py-16"
             >
               {/* Teal glows — intensify on card hover */}
               <div
@@ -434,10 +432,10 @@ export default function CreatorTimeline(): React.ReactElement {
                 className="pointer-events-none absolute -bottom-6 -left-6 h-36 w-36 rounded-full bg-primary/[0.09] blur-2xl transition-all duration-500 group-hover/card:bg-primary/[0.18]"
               />
 
-              <p className="text-display mb-4 text-balance text-white">
+              <p className="text-display mb-4 text-balance text-foreground">
                 Start your <span className="text-primary">story.</span>
               </p>
-              <p className="text-body mx-auto mb-8 max-w-sm leading-relaxed text-white/55">
+              <p className="text-body mx-auto mb-8 max-w-sm leading-relaxed text-muted-foreground">
                 Your first student is already looking for someone like you.
               </p>
 
@@ -465,7 +463,7 @@ export default function CreatorTimeline(): React.ReactElement {
               <defs>
                 <filter id="teal-glow" x="-50%" y="-50%" width="200%" height="200%">
                   <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
-                  <feFlood floodColor="oklch(0.543 0.093 177)" floodOpacity="0.2" result="color" />
+                  <feFlood floodColor="var(--color-primary)" floodOpacity="0.2" result="color" />
                   <feComposite in="color" in2="blur" operator="in" result="glow" />
                   <feMerge>
                     <feMergeNode in="glow" />
@@ -476,7 +474,7 @@ export default function CreatorTimeline(): React.ReactElement {
               <path
                 ref={leftPathRef}
                 fill="none"
-                stroke="oklch(0.543 0.093 177)"
+                className="stroke-primary"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 filter="url(#teal-glow)"
@@ -484,7 +482,7 @@ export default function CreatorTimeline(): React.ReactElement {
               <path
                 ref={rightPathRef}
                 fill="none"
-                stroke="oklch(0.543 0.093 177)"
+                className="stroke-primary"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 filter="url(#teal-glow)"

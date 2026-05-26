@@ -69,9 +69,9 @@ export default function CreonexIdeology(): React.ReactElement {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-muted py-20 md:py-28"
+      className="section-py relative overflow-hidden"
     >
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="page-container">
 
         {/* ── Centered manifesto text ──────────────────────────────────────────── */}
         <div ref={textRef} className="mx-auto max-w-2xl text-center">
@@ -88,7 +88,7 @@ export default function CreonexIdeology(): React.ReactElement {
             Creonex ranks creators by how good they actually are — not by how many people follow them. A structural shift that has never been done at scale in India.
           </p>
 
-          <Button size="lg" render={<Link href="/about" />}>
+          <Button size="lg" nativeButton={false} render={<Link href="/about" />}>
             Learn more
             <FontAwesomeIcon
               icon={faArrowRight}
