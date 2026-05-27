@@ -17,15 +17,15 @@ export default function HeroSection() {
 
           <p className="text-body text-muted-foreground mx-auto mt-6 max-w-xl text-balance">
             Sell courses, host sessions, build your community — one platform
-            built for micro-creators like you.
+            built to turn your knowledge into a real income.
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button size="lg" nativeButton={false} render={<Link href="/signup" />}>
               Start for Free
             </Button>
-            <Button size="lg" variant="outline" nativeButton={false} render={<Link href="/courses" />}>
-              Explore Courses
+            <Button size="lg" variant="outline" nativeButton={false} render={<Link href="#how-it-works" />}>
+              How It Works
             </Button>
           </div>
 

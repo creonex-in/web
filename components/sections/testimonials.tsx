@@ -41,7 +41,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Kavya Nair",
     niche: "Content Strategy",
     quote:
-      "First platform that pays Indian creators fairly. My community grew to 600 learners in three months without any marketing budget.",
+      "First platform that pays Indian creators fairly. My community grew to 600 members in three months without any marketing budget.",
     initials: "KN",
   },
   {
@@ -57,15 +57,9 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Sneha Kapoor",
     niche: "Brand Identity",
     quote:
-      "The profile page looks so professional that students trust it immediately. My session bookings doubled in the first month.",
+      "The profile page looks so professional that people trust it immediately. My session bookings doubled in the first month.",
     initials: "SK",
   },
-];
-
-const STATS = [
-  { value: "2,400+", label: "Active Creators" },
-  { value: "₹50L+",  label: "Total Earned" },
-  { value: "4.9★",   label: "Avg. Rating" },
 ];
 
 const N = TESTIMONIALS.length;
@@ -81,11 +75,11 @@ function depthStyle(d: number) {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function TestimonialsSection(): React.ReactElement {
-  const orderRef      = useRef<number[]>(TESTIMONIALS.map((_, i) => i));
+  const orderRef     = useRef<number[]>(TESTIMONIALS.map((_, i) => i));
   const [topIdx, setTopIdx] = useState(0);
-  const cardRefs      = useRef<(HTMLDivElement | null)[]>([]);
-  const draggableRef  = useRef<Draggable | null>(null);
-  const busyRef       = useRef(false);
+  const cardRefs     = useRef<(HTMLDivElement | null)[]>([]);
+  const draggableRef = useRef<Draggable | null>(null);
+  const busyRef      = useRef(false);
 
   function attachDraggable() {
     draggableRef.current?.kill();
@@ -158,86 +152,73 @@ export default function TestimonialsSection(): React.ReactElement {
   }, []);
 
   return (
-    <section className="section-py overflow-hidden bg-background">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:items-center lg:gap-20">
+    <section className="flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background py-16">
+      <div className="page-container flex flex-col items-center">
 
-          {/* ── Left: heading + stats + avatars ─────────────────────────────── */}
-          <div>
-            <p className="text-label text-primary mb-4">What creators say</p>
-            <h2 className="text-h1 text-balance text-foreground">
-              Real stories,{" "}
-              <span className="text-muted-foreground">real creators.</span>
-            </h2>
-            <p className="text-body mt-5 max-w-sm text-muted-foreground">
-              Over 2,400 creators across India use Creonex every week to teach,
-              earn, and grow their audiences.
-            </p>
+        {/* Heading */}
+        <div className="mx-auto mb-14 max-w-2xl text-center">
+          <p className="text-label text-primary mb-4">What creators say</p>
+          <h2 className="text-h1 text-balance text-foreground">
+            Real stories,{" "}
+            <span className="text-muted-foreground">real creators.</span>
+          </h2>
+          <p className="text-body mt-5 text-muted-foreground">
+            Over 2,400 creators across India use Creonex to sell their knowledge,
+            earn consistently, and build businesses they actually own.
+          </p>
+        </div>
 
-            {/* Stats */}
-            <div className="mt-10 grid grid-cols-3 gap-4">
-              {STATS.map((s) => (
-                <div key={s.label} className="card-base">
-                  <p className="text-h3 text-foreground">{s.value}</p>
-                  <p className="text-body-sm mt-1 text-muted-foreground">{s.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Avatar strip */}
-            <div className="mt-8 flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {TESTIMONIALS.map((item, i) => (
-                  <div
-                    key={item.id}
-                    aria-label={item.name}
-                    className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-primary/10 text-xs font-semibold text-foreground transition-transform duration-200",
-                      i === topIdx && "z-10 scale-110 ring-2 ring-foreground ring-offset-1 ring-offset-background"
-                    )}
-                  >
+        {/* Draggable card deck */}
+        <div className="flex w-full flex-col items-center gap-6">
+          <div className="relative h-[280px] w-full max-w-[560px] overflow-visible">
+            {TESTIMONIALS.map((item, i) => (
+              <div
+                key={item.id}
+                ref={(el) => { cardRefs.current[i] = el; }}
+                className="absolute inset-x-0 top-0 h-[220px] select-none touch-none rounded-2xl border border-border bg-card px-7 py-6 shadow-sm"
+              >
+                <FontAwesomeIcon
+                  icon={faQuoteLeft}
+                  className="mb-3 h-4 w-4 text-foreground/20"
+                />
+                <p className="text-body leading-relaxed text-foreground line-clamp-3">
+                  &ldquo;{item.quote}&rdquo;
+                </p>
+                <div className="mt-4 flex items-center gap-3 border-t border-border pt-4">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-foreground">
                     {item.initials}
                   </div>
-                ))}
+                  <div>
+                    <p className="text-body-sm font-semibold text-foreground">{item.name}</p>
+                    <p className="text-body-sm text-muted-foreground">{item.niche}</p>
+                  </div>
+                </div>
               </div>
-              <p className="text-body-sm text-muted-foreground">
-                {N} featured creators
-              </p>
-            </div>
+            ))}
           </div>
 
-          {/* ── Right: draggable card deck ────────────────────────────────── */}
-          <div className="flex flex-col items-center gap-5">
-            <div className="relative h-[300px] w-full max-w-[460px] overflow-visible">
+          {/* Avatar strip */}
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
               {TESTIMONIALS.map((item, i) => (
                 <div
                   key={item.id}
-                  ref={(el) => { cardRefs.current[i] = el; }}
-                  className="absolute inset-x-0 top-0 select-none touch-none rounded-2xl border border-border bg-card p-7 shadow-sm"
+                  aria-label={item.name}
+                  className={cn(
+                    "flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-primary/10 text-xs font-semibold text-foreground transition-transform duration-200",
+                    i === topIdx && "z-10 scale-110 ring-2 ring-foreground ring-offset-1 ring-offset-background"
+                  )}
                 >
-                  <FontAwesomeIcon
-                    icon={faQuoteLeft}
-                    className="mb-5 h-5 w-5 text-foreground/20"
-                  />
-                  <p className="text-body min-h-[5.5rem] leading-relaxed text-foreground">
-                    &ldquo;{item.quote}&rdquo;
-                  </p>
-                  <div className="mt-6 flex items-center gap-3 border-t border-border pt-5">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-foreground">
-                      {item.initials}
-                    </div>
-                    <div>
-                      <p className="text-body-sm font-semibold text-foreground">{item.name}</p>
-                      <p className="text-body-sm text-muted-foreground">{item.niche}</p>
-                    </div>
-                  </div>
+                  {item.initials}
                 </div>
               ))}
             </div>
-            <p className="text-label text-muted-foreground/40">drag to browse</p>
+            <p className="text-body-sm text-muted-foreground">{N} featured creators</p>
           </div>
 
+          <p className="text-label text-muted-foreground/40">drag to browse</p>
         </div>
+
       </div>
     </section>
   );

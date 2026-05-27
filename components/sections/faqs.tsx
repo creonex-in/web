@@ -28,7 +28,7 @@ const FAQS: Faq[] = [
   {
     question: "What can I build on Creonex?",
     answer:
-      "You can create recorded courses with structured chapters, open live 1-on-1 booking sessions, and run private communities for your students — all under your own branded profile.",
+      "You can create recorded courses with structured chapters, open live 1-on-1 booking sessions, and run private communities for your audience — all under your own branded profile.",
   },
   {
     question: "What makes Creonex different from other platforms?",
@@ -43,7 +43,7 @@ const FAQS: Faq[] = [
   {
     question: "Is Creonex good for beginners with no audience?",
     answer:
-      "Absolutely. Most of our creators start with zero students. The platform is designed to help you build from scratch — your first free session can become your first paying cohort within weeks.",
+      "Absolutely. Most of our creators start with zero audience. The platform is designed to help you build from scratch — your first free session can become your first paying cohort within weeks.",
   },
   {
     question: "How do payouts work?",
@@ -56,7 +56,7 @@ const FAQS: Faq[] = [
 
 export default function Faqs(): React.ReactElement {
   return (
-    <section className="dark section-py bg-background">
+    <section className="section-py bg-background">
       <div className="page-container">
 
         {/* Heading */}

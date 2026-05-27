@@ -30,9 +30,9 @@ const TABS: Tab[] = [
   {
     id: "sessions",
     label: "Sessions",
-    heading: "Let experts book you — on your terms",
+    heading: "Let your audience book you — on your terms",
     description:
-      "Set your availability once. Students find you, pick a slot, and pay — no back-and-forth. Your calendar, fully yours.",
+      "Set your availability once. Your audience finds you, picks a slot, and pays — no back-and-forth, no scheduling chaos. Your time, your price.",
     primaryCta: "Start Taking Sessions",
     secondaryCta: "See How It Works",
     image: "/creator-profiles/sessions.png",
@@ -42,17 +42,17 @@ const TABS: Tab[] = [
     label: "Courses",
     heading: "Build once. Earn every week.",
     description:
-      "Upload your curriculum, set a price, and go live. Full chapter control, progress tracking, and a checkout that converts.",
+      "Upload your curriculum, set a price, and go live. Full chapter control, student progress tracking, and a checkout that converts.",
     primaryCta: "Create Your Course",
-    secondaryCta: "Browse Courses",
+    secondaryCta: "View Demo",
     image: "/creator-profiles/create-course.png",
   },
   {
     id: "community",
     label: "Community",
-    heading: "Your students, your feed, your space.",
+    heading: "Your brand, your space, your rules.",
     description:
-      "A private community lives right next to your courses. Posts, announcements, member Q&A — all without leaving Creonex.",
+      "A private community lives right next to your courses. Posts, announcements, member Q&A — all under your name, without leaving Creonex.",
     primaryCta: "Build Your Community",
     secondaryCta: "See an Example",
     image: "/creator-profiles/join-community.png",
@@ -143,7 +143,7 @@ export default function ProductWalkthrough(): React.ReactElement {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <section className="section-py">
+    <section className="section-py bg-background">
       <div className="page-container">
         <div className="dark overflow-hidden rounded-3xl bg-background px-6 py-10 md:px-12 md:py-14">
 
@@ -196,7 +196,7 @@ export default function ProductWalkthrough(): React.ReactElement {
                   variant="outline"
                   nativeButton={false}
                   className="border-border bg-transparent text-foreground hover:bg-secondary hover:text-foreground"
-                  render={<Link href="/courses" />}
+                  render={<Link href="/signup" />}
                 >
                   {active.secondaryCta}
                 </Button>

@@ -44,7 +44,7 @@ const STEPS: Step[] = [
     number: "03",
     title: "Earn while you sleep",
     description:
-      "Students discover you via search and recommendations. Payments land in your account — zero manual work.",
+      "Your audience discovers you via search and recommendations. Payments land in your account — zero manual work.",
     benefits: [
       "Instant UPI & bank payouts",
       "Automated reminders & follow-ups",
@@ -100,7 +100,7 @@ export default function HowItWorks(): React.ReactElement {
 
         {/* Header */}
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <p className="text-label text-primary mb-4">How It's Works</p>
+          <p className="text-label text-primary mb-4">How It Works</p>
           <h2 className="text-h1 text-balance text-foreground">
             From signup to{" "}
             <span className="text-primary">first sale</span>

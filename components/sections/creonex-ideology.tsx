@@ -77,7 +77,7 @@ export default function CreonexIdeology(): React.ReactElement {
         <div ref={textRef} className="mx-auto max-w-2xl text-center">
 
           <p className="text-label text-primary mb-5">
-            The Discovery Engine
+            Why Creonex
           </p>
 
           <h2 className="text-h1 text-foreground mb-6 text-balance tracking-wide">
@@ -88,8 +88,8 @@ export default function CreonexIdeology(): React.ReactElement {
             Creonex ranks creators by how good they actually are — not by how many people follow them. A structural shift that has never been done at scale in India.
           </p>
 
-          <Button size="lg" nativeButton={false} render={<Link href="/about" />}>
-            Learn more
+          <Button size="lg" nativeButton={false} render={<Link href="#how-it-works" />}>
+            See how it works
             <FontAwesomeIcon
               icon={faArrowRight}
               className="ml-2 transition-transform duration-300 group-hover/button:translate-x-1"

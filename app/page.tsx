@@ -19,12 +19,12 @@ export default function Page() {
     <main>
       <HeroSection />
       <CreonexIdeology />
-      <CinematicGallery />
-      <CreatorTimeline />
-      <ProductWalkthrough />
       <HowItWorks />
-      <Faqs />
+      <CinematicGallery />
+      <ProductWalkthrough />
+      <CreatorTimeline />
       <Testimonials />
+      <Faqs />
     </main>
   );
 }

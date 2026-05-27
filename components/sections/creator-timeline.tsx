@@ -33,7 +33,7 @@ const MILESTONES: Milestone[] = [
   {
     phase: "The Beginning",
     month: "Month 1",
-    title: "Zero students. One idea.",
+    title: "Zero audience. One idea.",
     body: "Six years of design experience — no audience, no course, no plan. Just one workshop idea he couldn't stop thinking about. He ran it free, just to see if anyone would show up.",
     stat: null,
   },
@@ -62,7 +62,7 @@ const MILESTONES: Milestone[] = [
     phase: "Momentum",
     month: "Month 8",
     title: "₹50,000/month. Consistently.",
-    body: "Two live cohorts. One recorded course. Students referring students. Income stopped feeling exciting and started feeling reliable.",
+    body: "Two live cohorts. One recorded course. Members referring members. Income stopped feeling exciting and started feeling reliable.",
     stat: "₹50K / month",
   },
   {
@@ -261,7 +261,7 @@ export default function CreatorTimeline(): React.ReactElement {
   return (
     <section
       ref={sectionRef}
-      className="section-py relative overflow-hidden bg-card"
+      className="section-py relative overflow-hidden bg-background"
     >
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-border" />
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-border" />
@@ -414,7 +414,7 @@ export default function CreatorTimeline(): React.ReactElement {
         {/* end grid */}
 
         {/* ── Ending — centered below the full grid ────────────────────────────── */}
-        <div ref={endingRef} className="dark mt-20 md:mt-28 flex justify-center">
+        <div ref={endingRef} className="mt-20 md:mt-28 flex justify-center">
           <div className="relative w-full max-w-2xl">
 
             {/* Card */}
@@ -436,12 +436,13 @@ export default function CreatorTimeline(): React.ReactElement {
                 Start your <span className="text-primary">story.</span>
               </p>
               <p className="text-body mx-auto mb-8 max-w-sm leading-relaxed text-muted-foreground">
-                Your first student is already looking for someone like you.
+                Your audience is already out there, waiting for someone like you.
               </p>
 
               <div className="flex justify-center">
                 <Button
                   size="lg"
+                  nativeButton={false}
                   render={<Link href="/signup" />}
                   className="[a]:hover:bg-primary hover:-translate-y-0.5"
                 >

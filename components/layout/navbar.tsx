@@ -33,19 +33,19 @@ const EXPLORE_LEFT = [
   {
     icon: faCalendarCheck,
     label: "Sessions",
-    description: "Book a 1-on-1 with India's top creators",
+    description: "Sell 1-on-1 sessions — your time, your price",
     href: "#sessions",
   },
   {
     icon: faBook,
     label: "Courses",
-    description: "Self-paced learning at your own speed",
+    description: "Publish courses and earn while you sleep",
     href: "#courses",
   },
   {
     icon: faUsers,
     label: "Community",
-    description: "Join spaces built for serious learners",
+    description: "Build a paid community around your brand",
     href: "#community",
   },
 ] as const;
@@ -54,7 +54,7 @@ const EXPLORE_RIGHT = [
   {
     icon: faBolt,
     label: "For Creators",
-    description: "Sell what you know, grow who you reach",
+    description: "Everything you need to turn knowledge into income",
     href: "#creators",
   },
   {
@@ -67,21 +67,21 @@ const EXPLORE_RIGHT = [
     icon: faTag,
     label: "Pricing",
     description: "Simple, creator-first plans",
-    href: "#pricing",
+    href: "/signup",
   },
 ] as const;
 
 const PLAIN_LINKS = [
-  { label: "Find Experts", href: "#experts" },
-  { label: "Courses",      href: "#courses" },
+  { label: "For Creators", href: "#creators" },
   { label: "How It Works", href: "#how-it-works" },
+  { label: "Get Started", href: "/signup" },
 ] as const;
 
 const ALL_MOBILE_LINKS = [
-  { label: "Explore",      href: "#explore" },
-  { label: "Find Experts", href: "#experts" },
-  { label: "Courses",      href: "#courses" },
+  { label: "Explore", href: "#explore" },
+  { label: "For Creators", href: "#creators" },
   { label: "How It Works", href: "#how-it-works" },
+  { label: "Get Started", href: "/signup" },
 ] as const;
 
 gsap.registerPlugin(ScrollTrigger);
@@ -98,7 +98,7 @@ export default function Navbar(): JSX.Element {
 
     ScrollTrigger.create({
       start: "20px top",
-      onEnter:    () => header.setAttribute("data-scrolled", ""),
+      onEnter: () => header.setAttribute("data-scrolled", ""),
       onLeaveBack: () => header.removeAttribute("data-scrolled"),
     });
 
@@ -128,7 +128,7 @@ export default function Navbar(): JSX.Element {
         </Link>
 
         {/* ── Col 2: Nav links (desktop) ───────────────────────────────── */}
-        <div className="hidden items-center justify-center lg:flex">
+        <div className="hidden items-center place-self-center justify-center lg:flex">
           <NavigationMenu>
             <NavigationMenuList className="gap-0.5">
 
@@ -234,7 +234,7 @@ export default function Navbar(): JSX.Element {
         </div>
 
         {/* ── Col 3: Actions ──────────────────────────────────────────────── */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-self-end">
 
           {/* Desktop CTAs */}
           <div className="hidden items-center gap-2 lg:flex">
