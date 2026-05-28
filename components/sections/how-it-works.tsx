@@ -1,135 +1,235 @@
+"use client";
+
+import { useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPenToSquare,
   faLayerGroup,
-  faMoneyBill,
+  faChartLine,
+  faChevronLeft,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+type SlideImage = {
+  src: string; // fill in when ready — leave "" for placeholder
+  alt: string;
+};
+
 type Step = {
-  icon: IconDefinition;
   number: string;
+  icon: IconDefinition;
   title: string;
   description: string;
-  benefits: string[];
+  images: SlideImage[];
 };
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const STEPS: Step[] = [
   {
-    icon: faPenToSquare,
     number: "01",
+    icon: faPenToSquare,
     title: "Create your creator profile",
     description:
       "Set up your public storefront in minutes — bio, expertise, and social proof. No tech skills needed.",
-    benefits: [
-      "Custom public profile page",
-      "Verified creator badge",
-      "Shareable link for every platform",
+    images: [
+      { src: "/creator-profiles/raj.png", alt: "Profile setup screen" },
+      { src: "/creator-profiles/raj.png", alt: "Profile preview" },
+      { src: "/creator-profiles/raj.png", alt: "Creator badge" },
     ],
   },
   {
-    icon: faLayerGroup,
     number: "02",
+    icon: faLayerGroup,
     title: "Publish courses or sessions",
     description:
       "Upload your curriculum or open 1-on-1 booking slots. You control the price, pace, and availability.",
-    benefits: [
-      "Drag-and-drop curriculum builder",
-      "Flexible session scheduling",
-      "Built-in payment checkout",
+    images: [
+      { src: "/creator-profiles/shraddha.jpeg", alt: "Course builder" },
+      { src: "/creator-profiles/shraddha.jpeg", alt: "Session scheduling" },
+      { src: "/creator-profiles/shraddha.jpeg", alt: "Pricing setup" },
+      { src: "/creator-profiles/shraddha.jpeg", alt: "Curriculum editor" },
     ],
   },
   {
-    icon: faMoneyBill,
     number: "03",
+    icon: faChartLine,
     title: "Earn while you sleep",
     description:
       "Your audience discovers you via search and recommendations. Payments land in your account — zero manual work.",
-    benefits: [
-      "Instant UPI & bank payouts",
-      "Automated reminders & follow-ups",
-      "Monthly earnings dashboard",
+    images: [
+      { src: "/creator-profiles/shraddha.jpeg", alt: "Earnings dashboard" },
+      { src: "/creator-profiles/shraddha.jpeg", alt: "Analytics overview" },
+      { src: "/creator-profiles/shraddha.jpeg", alt: "Student growth" },
     ],
   },
 ];
 
-function StepCard({ step }: { step: Step }): React.ReactElement {
+const AUTO_DELAY = 4;
+
+// ─── Carousel ────────────────────────────────────────────────────────────────
+
+interface CarouselProps {
+  images: SlideImage[];
+}
+
+function Carousel({ images }: CarouselProps): React.ReactElement {
+  const slideEls   = useRef<(HTMLDivElement | null)[]>([]);
+  const progressEl = useRef<HTMLDivElement>(null);
+  const timerRef   = useRef<gsap.core.Tween | null>(null);
+  const idxRef     = useRef(0);
+  const count      = images.length;
+
+  const goTo = useCallback((next: number) => {
+    timerRef.current?.kill();
+    gsap.killTweensOf(progressEl.current);
+
+    const n = ((next % count) + count) % count;
+    idxRef.current = n;
+
+    const targets = slideEls.current.filter((el): el is HTMLDivElement => el !== null);
+    gsap.to(targets, {
+      xPercent: (i) => (i - n) * 100,
+      duration: 0.55,
+      ease: "power2.inOut",
+    });
+
+    gsap.fromTo(
+      progressEl.current,
+      { scaleX: 0 },
+      { scaleX: 1, duration: AUTO_DELAY, ease: "none", transformOrigin: "left" },
+    );
+
+    timerRef.current = gsap.delayedCall(AUTO_DELAY, () => goTo(n + 1));
+  }, [count]);
+
+  useEffect(() => {
+    const targets = slideEls.current.filter((el): el is HTMLDivElement => el !== null);
+    gsap.set(targets, { xPercent: (i) => i * 100 });
+    goTo(0);
+    return () => { timerRef.current?.kill(); };
+  }, [goTo]);
+
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
-      {/* Top accent bar — slides in on hover */}
-      <div className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-500 group-hover:scale-x-100" />
-
-      {/* Icon + watermark number */}
-      <div className="mb-7 flex items-start justify-between">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary/15">
-          <FontAwesomeIcon icon={step.icon} className="h-5 w-5" />
-        </div>
-        <span className="font-display select-none text-7xl font-bold leading-none text-foreground/[0.04]">
-          {step.number}
-        </span>
-      </div>
-
-      {/* Text */}
-      <h3 className="text-h3 mb-3 text-foreground">{step.title}</h3>
-      <p className="text-body-sm mb-7 flex-1 leading-relaxed text-muted-foreground">
-        {step.description}
-      </p>
-
-      {/* Divider */}
-      <div className="mb-5 h-px bg-border" />
-
-      {/* Benefits */}
-      <ul className="space-y-3">
-        {step.benefits.map((benefit) => (
-          <li key={benefit} className="flex items-center gap-3">
-            <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/15">
-              <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+    <div className="group relative aspect-[16/10] overflow-hidden rounded-2xl bg-card">
+      {images.map((img, i) => (
+        <div
+          key={i}
+          ref={(el) => { slideEls.current[i] = el; }}
+          className="absolute inset-0 will-change-transform"
+        >
+          {img.src ? (
+            <Image
+              src={img.src}
+              alt={img.alt}
+              fill
+              className="object-cover"
+              draggable={false}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 border border-dashed border-border/30">
+              {/* Browser shape hint */}
+              <div className="flex w-24 flex-col overflow-hidden rounded border border-dashed border-border/40">
+                <div className="flex items-center gap-1 border-b border-border/30 px-1.5 py-1">
+                  <div className="h-1 w-1 rounded-full bg-border/40" />
+                  <div className="h-1 w-1 rounded-full bg-border/40" />
+                  <div className="h-1 w-1 rounded-full bg-border/40" />
+                </div>
+                <div className="h-8" />
+              </div>
+              <span className="text-[10px] text-muted-foreground/35">
+                Web screenshot · {i + 1} / {count}
+              </span>
             </div>
-            <span className="text-body-sm text-muted-foreground">{benefit}</span>
-          </li>
-        ))}
-      </ul>
+          )}
+        </div>
+      ))}
+
+      {/* Arrows — appear on hover */}
+      <button
+        onClick={() => goTo(idxRef.current - 1)}
+        aria-label="Previous"
+        className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-background/60 text-foreground/70 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 hover:text-foreground group-hover:opacity-100"
+      >
+        <FontAwesomeIcon icon={faChevronLeft} className="h-3 w-3" />
+      </button>
+      <button
+        onClick={() => goTo(idxRef.current + 1)}
+        aria-label="Next"
+        className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-background/60 text-foreground/70 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 hover:text-foreground group-hover:opacity-100"
+      >
+        <FontAwesomeIcon icon={faChevronRight} className="h-3 w-3" />
+      </button>
+
+      {/* Progress line */}
+      <div className="absolute inset-x-0 bottom-0 h-px bg-white/10">
+        <div ref={progressEl} className="h-full origin-left bg-primary/70" />
+      </div>
     </div>
   );
 }
 
+// ─── Section ──────────────────────────────────────────────────────────────────
+
 export default function HowItWorks(): React.ReactElement {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".how-card", {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 72%",
+          once: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="how-it-works" className="section-py bg-background">
+    <section ref={sectionRef} id="how-it-works" className="dark section-py bg-background">
       <div className="page-container">
 
-        {/* Header */}
-        <div className="mx-auto mb-16 max-w-2xl text-center">
-          <p className="text-label text-primary mb-4">How It Works</p>
-          <h2 className="text-h1 text-balance text-foreground">
-            From signup to{" "}
-            <span className="text-primary">first sale</span>
+        {/* Header — centered */}
+        <div className="mx-auto mb-14 max-w-2xl text-center">
+          <p className="text-label mb-4 text-primary">How It Works</p>
+          <h2 className="text-display text-balance text-foreground">
+            Simple steps to{" "}
+            <span className="text-primary">earning online.</span>
           </h2>
-          <p className="text-body mx-auto mt-5 max-w-lg text-balance text-muted-foreground">
-            No waiting, no approvals. Publish your knowledge and start earning
-            the same day.
+          <p className="text-body mx-auto mt-5 max-w-lg text-muted-foreground">
+            No waiting, no approvals. Publish your knowledge and start earning the same day.
           </p>
         </div>
 
-        {/* Step tracker — visible from sm up */}
-        <div className="relative mb-10 hidden sm:block">
-          {/* Connecting line: anchored to center of first and last column (each col = 33.33%, center at 16.67%) */}
-          <div className="absolute left-[16.67%] right-[16.67%] top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20" />
-          <div className="relative grid grid-cols-3">
-            {STEPS.map((step) => (
-              <div key={step.number} className="flex justify-center">
-                <div className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border border-primary/30 bg-background text-xs font-bold text-primary">
-                  {parseInt(step.number, 10)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:gap-7">
+        {/* Cards */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((step) => (
-            <StepCard key={step.number} step={step} />
+            <div key={step.number} className="how-card flex flex-col gap-5">
+              <Carousel images={step.images} />
+
+              <div>
+                <p className="text-label mb-2 text-primary">Step {parseInt(step.number, 10)}</p>
+                <h3 className="text-h3 mb-2 text-foreground">{step.title}</h3>
+                <p className="text-body-sm text-muted-foreground">{step.description}</p>
+              </div>
+            </div>
           ))}
         </div>
 

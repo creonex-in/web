@@ -154,7 +154,7 @@ export default function Footer(): React.ReactElement {
         className="pointer-events-none select-none overflow-hidden flex justify-center"
         style={{ height: "clamp(3.5rem, 15.4vw, 12.6rem)" }}
       >
-        <p className="font-display font-bold leading-none tracking-tighter text-foreground/[0.025] whitespace-nowrap shrink-0"
+        <p className="font-display font-bold leading-none tracking-tighter text-foreground/[0.085] whitespace-nowrap shrink-0"
           style={{ fontSize: "clamp(5rem, 22vw, 18rem)" }}>
           CREONEX
         </p>

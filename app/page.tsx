@@ -19,10 +19,10 @@ export default function Page() {
     <main>
       <HeroSection />
       <CreonexIdeology />
-      <HowItWorks />
       <CinematicGallery />
       <ProductWalkthrough />
       <CreatorTimeline />
+      <HowItWorks />
       <Testimonials />
       <Faqs />
     </main>

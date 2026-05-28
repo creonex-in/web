@@ -1,14 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
-import { Draggable } from "gsap/Draggable";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-gsap.registerPlugin(Draggable);
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -62,19 +59,15 @@ const TABS: Tab[] = [
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function ProductWalkthrough(): React.ReactElement {
-  const [activeIdx, setActiveIdx]   = useState(0);
-  const activeIdxRef                = useRef(0);
-  const contentRef                  = useRef<HTMLDivElement>(null);
-  const draggableRef                = useRef<Draggable | null>(null);
-  const busyRef                     = useRef(false);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const activeIdxRef              = useRef(0);
+  const contentRef                = useRef<HTMLDivElement>(null);
+  const busyRef                   = useRef(false);
 
-  // ── Transition ──────────────────────────────────────────────────────────────
-  // Store in a ref so the Draggable closure always calls the latest version.
   const transitionRef = useRef((nextIdx: number, dir: 1 | -1) => {
     const el = contentRef.current;
     if (!el || busyRef.current) return;
     busyRef.current = true;
-    draggableRef.current?.disable();
 
     gsap.set(el, { x: 0 });
     gsap.to(el, {
@@ -91,10 +84,7 @@ export default function ProductWalkthrough(): React.ReactElement {
           opacity: 1,
           duration: 0.3,
           ease: "power2.out",
-          onComplete: () => {
-            busyRef.current = false;
-            draggableRef.current?.enable();
-          },
+          onComplete: () => { busyRef.current = false; },
         });
       },
     });
@@ -102,45 +92,10 @@ export default function ProductWalkthrough(): React.ReactElement {
 
   const switchTab = (idx: number) => {
     if (idx === activeIdxRef.current || busyRef.current) return;
-    const dir = idx > activeIdxRef.current ? 1 : -1;
-    transitionRef.current(idx, dir);
+    transitionRef.current(idx, idx > activeIdxRef.current ? 1 : -1);
   };
 
-  // ── Draggable setup ─────────────────────────────────────────────────────────
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-
-    const [d] = Draggable.create(el, {
-      type: "x",
-      cursor: "grab",
-      activeCursor: "grabbing",
-      onDragEnd() {
-        const hitDist = Math.abs(this.x) > 80;
-        const hitVel  = Math.abs(this.velocityX) > 450;
-
-        if (!hitDist && !hitVel) {
-          gsap.to(el, { x: 0, duration: 0.45, ease: "power3.out" });
-          return;
-        }
-
-        const goNext  = this.x < 0 || this.velocityX < -450;
-        const nextIdx = goNext
-          ? (activeIdxRef.current + 1) % TABS.length
-          : (activeIdxRef.current - 1 + TABS.length) % TABS.length;
-
-        gsap.set(el, { x: 0 });
-        transitionRef.current(nextIdx, goNext ? 1 : -1);
-      },
-    });
-
-    draggableRef.current = d;
-    return () => { d.kill(); };
-  }, []);
-
   const active = TABS[activeIdx];
-
-  // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
     <section className="section-py bg-background">
@@ -170,10 +125,10 @@ export default function ProductWalkthrough(): React.ReactElement {
             </div>
           </div>
 
-          {/* Content — Draggable target */}
+          {/* Content */}
           <div
             ref={contentRef}
-            className="grid cursor-grab select-none items-center gap-10 active:cursor-grabbing lg:grid-cols-2 lg:gap-16"
+            className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
           >
             {/* Left — copy */}
             <div>

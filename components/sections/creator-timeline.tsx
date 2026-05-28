@@ -420,7 +420,7 @@ export default function CreatorTimeline(): React.ReactElement {
             {/* Card */}
             <div
               ref={endCardRef}
-              className="group/card relative w-full overflow-hidden rounded-2xl border border-border bg-background px-10 py-12 text-center transition-colors duration-300 md:py-16"
+              className="dark group/card relative w-full overflow-hidden rounded-2xl border border-border bg-background px-10 py-12 text-center transition-colors duration-300 md:py-16"
             >
               {/* Teal glows — intensify on card hover */}
               <div
