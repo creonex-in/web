@@ -1,6 +1,7 @@
 "use client";
 
 import { JSX, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
@@ -55,7 +56,7 @@ const EXPLORE_RIGHT = [
     icon: faBolt,
     label: "For Creators",
     description: "Everything you need to turn knowledge into income",
-    href: "#creators",
+    href: "/creators",
   },
   {
     icon: faCirclePlay,
@@ -72,14 +73,13 @@ const EXPLORE_RIGHT = [
 ] as const;
 
 const PLAIN_LINKS = [
-  { label: "For Creators", href: "#creators" },
+  { label: "For Creators", href: "/creators" },
   { label: "How It Works", href: "#how-it-works" },
-  { label: "Get Started", href: "/signup" },
 ] as const;
 
 const ALL_MOBILE_LINKS = [
   { label: "Explore", href: "#explore" },
-  { label: "For Creators", href: "#creators" },
+  { label: "For Creators", href: "/creators" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Get Started", href: "/signup" },
 ] as const;
@@ -90,6 +90,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar(): JSX.Element {
   const { isSignedIn, isLoaded } = useAuth();
+  const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -221,7 +222,10 @@ export default function Navbar(): JSX.Element {
                     href={link.href}
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "bg-transparent text-muted-foreground hover:bg-transparent hover:text-foreground",
+                      "bg-transparent hover:bg-transparent",
+                      pathname === link.href
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
                     )}
                   >
                     {link.label}

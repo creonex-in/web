@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import AnimatedHeadline from "@/components/sections/animated-headline";
+import AnimatedHeadline from "@/components/shared/animated-headline";
 import { VideoPlayer } from "@/components/shared/video-player";
 
 export default function HeroSection() {
@@ -13,7 +13,11 @@ export default function HeroSection() {
 
       <div className="page-container">
         <div className="mx-auto max-w-3xl text-center">
-          <AnimatedHeadline />
+          <h1 className="text-display text-balance text-foreground">
+            The next step for{" "}
+            <AnimatedHeadline words={["serious", "curious", "devoted", "focused"]} />{" "}
+            creators
+          </h1>
 
           <p className="text-body text-muted-foreground mx-auto mt-6 max-w-xl text-balance">
             Sell courses, host sessions, build your community — one platform
