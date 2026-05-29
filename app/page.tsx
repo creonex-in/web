@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/shared/page-transition";
 import UserHero from "@/components/sections/user/user-hero";
-import CreatorButton from "@/components/sections/user/creator-button";
+import ExploreTopics from "@/components/sections/user/explore-topics";
 import CinematicGallery from "@/components/sections/creator/creators-gallery";
 import Testimonials from "@/components/sections/creator/testimonials";
 import Faqs from "@/components/sections/creator/faqs";
@@ -17,6 +17,7 @@ export default function Page(): React.ReactElement {
     <PageTransition>
       <main>
         <UserHero />
+        <ExploreTopics />
         {/* <CreatorButton /> */}
         <Testimonials />
         <CinematicGallery />
