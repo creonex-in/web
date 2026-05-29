@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/shared/page-transition";
-import UserHero from "@/components/sections/user-landing-sections/user-hero";
-import CreatorButton from "@/components/sections/user-landing-sections/creator-button";
-import CinematicGallery from "@/components/sections/creator-landing-sections/creators-gallery";
-import Testimonials from "@/components/sections/creator-landing-sections/testimonials";
-import Faqs from "@/components/sections/creator-landing-sections/faqs";
+import UserHero from "@/components/sections/user/user-hero";
+import CreatorButton from "@/components/sections/user/creator-button";
+import CinematicGallery from "@/components/sections/creator/creators-gallery";
+import Testimonials from "@/components/sections/creator/testimonials";
+import Faqs from "@/components/sections/creator/faqs";
 
 export const metadata: Metadata = {
   title: "Creonex — Learn from India's Best Creators",
@@ -17,7 +17,7 @@ export default function Page(): React.ReactElement {
     <PageTransition>
       <main>
         <UserHero />
-        <CreatorButton />
+        {/* <CreatorButton /> */}
         <Testimonials />
         <CinematicGallery />
         <Faqs />

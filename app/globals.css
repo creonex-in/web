@@ -48,23 +48,23 @@
 }
 
 :root {
-  --background: oklch(0.976 0.004 88);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(0.941 0.009 86);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(0.941 0.009 86);
-  --popover-foreground: oklch(0.145 0 0);
+  --background: oklch(0.982 0.002 240);
+  --foreground: oklch(0.118 0.010 240);
+  --card: oklch(1.0 0 0);
+  --card-foreground: oklch(0.118 0.010 240);
+  --popover: oklch(1.0 0 0);
+  --popover-foreground: oklch(0.118 0.010 240);
   --primary: oklch(0.543 0.093 177);
   --primary-foreground: oklch(0.976 0.004 88);
-  --secondary: oklch(0.906 0.009 86);
-  --secondary-foreground: oklch(0.145 0 0);
-  --muted: oklch(0.906 0.009 86);
-  --muted-foreground: oklch(0.668 0.018 74);
+  --secondary: oklch(0.944 0.005 240);
+  --secondary-foreground: oklch(0.25 0.010 240);
+  --muted: oklch(0.944 0.005 240);
+  --muted-foreground: oklch(0.52 0.012 240);
   --accent: oklch(0.869 0.038 183);
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.906 0.009 86);
-  --input: oklch(0.906 0.009 86);
+  --border: oklch(0.882 0.006 240);
+  --input: oklch(0.944 0.005 240);
   --ring: oklch(0.543 0.093 177);
   --chart-1: oklch(0.543 0.093 177);
   --chart-2: oklch(0.750 0.130 60);
@@ -72,47 +72,47 @@
   --chart-4: oklch(0.700 0.055 183);
   --chart-5: oklch(0.600 0.150 30);
   --radius: 0.625rem;
-  --sidebar: oklch(0.941 0.009 86);
-  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar: oklch(0.944 0.005 240);
+  --sidebar-foreground: oklch(0.118 0.010 240);
   --sidebar-primary: oklch(0.543 0.093 177);
   --sidebar-primary-foreground: oklch(0.976 0.004 88);
-  --sidebar-accent: oklch(0.906 0.009 86);
-  --sidebar-accent-foreground: oklch(0.145 0 0);
-  --sidebar-border: oklch(0.906 0.009 86);
+  --sidebar-accent: oklch(0.910 0.005 240);
+  --sidebar-accent-foreground: oklch(0.25 0.010 240);
+  --sidebar-border: oklch(0.882 0.006 240);
   --sidebar-ring: oklch(0.543 0.093 177);
 }
 
 .dark {
-  --background: oklch(0.103 0.006 148);
-  --foreground: oklch(0.906 0.009 86);
-  --card: oklch(0.135 0.006 148);
-  --card-foreground: oklch(0.906 0.009 86);
-  --popover: oklch(0.135 0.006 148);
-  --popover-foreground: oklch(0.906 0.009 86);
+  --background: oklch(0.096 0.006 240);
+  --foreground: oklch(0.940 0.006 240);
+  --card: oklch(0.140 0.006 240);
+  --card-foreground: oklch(0.940 0.006 240);
+  --popover: oklch(0.140 0.006 240);
+  --popover-foreground: oklch(0.940 0.006 240);
   --primary: oklch(0.543 0.093 177);
   --primary-foreground: oklch(0.976 0.004 88);
-  --secondary: oklch(0.160 0.006 148);
-  --secondary-foreground: oklch(0.906 0.009 86);
-  --muted: oklch(0.160 0.006 148);
-  --muted-foreground: oklch(0.668 0.018 74);
+  --secondary: oklch(0.182 0.006 240);
+  --secondary-foreground: oklch(0.940 0.006 240);
+  --muted: oklch(0.182 0.006 240);
+  --muted-foreground: oklch(0.56 0.012 240);
   --accent: oklch(0.869 0.038 183);
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.160 0.006 148);
-  --input: oklch(0.160 0.006 148);
+  --border: oklch(0.224 0.007 240);
+  --input: oklch(0.224 0.007 240);
   --ring: oklch(0.543 0.093 177);
   --chart-1: oklch(0.543 0.093 177);
   --chart-2: oklch(0.750 0.130 60);
   --chart-3: oklch(0.650 0.050 86);
   --chart-4: oklch(0.700 0.055 183);
   --chart-5: oklch(0.650 0.150 30);
-  --sidebar: oklch(0.135 0.006 148);
-  --sidebar-foreground: oklch(0.906 0.009 86);
+  --sidebar: oklch(0.140 0.006 240);
+  --sidebar-foreground: oklch(0.940 0.006 240);
   --sidebar-primary: oklch(0.543 0.093 177);
   --sidebar-primary-foreground: oklch(0.976 0.004 88);
-  --sidebar-accent: oklch(0.160 0.006 148);
-  --sidebar-accent-foreground: oklch(0.906 0.009 86);
-  --sidebar-border: oklch(0.160 0.006 148);
+  --sidebar-accent: oklch(0.182 0.006 240);
+  --sidebar-accent-foreground: oklch(0.940 0.006 240);
+  --sidebar-border: oklch(0.224 0.007 240);
   --sidebar-ring: oklch(0.543 0.093 177);
 }
 
@@ -197,7 +197,7 @@
 /* ── Global scrollbar ─────────────────────────────────────────────────────── */
 html {
   scrollbar-width: thin;
-  scrollbar-color: hsl(var(--border)) transparent;
+  scrollbar-color: var(--color-border) transparent;
 }
 
 html::-webkit-scrollbar {
@@ -209,10 +209,10 @@ html::-webkit-scrollbar-track {
 }
 
 html::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: var(--color-border);
   border-radius: 999px;
 }
 
 html::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.4);
+  background: color-mix(in oklch, var(--color-muted-foreground) 40%, transparent);
 }

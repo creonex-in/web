@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/shared/page-transition";
-import HeroSection from "@/components/sections/creator-landing-sections/hero-section";
-import CreonexIdeology from "@/components/sections/creator-landing-sections/creonex-ideology";
-import CinematicGallery from "@/components/sections/creator-landing-sections/creators-gallery";
-import CreatorTimeline from "@/components/sections/creator-landing-sections/creator-timeline";
-import ProductWalkthrough from "@/components/sections/creator-landing-sections/product-walkthrough";
-import HowItWorks from "@/components/sections/creator-landing-sections/how-it-works";
-import Faqs from "@/components/sections/creator-landing-sections/faqs";
-import Testimonials from "@/components/sections/creator-landing-sections/testimonials";
+import HeroSection from "@/components/sections/creator/hero-section";
+import CreonexIdeology from "@/components/sections/creator/creonex-ideology";
+import CinematicGallery from "@/components/sections/creator/creators-gallery";
+import CreatorTimeline from "@/components/sections/creator/creator-timeline";
+import ProductWalkthrough from "@/components/sections/creator/product-walkthrough";
+import HowItWorks from "@/components/sections/creator/how-it-works";
+import Faqs from "@/components/sections/creator/faqs";
+import Testimonials from "@/components/sections/creator/testimonials";
 
 export const metadata: Metadata = {
   title: "For Creators — Creonex",
