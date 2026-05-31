@@ -4,7 +4,7 @@ import { JSX, useState } from "react";
 import Link from "next/link";
 import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faGrip, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -31,7 +31,7 @@ export default function MobileNav({ links }: MobileNavProps): JSX.Element {
         }
       >
         <FontAwesomeIcon
-          icon={open ? faXmark : faBars}
+          icon={open ? faXmark : faGrip}
           className="size-4"
         />
       </SheetTrigger>

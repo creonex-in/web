@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
+import SmoothScrollProvider from "@/components/shared/smooth-scroll-provider";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -51,9 +52,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <QueryProvider>
-              <Navbar />
-              {children}
-              <Footer />
+              <SmoothScrollProvider>
+                <Navbar />
+                {children}
+                <Footer />
+              </SmoothScrollProvider>
             </QueryProvider>
           </ThemeProvider>
         </ClerkProvider>

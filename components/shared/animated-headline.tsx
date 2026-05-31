@@ -15,24 +15,23 @@ export default function AnimatedHeadline({
   className = "text-primary",
 }: AnimatedHeadlineProps): React.ReactElement {
   const wrapperRef = useRef<HTMLSpanElement>(null);
-  const wordRef    = useRef<HTMLSpanElement>(null);
-  const indexRef   = useRef(0);
+  const wordRef = useRef<HTMLSpanElement>(null);
+  const indexRef = useRef(0);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
-    const el      = wordRef.current;
+    const el = wordRef.current;
     if (!el || !wrapper) return;
 
-    // Measure every word's natural width upfront — no DOM flicker during cycles
+    // Measure every word width upfront, then fix wrapper to the longest
+    // so the surrounding text never reflows during cycles
     const widths: number[] = [];
     words.forEach((w) => {
       el.textContent = w;
       widths.push(el.offsetWidth);
     });
     el.textContent = words[0];
-
-    // Start at first word's exact width — no trailing gap
-    gsap.set(wrapper, { width: widths[0] });
+    gsap.set(wrapper, { width: Math.max(...widths) });
 
     const cycle = () => {
       const next = (indexRef.current + 1) % words.length;
@@ -46,10 +45,7 @@ export default function AnimatedHeadline({
         ease: "power3.in",
         onComplete: () => {
           indexRef.current = next;
-          el.textContent   = words[next];
-
-          // Resize wrapper to fit new word — runs in parallel with enter
-          gsap.to(wrapper, { width: widths[next], duration: 0.38, ease: "power2.inOut" });
+          el.textContent = words[next];
 
           gsap.fromTo(
             el,
@@ -67,7 +63,7 @@ export default function AnimatedHeadline({
   return (
     <span
       ref={wrapperRef}
-      className="inline-block overflow-hidden align-bottom"
+      className="inline-block overflow-hidden text-center align-bottom"
       style={{ lineHeight: "inherit" }}
     >
       <span ref={wordRef} className={`inline-block ${className}`}>

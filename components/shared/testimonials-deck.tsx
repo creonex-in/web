@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(Draggable);
 
-// ── Data ──────────────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────────
 
-type Testimonial = {
+export type Testimonial = {
   id: string;
   name: string;
   niche: string;
@@ -19,67 +19,33 @@ type Testimonial = {
   initials: string;
 };
 
-const TESTIMONIALS: Testimonial[] = [
-  {
-    id: "1",
-    name: "Priya Sharma",
-    niche: "UI/UX Design",
-    quote:
-      "Creonex gave me a real home for my design courses. My first cohort sold out in two weeks — no paid ads, just organic discovery.",
-    initials: "PS",
-  },
-  {
-    id: "2",
-    name: "Arjun Mehta",
-    niche: "Full-Stack Dev",
-    quote:
-      "I run live sessions every weekend. The scheduling and payments just work — I focus entirely on teaching, nothing else.",
-    initials: "AM",
-  },
-  {
-    id: "3",
-    name: "Kavya Nair",
-    niche: "Content Strategy",
-    quote:
-      "First platform that pays Indian creators fairly. My community grew to 600 members in three months without any marketing budget.",
-    initials: "KN",
-  },
-  {
-    id: "4",
-    name: "Rohan Das",
-    niche: "Motion Graphics",
-    quote:
-      "Uploaded my first course on Saturday, had my first sale by Sunday evening. The onboarding is genuinely that smooth.",
-    initials: "RD",
-  },
-  {
-    id: "5",
-    name: "Sneha Kapoor",
-    niche: "Brand Identity",
-    quote:
-      "The profile page looks so professional that people trust it immediately. My session bookings doubled in the first month.",
-    initials: "SK",
-  },
-];
+type Props = {
+  testimonials: Testimonial[];
+  label?: string;
+  heading: React.ReactNode;
+  description?: string;
+};
 
-const N = TESTIMONIALS.length;
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
-function depthStyle(d: number) {
-  return {
-    scale:  1 - d * 0.04,
-    y:      d * 10,
-    zIndex: N - d,
-  };
+function depthStyle(d: number, n: number) {
+  return { scale: 1 - d * 0.04, y: d * 10, zIndex: n - d };
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function TestimonialsSection(): React.ReactElement {
-  const orderRef     = useRef<number[]>(TESTIMONIALS.map((_, i) => i));
+export default function TestimonialsDeck({
+  testimonials,
+  label = "What they say",
+  heading,
+  description,
+}: Props): React.ReactElement {
+  const N           = testimonials.length;
+  const orderRef    = useRef<number[]>(testimonials.map((_, i) => i));
   const [topIdx, setTopIdx] = useState(0);
-  const cardRefs     = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const draggableRef = useRef<Draggable | null>(null);
-  const busyRef      = useRef(false);
+  const busyRef     = useRef(false);
 
   function attachDraggable() {
     draggableRef.current?.kill();
@@ -113,21 +79,21 @@ export default function TestimonialsSection(): React.ReactElement {
           rotation: goLeft ? -18 : 18,
           opacity:  0,
           duration: 0.4,
-          ease: "power2.in",
+          ease:     "power2.in",
           onComplete: () => {
-            const old = orderRef.current;
+            const old      = orderRef.current;
             const newOrder = [...old.slice(1), old[0]];
             orderRef.current = newOrder;
 
             newOrder.forEach((cardIdx, depth) => {
               gsap.to(cardRefs.current[cardIdx], {
-                ...depthStyle(depth),
+                ...depthStyle(depth, N),
                 duration: 0.35,
-                ease: "power2.out",
+                ease:     "power2.out",
               });
             });
 
-            gsap.set(el, { x: 0, rotation: 0, opacity: 1, ...depthStyle(N - 1) });
+            gsap.set(el, { x: 0, rotation: 0, opacity: 1, ...depthStyle(N - 1, N) });
 
             setTopIdx(newOrder[0]);
             busyRef.current = false;
@@ -144,7 +110,7 @@ export default function TestimonialsSection(): React.ReactElement {
     orderRef.current.forEach((cardIdx, depth) => {
       const el = cardRefs.current[cardIdx];
       if (!el) return;
-      gsap.set(el, { x: 0, rotation: 0, opacity: 1, ...depthStyle(depth) });
+      gsap.set(el, { x: 0, rotation: 0, opacity: 1, ...depthStyle(depth, N) });
     });
     attachDraggable();
     return () => { draggableRef.current?.kill(); };
@@ -152,26 +118,22 @@ export default function TestimonialsSection(): React.ReactElement {
   }, []);
 
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background py-16">
+    <section className="section-py overflow-hidden bg-background">
       <div className="page-container flex flex-col items-center">
 
         {/* Heading */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <p className="text-label text-primary mb-4">What creators say</p>
-          <h2 className="text-h1 text-balance text-foreground">
-            Real stories,{" "}
-            <span className="text-muted-foreground">real creators.</span>
-          </h2>
-          <p className="text-body mt-5 text-muted-foreground">
-            Over 2,400 creators across India use Creonex to sell their knowledge,
-            earn consistently, and build businesses they actually own.
-          </p>
+          <p className="text-label mb-4 text-primary">{label}</p>
+          <h2 className="text-h1 text-balance text-foreground">{heading}</h2>
+          {description && (
+            <p className="text-body mt-5 text-muted-foreground">{description}</p>
+          )}
         </div>
 
         {/* Draggable card deck */}
         <div className="flex w-full flex-col items-center gap-6">
           <div className="relative h-[280px] w-full max-w-[560px] overflow-visible">
-            {TESTIMONIALS.map((item, i) => (
+            {testimonials.map((item, i) => (
               <div
                 key={item.id}
                 ref={(el) => { cardRefs.current[i] = el; }}
@@ -181,11 +143,11 @@ export default function TestimonialsSection(): React.ReactElement {
                   icon={faQuoteLeft}
                   className="mb-3 h-4 w-4 text-foreground/20"
                 />
-                <p className="text-body leading-relaxed text-foreground line-clamp-3">
+                <p className="text-body line-clamp-3 leading-relaxed text-foreground">
                   &ldquo;{item.quote}&rdquo;
                 </p>
                 <div className="mt-4 flex items-center gap-3 border-t border-border pt-4">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-foreground">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-foreground">
                     {item.initials}
                   </div>
                   <div>
@@ -200,20 +162,20 @@ export default function TestimonialsSection(): React.ReactElement {
           {/* Avatar strip */}
           <div className="flex items-center gap-3">
             <div className="flex -space-x-2">
-              {TESTIMONIALS.map((item, i) => (
+              {testimonials.map((item, i) => (
                 <div
                   key={item.id}
                   aria-label={item.name}
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-primary/10 text-xs font-semibold text-foreground transition-transform duration-200",
-                    i === topIdx && "z-10 scale-110 ring-2 ring-foreground ring-offset-1 ring-offset-background"
+                    i === topIdx && "z-10 scale-110 ring-2 ring-foreground ring-offset-1 ring-offset-background",
                   )}
                 >
                   {item.initials}
                 </div>
               ))}
             </div>
-            <p className="text-body-sm text-muted-foreground">{N} featured creators</p>
+            <p className="text-body-sm text-muted-foreground">{N} featured</p>
           </div>
 
           <p className="text-label text-muted-foreground/40">drag to browse</p>

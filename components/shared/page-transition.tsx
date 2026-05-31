@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export default function PageTransition({
   children,
@@ -10,7 +11,7 @@ export default function PageTransition({
 }): React.ReactElement {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const el = ref.current;
     if (!el) return;
     gsap.fromTo(

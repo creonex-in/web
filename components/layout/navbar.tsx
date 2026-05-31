@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, useEffect, useRef } from "react";
+import { JSX, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import MobileNav from "@/components/layout/mobile-nav";
 import { cn } from "@/lib/utils";
+import { useGSAP } from "@gsap/react";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -93,7 +94,7 @@ export default function Navbar(): JSX.Element {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const header = headerRef.current;
     if (!header) return;
 
@@ -111,7 +112,7 @@ export default function Navbar(): JSX.Element {
       ref={headerRef}
       className="sticky top-0 z-50 w-full border-b border-transparent bg-transparent transition-all duration-300 data-[scrolled]:border-border data-[scrolled]:bg-background/80 data-[scrolled]:shadow-sm data-[scrolled]:backdrop-blur-md"
     >
-      <nav className="page-container grid h-16 grid-cols-3 items-center gap-6">
+      <nav className="page-container grid h-16 grid-cols-2 lg:grid-cols-3 items-center gap-6">
 
         {/* ── Col 1: Logo ─────────────────────────────────────────────────── */}
         <Link href="/" className="flex shrink-0 items-center gap-2">
@@ -238,7 +239,7 @@ export default function Navbar(): JSX.Element {
         </div>
 
         {/* ── Col 3: Actions ──────────────────────────────────────────────── */}
-        <div className="flex items-center gap-2 justify-self-end">
+        <div className="flex justify-end items-center gap-2 justify-self-end">
 
           {/* Desktop CTAs */}
           <div className="hidden items-center gap-2 lg:flex">
