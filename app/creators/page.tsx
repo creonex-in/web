@@ -6,6 +6,8 @@ import CinematicGallery from "@/components/sections/creator/creators-gallery";
 import CreatorTimeline from "@/components/sections/creator/creator-timeline";
 import ProductWalkthrough from "@/components/sections/creator/product-walkthrough";
 import HowItWorks from "@/components/sections/creator/how-it-works";
+import MonetizeSection from "@/components/sections/creator/monetize-section";
+import PlatformInfrastructure from "@/components/sections/creator/platform-infrastructure";
 import Faqs from "@/components/sections/creator/faqs";
 import Testimonials from "@/components/sections/creator/testimonials";
 
@@ -22,6 +24,8 @@ export default function CreatorsPage(): React.ReactElement {
         <HeroSection />
         <CreonexIdeology />
         <CinematicGallery />
+        <MonetizeSection />
+        <PlatformInfrastructure />
         <ProductWalkthrough />
         <CreatorTimeline />
         <HowItWorks />

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import AnimatedHeadline from "@/components/shared/animated-headline";
 
@@ -191,49 +192,41 @@ export default function UserHero(): React.ReactElement {
                       first?.focus();
                     }
                   }}
-                  className={cn(
-                    "min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60",
-                    "sm:text-base",
-                    // Hide browser-native clear button (we have our own)
-                    "[&::-webkit-search-cancel-button]:appearance-none",
-                  )}
+                  className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60 sm:text-base [&::-webkit-search-cancel-button]:appearance-none"
                 />
 
                 {/* Clear button — shows when there's a query */}
                 {query && (
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
                     onClick={clearSearch}
                     aria-label="Clear search"
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="shrink-0 text-muted-foreground hover:text-foreground"
                   >
                     <FontAwesomeIcon icon={faXmark} className="h-3 w-3" />
-                  </button>
+                  </Button>
                 )}
 
                 {/* Search button — text on desktop, icon on mobile */}
-                <button
-                  type="button"
+                <Button
+                  size="sm"
                   onClick={handleSearch}
                   aria-label="Search"
-                  className={cn(
-                    "shrink-0 rounded-full bg-primary text-primary-foreground transition-all duration-200 active:scale-95",
-                    // Desktop: pill button
-                    "hidden items-center gap-2 px-5 py-2 text-sm font-medium sm:flex",
-                  )}
+                  className="hidden shrink-0 gap-2 sm:flex"
                 >
                   Search
                   <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
-                </button>
+                </Button>
                 {/* Mobile icon-only */}
-                <button
-                  type="button"
+                <Button
+                  size="icon"
                   onClick={handleSearch}
                   aria-label="Search"
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all duration-200 active:scale-95 sm:hidden"
+                  className="flex shrink-0 sm:hidden"
                 >
                   <FontAwesomeIcon icon={faMagnifyingGlass} className="h-3.5 w-3.5" />
-                </button>
+                </Button>
               </div>
 
               {/* ── Suggestions Dropdown ───────────────────────────────────── */}
@@ -262,13 +255,12 @@ export default function UserHero(): React.ReactElement {
                     <ul className="max-h-72 overflow-y-auto py-1.5 overscroll-contain">
                       {filtered.map((cat, i) => (
                         <li key={cat}>
-                          <button
-                            type="button"
+                          <Button
+                            variant="ghost"
                             role="option"
                             data-suggestion
                             aria-selected={active === cat}
                             onMouseDown={(e) => {
-                              // Prevent input blur before select fires
                               e.preventDefault();
                               selectCategory(cat);
                             }}
@@ -277,7 +269,6 @@ export default function UserHero(): React.ReactElement {
                                 e.preventDefault();
                                 selectCategory(cat);
                               }
-                              // Arrow key navigation inside list
                               if (e.key === "ArrowDown") {
                                 e.preventDefault();
                                 const items = searchRef.current?.querySelectorAll<HTMLButtonElement>(
@@ -298,24 +289,23 @@ export default function UserHero(): React.ReactElement {
                               }
                             }}
                             className={cn(
-                              "flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors duration-100",
-                              "focus-visible:outline-none",
+                              "h-auto w-full justify-start gap-3 rounded-none px-4 py-2.5 text-sm",
                               active === cat
-                                ? "bg-primary/10 text-primary"
-                                : "text-foreground hover:bg-muted focus-visible:bg-muted",
+                                ? "bg-primary/10 text-primary hover:bg-primary/10"
+                                : "text-foreground",
                             )}
                           >
                             <span className="text-base leading-none" aria-hidden>
                               {CATEGORY_ICON[cat]}
                             </span>
-                            <span className="flex-1 font-medium">{cat}</span>
+                            <span className="flex-1 text-left font-medium">{cat}</span>
                             {active === cat && (
                               <FontAwesomeIcon
                                 icon={faArrowRight}
                                 className="h-3 w-3 text-primary"
                               />
                             )}
-                          </button>
+                          </Button>
                         </li>
                       ))}
                     </ul>
@@ -342,25 +332,25 @@ export default function UserHero(): React.ReactElement {
             {/* ── Category Pills ─────────────────────────────────────────── */}
             <div className="scrollbar-hide mt-4 flex gap-2 overflow-x-auto pb-2 pt-1">
               {CATEGORIES.map((cat) => (
-                <button
+                <Button
                   key={cat}
-                  type="button"
+                  size="sm"
+                  variant="outline"
                   onClick={() => {
                     const next = active === cat ? null : cat;
                     setActive(next);
                     setQuery(next ?? "");
                   }}
                   className={cn(
-                    "inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-medium transition-all duration-150",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+                    "shrink-0 gap-1.5 rounded-full text-xs",
                     active === cat
-                      ? "border-primary/50 bg-primary/10 text-primary"
-                      : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                      ? "border-primary/50 bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary"
+                      : "border-border text-muted-foreground",
                   )}
                 >
                   <span aria-hidden className="text-[11px]">{CATEGORY_ICON[cat]}</span>
                   {cat}
-                </button>
+                </Button>
               ))}
             </div>
 

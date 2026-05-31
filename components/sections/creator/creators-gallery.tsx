@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
-import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 gsap.registerPlugin(Draggable);
 
@@ -68,14 +71,16 @@ const G_HUE = [175, 179, 173, 178, 176, 180, 174, 177];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function CinematicGallery(): React.ReactElement {
-  const [dims, setDims] = useState<Dims>(DESKTOP);
+export default function CinematicGallery({ showViewProfile = false }: { showViewProfile?: boolean }): React.ReactElement {
+  const [dims, setDims]         = useState<Dims>(DESKTOP);
+  const [centerIdx, setCenterIdx] = useState(0);
   const dimsRef         = useRef<Dims>(DESKTOP);
   const cardRefs        = useRef<(HTMLDivElement | null)[]>([]);
   const scrollRef       = useRef(0);
   const currRef         = useRef(0);
   const velRef          = useRef(0);
   const dragging        = useRef(false);
+  const prevCenterRef   = useRef(0);
   const galleryRef      = useRef<HTMLDivElement>(null);
   const dragProxyRef    = useRef<HTMLDivElement>(null);
 
@@ -117,6 +122,13 @@ export default function CinematicGallery(): React.ReactElement {
 
       currRef.current += (scrollRef.current - currRef.current) * LERP;
       const cx = currRef.current;
+
+      // Track center creator — only setState when it changes to avoid per-frame renders
+      const c = ((Math.round(cx / dimsRef.current.stride) % N_ORIG) + N_ORIG) % N_ORIG;
+      if (c !== prevCenterRef.current) {
+        prevCenterRef.current = c;
+        setCenterIdx(c);
+      }
 
       for (let i = 0; i < N; i++) {
         const card = cards[i];
@@ -161,12 +173,23 @@ export default function CinematicGallery(): React.ReactElement {
       trigger: gallery,
       cursor: "grab",
       activeCursor: "grabbing",
-      onPress() {
-        dragging.current = true;
-        velRef.current   = 0;
-        dragStartScroll  = scrollRef.current;
+      onPress(this: Draggable) {
+        // If the press target is a link, cancel drag immediately so the click fires normally.
+        const target = (this.pointerEvent as PointerEvent | null)?.target as HTMLElement | null;
+        if (target?.closest?.("a")) {
+          this.endDrag(this.pointerEvent as PointerEvent);
+          return;
+        }
+        velRef.current  = 0;
+        dragStartScroll = scrollRef.current;
       },
       onDrag(this: Draggable) {
+        if (!dragging.current) {
+          // First actual motion: sync start to current auto-scrolled position
+          // so the gap between press and first drag frame isn't seen as a jump.
+          dragging.current = true;
+          dragStartScroll  = scrollRef.current;
+        }
         const delta       = this.startX - this.x;
         const next        = dragStartScroll + delta;
         velRef.current    = next - scrollRef.current;
@@ -258,11 +281,11 @@ export default function CinematicGallery(): React.ReactElement {
                   />
                 )}
 
-                <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-16 bg-gradient-to-t from-background via-background/75 to-transparent">
-                  <span className="text-label text-primary block mb-1">
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 via-background/70 to-transparent px-4 pb-4 pt-20 backdrop-blur-[2px]">
+                  <span className="text-label mb-1 block text-primary">
                     {creator.niche}
                   </span>
-                  <span className="text-h4 text-foreground block mb-2">
+                  <span className="text-h4 mb-2 block text-foreground">
                     {creator.name}
                   </span>
                   <div className="flex items-center gap-3">
@@ -283,6 +306,21 @@ export default function CinematicGallery(): React.ReactElement {
         <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-40 md:w-52 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 md:w-52 bg-gradient-to-l from-background to-transparent" />
       </div>
+
+      {showViewProfile && (
+        <div className="page-container mt-8 flex items-center justify-center">
+          <Link
+            href={`/creators/${CREATORS[centerIdx].id}`}
+            className="group flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
+          >
+            View {CREATORS[centerIdx].name}&apos;s profile
+            <FontAwesomeIcon
+              icon={faArrowRight}
+              className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5"
+            />
+          </Link>
+        </div>
+      )}
 
     </section>
   );

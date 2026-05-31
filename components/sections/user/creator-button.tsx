@@ -1,20 +1,21 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function CreatorButton(): React.ReactElement {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       // Each element scrubs in independently — slight offset creates natural stagger
       const shared = { ease: "none", force3D: true } as const;
 
@@ -40,11 +41,9 @@ export default function CreatorButton(): React.ReactElement {
           },
         );
       });
-    }, sectionRef);
-
-    ScrollTrigger.refresh();
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: sectionRef },
+  );
 
   return (
     <section ref={sectionRef} className="dark section-py bg-background relative overflow-hidden">

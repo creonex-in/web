@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPenToSquare,
@@ -13,13 +14,14 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { Button } from "@/components/ui/button";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type SlideImage = {
-  src: string; // fill in when ready — leave "" for placeholder
+  src: string;
   alt: string;
 };
 
@@ -137,7 +139,6 @@ function Carousel({ images }: CarouselProps): React.ReactElement {
             />
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 border border-dashed border-border/30">
-              {/* Browser shape hint */}
               <div className="flex w-24 flex-col overflow-hidden rounded border border-dashed border-border/40">
                 <div className="flex items-center gap-1 border-b border-border/30 px-1.5 py-1">
                   <div className="h-1 w-1 rounded-full bg-border/40" />
@@ -154,21 +155,25 @@ function Carousel({ images }: CarouselProps): React.ReactElement {
         </div>
       ))}
 
-      {/* Arrows — appear on hover */}
-      <button
+      {/* Arrows */}
+      <Button
+        variant="ghost"
+        size="icon-sm"
         onClick={() => goTo(idxRef.current - 1)}
         aria-label="Previous"
-        className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-background/60 text-foreground/70 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 hover:text-foreground group-hover:opacity-100"
+        className="absolute left-3 top-1/2 z-10 -translate-y-1/2 bg-background/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 group-hover:opacity-100"
       >
         <FontAwesomeIcon icon={faChevronLeft} className="h-3 w-3" />
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon-sm"
         onClick={() => goTo(idxRef.current + 1)}
         aria-label="Next"
-        className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-background/60 text-foreground/70 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 hover:text-foreground group-hover:opacity-100"
+        className="absolute right-3 top-1/2 z-10 -translate-y-1/2 bg-background/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 group-hover:opacity-100"
       >
         <FontAwesomeIcon icon={faChevronRight} className="h-3 w-3" />
-      </button>
+      </Button>
 
       {/* Progress line */}
       <div className="absolute inset-x-0 bottom-0 h-px bg-white/10">
@@ -183,8 +188,8 @@ function Carousel({ images }: CarouselProps): React.ReactElement {
 export default function HowItWorks(): React.ReactElement {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       gsap.from(".how-card", {
         y: 40,
         opacity: 0,
@@ -197,16 +202,14 @@ export default function HowItWorks(): React.ReactElement {
           once: true,
         },
       });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: sectionRef },
+  );
 
   return (
     <section ref={sectionRef} id="how-it-works" className="dark section-py bg-background">
       <div className="page-container">
 
-        {/* Header — centered */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
           <p className="text-label mb-4 text-primary">How It Works</p>
           <h2 className="text-display text-balance text-foreground">
@@ -218,12 +221,10 @@ export default function HowItWorks(): React.ReactElement {
           </p>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((step) => (
             <div key={step.number} className="how-card flex flex-col gap-5">
               <Carousel images={step.images} />
-
               <div>
                 <p className="text-label mb-2 text-primary">Step {parseInt(step.number, 10)}</p>
                 <h3 className="text-h3 mb-2 text-foreground">{step.title}</h3>
