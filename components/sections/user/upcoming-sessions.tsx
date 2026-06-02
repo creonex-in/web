@@ -114,67 +114,71 @@ function ExpertAvatar({ expert }: { expert: Session["expert"] }): React.ReactEle
 
 function SessionCard({ session }: { session: Session }): React.ReactElement {
   return (
-    <article className="group relative flex min-h-[360px] flex-col gap-5 overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_8px_40px_oklch(0.543_0.093_177_/_0.12)] md:min-h-[400px] md:p-8">
+    <article className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-border bg-card p-5 [will-change:transform] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_8px_40px_oklch(0.543_0.093_177_/_0.12)] sm:p-6">
 
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
+      {/* Expert */}
       <div className="flex min-w-0 items-center gap-3">
         <ExpertAvatar expert={session.expert} />
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold leading-tight text-foreground">
             {session.expert.name}
           </p>
-          {session.expert.role.split(" @ ").map((part, i) => (
-            <span key={i} className="block text-[11px] leading-snug text-muted-foreground">
-              {i > 0 ? `@ ${part}` : part}
-            </span>
-          ))}
+          <p className="truncate text-[11px] leading-snug text-muted-foreground">
+            {session.expert.role}
+          </p>
         </div>
       </div>
 
       <div className="h-px bg-border" />
 
+      {/* Topic */}
       <div className="flex-1">
         <p className="text-label mb-1.5 text-primary/60">Session</p>
-        <h3 className="text-h4 leading-snug text-foreground">{session.topic}</h3>
+        <h3 className="text-sm font-semibold leading-snug text-foreground sm:text-base">
+          {session.topic}
+        </h3>
       </div>
 
-      <div className="flex items-end justify-between gap-4">
-        <div className="flex flex-col gap-1.5">
-          <span className="flex items-center gap-2 text-xs text-muted-foreground">
+      {/* Date / Time + Price */}
+      <div className="flex items-end justify-between gap-2">
+        <div className="flex flex-col gap-1">
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <FontAwesomeIcon icon={faCalendarDays} className="h-3 w-3 shrink-0 text-primary/50" />
             {session.date}
           </span>
-          <span className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <FontAwesomeIcon icon={faClock} className="h-3 w-3 shrink-0 text-primary/50" />
             {session.time}
           </span>
         </div>
 
-        <div className="flex items-baseline gap-0.5 text-foreground">
-          <FontAwesomeIcon icon={faIndianRupeeSign} className="h-3.5 w-3.5 self-center" />
-          <span className="text-xl font-bold leading-none">
+        <div className="flex shrink-0 items-center gap-0.5 text-foreground">
+          <FontAwesomeIcon icon={faIndianRupeeSign} className="h-3 w-3" />
+          <span className="text-lg font-bold leading-none sm:text-xl">
             {session.price.toLocaleString("en-IN")}
           </span>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-3">
+      {/* Status + CTA */}
+      <div className="flex items-center justify-between gap-2">
         <span className={cn(
           "flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
           STATUS_CLASS[session.status],
         )}>
-          <span className={cn("h-1.5 w-1.5 rounded-full", STATUS_DOT[session.status])} />
-          {session.status}
+          <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", STATUS_DOT[session.status])} />
+          <span className="truncate">{session.status}</span>
         </span>
 
         <Button
           variant="ghost"
           size="sm"
           aria-label={`Book ${session.topic} with ${session.expert.name}`}
-          className="h-auto gap-1.5 p-0 text-primary hover:bg-transparent hover:text-primary/70"
+          className="h-auto shrink-0 gap-1.5 p-0 text-xs text-primary hover:bg-transparent hover:text-primary/70 sm:text-sm"
         >
-          View details
+          Book
           <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
         </Button>
       </div>
@@ -194,15 +198,17 @@ export default function UpcomingSessions(): React.ReactElement {
 
   useGSAP(
     () => {
-      gsap.from(".us-header", {
-        opacity: 0,
-        y: 24,
-        duration: 0.75,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 78%",
-          once: true,
+      gsap.fromTo(".us-header",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.75,
+          ease: "power3.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 78%",
+            once: true,
         },
       });
     },
@@ -210,16 +216,17 @@ export default function UpcomingSessions(): React.ReactElement {
   );
 
   return (
-    <section ref={sectionRef} className="dark section-py relative overflow-hidden bg-background">
+    <section ref={sectionRef} className="dark section-py relative bg-background">
 
-      <div className="pointer-events-none absolute -left-40 top-0 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl" />
-      <div className="pointer-events-none absolute -right-40 bottom-0 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl" />
+      {/* Smaller blobs — no overflow-hidden clipping cost, reduced blur radius */}
+      <div className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full bg-primary/6 blur-2xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-64 w-64 rounded-full bg-primary/6 blur-2xl" />
 
       <div className="page-container relative">
 
         <div className="us-header mx-auto mb-10 max-w-xl text-center">
           <div className="mb-3 flex items-center justify-center gap-2">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             <p className="text-label text-primary">Upcoming Sessions</p>
           </div>
           <h2 className="text-h1 text-balance text-foreground">
@@ -239,6 +246,7 @@ export default function UpcomingSessions(): React.ReactElement {
               size="sm"
               variant={activeFilter === filter ? "default" : "secondary"}
               onClick={() => setActiveFilter(filter)}
+              aria-pressed={activeFilter === filter}
               className="rounded-full"
             >
               {filter}
@@ -254,7 +262,7 @@ export default function UpcomingSessions(): React.ReactElement {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-4">
             {filtered.map((session) => (
               <SessionCard key={session.id} session={session} />
             ))}
@@ -262,7 +270,7 @@ export default function UpcomingSessions(): React.ReactElement {
         )}
 
         <div className="us-header mt-10 flex justify-center">
-          <Button size="md" className="py-6 font-semibold">
+          <Button size="lg" className="rounded-full px-8 font-semibold">
             Explore more sessions
             <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
           </Button>

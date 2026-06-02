@@ -114,18 +114,21 @@ export default function PaymentsTrust(): React.ReactElement {
 
   useGSAP(
     () => {
-      gsap.from(".pt-animate", {
-        opacity: 0,
-        y: 22,
-        duration: 0.75,
-        stagger: 0.09,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 76%",
-          once: true,
+      gsap.fromTo(".pt-animate",
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.75,
+          stagger: 0.09,
+          ease: "power3.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 76%",
+            once: true,
+          },
         },
-      });
+      );
     },
     { scope: sectionRef },
   );

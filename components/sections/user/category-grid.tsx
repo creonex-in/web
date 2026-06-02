@@ -74,7 +74,7 @@ export default function CategoryGrid(): React.ReactElement {
 
         {/* CTA */}
         <div className="mt-10 flex justify-center">
-          <Button className="cursor-pointer py-6 font-semibold" size="md">
+          <Button className="cursor-pointer rounded-full px-8 font-semibold" size="lg">
             Explore all categories
             <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
           </Button>

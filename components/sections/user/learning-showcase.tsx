@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,8 +12,10 @@ import {
   faPlay,
   faCalendarCheck,
   faFileLines,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { Button } from "@/components/ui/button";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -193,40 +196,32 @@ export default function LearningShowcase(): React.ReactElement {
 
   useGSAP(
     () => {
-      gsap.from(".ls-header > *", {
-        opacity: 0,
-        y: 30,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".ls-header",
-          start: "top 80%",
-          once: true,
+      gsap.fromTo(
+        ".ls-header > *",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0, duration: 0.7, stagger: 0.1,
+          ease: "power3.out", clearProps: "all",
+          scrollTrigger: { trigger: ".ls-header", start: "top 80%", once: true },
         },
-      });
+      );
 
-      const blocks = document.querySelectorAll(".ls-block");
-      blocks.forEach((block) => {
-        const targets: Element[] = [];
-        const img = block.querySelector(".ls-image");
+      // gsap.utils.toArray scopes query to sectionRef — no document.querySelectorAll
+      gsap.utils.toArray<HTMLElement>(".ls-block", sectionRef.current).forEach((block) => {
+        const img     = block.querySelector(".ls-image");
         const content = block.querySelector(".ls-content");
-        if (img) targets.push(img);
-        if (content) targets.push(content);
+        const targets = [img, content].filter(Boolean) as Element[];
         if (!targets.length) return;
 
-        gsap.from(targets, {
-          opacity: 0,
-          y: 40,
-          duration: 0.75,
-          stagger: 0.12,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: block,
-            start: "top 78%",
-            once: true,
+        gsap.fromTo(
+          targets,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1, y: 0, duration: 0.75, stagger: 0.12,
+            ease: "power3.out", clearProps: "all",
+            scrollTrigger: { trigger: block, start: "top 78%", once: true },
           },
-        });
+        );
       });
     },
     { scope: sectionRef },
@@ -252,6 +247,18 @@ export default function LearningShowcase(): React.ReactElement {
           {FEATURES.map((feature) => (
             <FeatureBlock key={feature.id} feature={feature} />
           ))}
+        </div>
+
+        <div className="mt-16 flex justify-center">
+          <Button
+            size="lg"
+            nativeButton={false}
+            render={<Link href="/courses" />}
+            className="rounded-full px-8"
+          >
+            Browse all courses
+            <FontAwesomeIcon icon={faArrowRight} className="ml-1 h-3.5 w-3.5" />
+          </Button>
         </div>
 
       </div>

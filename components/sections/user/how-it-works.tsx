@@ -2,10 +2,12 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@/components/ui/button";
 import {
   faCompass,
   faUserTie,
@@ -13,6 +15,7 @@ import {
   faCreditCard,
   faComments,
   faTrophy,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
@@ -33,18 +36,18 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    id: "path",      number: "01", icon: faCompass,
+    id: "path", number: "01", icon: faCompass,
     title: "Pick your learning path",
     description: "Design, tech, or marketing — choose the domain you want to master.",
     tag: "Explore",
-    imageSrc: "/showcase/course-preview.png",   imageAlt: "Creonex learning path selection",
+    imageSrc: "/showcase/course-preview.png", imageAlt: "Creonex learning path selection",
   },
   {
-    id: "expert",    number: "02", icon: faUserTie,
+    id: "expert", number: "02", icon: faUserTie,
     title: "Find the right expert",
     description: "Real creators, real reviews. Browse and pick someone worth learning from.",
     tag: "Discover",
-    imageSrc: "/showcase/expert-session.png",   imageAlt: "Creonex expert profiles",
+    imageSrc: "/showcase/expert-session.png", imageAlt: "Creonex expert profiles",
   },
   {
     id: "resources", number: "03", icon: faBookOpen,
@@ -54,21 +57,21 @@ const STEPS: Step[] = [
     imageSrc: "/showcase/resources-library.png", imageAlt: "Creonex course and session booking",
   },
   {
-    id: "payment",   number: "04", icon: faCreditCard,
+    id: "payment", number: "04", icon: faCreditCard,
     title: "Pay securely",
     description: "One clean checkout. Instant access. No hidden charges, ever.",
     tag: "Secure",
-    imageSrc: "/showcase/course-preview.png",   imageAlt: "Creonex secure checkout",
+    imageSrc: "/showcase/course-preview.png", imageAlt: "Creonex secure checkout",
   },
   {
     id: "collaborate", number: "05", icon: faComments,
     title: "Work with your expert",
     description: "Live sessions, direct feedback, real questions answered in real time.",
     tag: "Connect",
-    imageSrc: "/showcase/expert-session.png",   imageAlt: "Creonex live session with expert",
+    imageSrc: "/showcase/expert-session.png", imageAlt: "Creonex live session with expert",
   },
   {
-    id: "skilled",   number: "06", icon: faTrophy,
+    id: "skilled", number: "06", icon: faTrophy,
     title: "Build real skills",
     description: "Track progress and develop expertise that employers actually notice.",
     tag: "Grow",
@@ -125,16 +128,16 @@ function CardImage({ src, alt }: { src: string; alt: string }): React.ReactEleme
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export default function HowItWorks(): React.ReactElement {
-  const sectionRef  = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   // scrollContainer provides the scroll range — h-[600vh]:
   //   100vh  = initial view (card 0 already visible)
   //   500vh  = 5 transitions (cards 1–5 slide in, 100vh each)
-  const scrollRef   = useRef<HTMLDivElement>(null);
-  const cardRefs    = useRef<(HTMLDivElement | null)[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
     const scroller = scrollRef.current;
-    const cards    = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
+    const cards = cardRefs.current.filter((c): c is HTMLDivElement => c !== null);
     if (!scroller || cards.length !== STEPS.length) return;
 
     // matchMedia keeps each breakpoint's setup isolated and auto-reverts when the
@@ -160,11 +163,11 @@ export default function HowItWorks(): React.ReactElement {
       const setBase = (): void => {
         cards.forEach((card, i) =>
           gsap.set(card, {
-            x:         i === 0 ? 0 : window.innerWidth,
-            y:         0,
-            zIndex:    i,
+            x: i === 0 ? 0 : window.innerWidth,
+            y: 0,
+            zIndex: i,
             autoAlpha: 1,
-            force3D:   true,
+            force3D: true,
           }),
         );
       };
@@ -176,12 +179,12 @@ export default function HowItWorks(): React.ReactElement {
       const tl = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
-          trigger:             scroller,
-          start:               "top top",
-          end:                 () => `+=${window.innerHeight * TRANSITIONS}`,
-          scrub:               true,
+          trigger: scroller,
+          start: "top top",
+          end: () => `+=${window.innerHeight * TRANSITIONS}`,
+          scrub: true,
           invalidateOnRefresh: true,
-          onRefreshInit:       () => { measure(); setBase(); },
+          onRefreshInit: () => { measure(); setBase(); },
         },
       });
 
@@ -200,15 +203,19 @@ export default function HowItWorks(): React.ReactElement {
     // ── Mobile / tablet (<lg): clean vertical fade-up, no scroll-jacking ──────
     mm.add("(max-width: 1023px)", () => {
       cards.forEach((card) => {
-        gsap.from(card, {
-          autoAlpha: 0,
-          y:         32,
-          duration:  0.6,
-          ease:      "power3.out",
-          scrollTrigger: { trigger: card, start: "top 85%", once: true },
-        });
+        gsap.fromTo(
+          card,
+          { autoAlpha: 0, y: 32 },
+          {
+            autoAlpha: 1, y: 0, duration: 0.6, ease: "power3.out",
+            clearProps: "all",
+            scrollTrigger: { trigger: card, start: "top 85%", once: true },
+          },
+        );
       });
     });
+
+    return () => mm.revert();
   }, { scope: sectionRef });
 
   return (
@@ -240,37 +247,53 @@ export default function HowItWorks(): React.ReactElement {
                 ref={(el) => { cardRefs.current[index] = el; }}
                 className="dark flex w-full max-w-md flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-2xl lg:invisible lg:col-start-1 lg:row-start-1 lg:max-h-[88vh] lg:w-[58vw] lg:max-w-none lg:will-change-transform"
               >
-              {/* Top bar */}
-              <div className="flex items-center justify-between px-5 pb-3 pt-5">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/15">
-                    <FontAwesomeIcon icon={step.icon} className="h-2.5 w-2.5 text-primary" />
+                {/* Top bar */}
+                <div className="flex items-center justify-between px-5 pb-3 pt-5">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/15">
+                      <FontAwesomeIcon icon={step.icon} className="h-2.5 w-2.5 text-primary" />
+                    </div>
+                    <span className="text-[11px] font-semibold uppercase tracking-widest text-primary/60">
+                      {step.tag}
+                    </span>
                   </div>
-                  <span className="text-[11px] font-semibold uppercase tracking-widest text-primary/60">
-                    {step.tag}
+                  <span className="font-display text-3xl font-bold leading-none text-foreground/[0.07] tabular-nums">
+                    {step.number}
                   </span>
                 </div>
-                <span className="font-display text-3xl font-bold leading-none text-foreground/[0.07] tabular-nums">
-                  {step.number}
-                </span>
-              </div>
 
-              {/* Screenshot */}
-              <CardImage src={step.imageSrc} alt={step.imageAlt} />
+                {/* Screenshot */}
+                <CardImage src={step.imageSrc} alt={step.imageAlt} />
 
-              {/* Text */}
-              <div className="flex flex-col gap-1.5 px-5 pb-5 pt-4">
-                <h3 className="text-lg font-semibold leading-snug text-foreground">
-                  {step.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
-              </div>
+                {/* Text */}
+                <div className="flex flex-col gap-1.5 px-5 pb-5 pt-4">
+                  <h3 className="text-lg font-semibold leading-snug text-foreground">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {step.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
+      </div>
+
+      {/* CTA — after 6-step guide */}
+      <div className="page-container pb-16 pt-10 text-center md:pb-24">
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link href="/signup" />}
+          className="rounded-full px-10"
+        >
+          Start Learning Today
+          <FontAwesomeIcon icon={faArrowRight} className="ml-1 h-3.5 w-3.5" />
+        </Button>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Free to join · No credit card needed
+        </p>
       </div>
 
     </section>

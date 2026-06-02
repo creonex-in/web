@@ -17,9 +17,10 @@ import {
 
 interface MobileNavProps {
   links: ReadonlyArray<{ label: string; href: string }>;
+  ctaText?: string;
 }
 
-export default function MobileNav({ links }: MobileNavProps): JSX.Element {
+export default function MobileNav({ links, ctaText = "Get Started Free" }: MobileNavProps): JSX.Element {
   const [open, setOpen] = useState(false);
   const { isSignedIn, isLoaded } = useAuth();
 
@@ -75,7 +76,7 @@ export default function MobileNav({ links }: MobileNavProps): JSX.Element {
                 variant="default"
                 className="w-full cursor-pointer"
               >
-                Get Started Free
+                {ctaText}
               </Button>
             </SignUpButton>
           </div>

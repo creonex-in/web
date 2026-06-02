@@ -24,7 +24,7 @@ export default function SmoothScrollProvider({
       window.history.scrollRestoration = "manual";
     }
 
-    const lenis = new Lenis({ duration: 1.5 });
+    const lenis = new Lenis({ duration: 1.0 });
     lenisInstance = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
@@ -33,7 +33,8 @@ export default function SmoothScrollProvider({
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(onTick);
-    gsap.ticker.lagSmoothing(0);
+    // lagSmoothing intentionally omitted — GSAP's default frame-skip protection
+    // prevents overwork when the browser drops frames under load.
 
     return () => {
       gsap.ticker.remove(onTick);
