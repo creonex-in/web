@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import PageTransition from "@/components/shared/page-transition";
 import UserHero from "@/components/sections/user/user-hero";
-import ExploreTopics from "@/components/sections/user/explore-topics";
+import CategoryGrid from "@/components/sections/user/category-grid";
+import LearningShowcase from "@/components/sections/user/learning-showcase";
+import HowItWorks from "@/components/sections/user/how-it-works";
+import CreatorButton from "@/components/sections/user/creator-button";
 import CinematicGallery from "@/components/sections/creator/creators-gallery";
-import Testimonials from "@/components/sections/creator/testimonials";
+import UpcomingSessions from "@/components/sections/user/upcoming-sessions";
+import PaymentsTrust from "@/components/sections/user/payments-trust";
+import Testimonials from "@/components/sections/user/testimonials";
 import Faqs from "@/components/sections/creator/faqs";
 
 export const metadata: Metadata = {
@@ -17,10 +22,14 @@ export default function Page(): React.ReactElement {
     <PageTransition>
       <main>
         <UserHero />
-        <ExploreTopics />
-        {/* <CreatorButton /> */}
+        <CategoryGrid />
+        {/* <CinematicGallery showViewProfile /> */}
+        <LearningShowcase />
+        <HowItWorks />
+        <UpcomingSessions />
+        <PaymentsTrust />
+        <CreatorButton />
         <Testimonials />
-        <CinematicGallery />
         <Faqs />
       </main>
     </PageTransition>

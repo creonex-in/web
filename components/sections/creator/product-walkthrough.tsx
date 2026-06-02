@@ -106,21 +106,21 @@ export default function ProductWalkthrough(): React.ReactElement {
           <div className="mb-10 border-b border-border">
             <div className="flex">
               {TABS.map((tab, i) => (
-                <button
+                <Button
                   key={tab.id}
+                  variant="ghost"
+                  size="sm"
                   onClick={() => switchTab(i)}
                   className={cn(
-                    "relative px-6 pb-3 text-sm font-medium transition-colors duration-200 focus-visible:outline-none",
-                    activeIdx === i
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
+                    "relative rounded-none pb-3 pt-0 font-medium transition-colors duration-200",
+                    activeIdx === i ? "text-foreground" : "text-muted-foreground",
                   )}
                 >
                   {tab.label}
                   {activeIdx === i && (
                     <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary" />
                   )}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -130,7 +130,6 @@ export default function ProductWalkthrough(): React.ReactElement {
             ref={contentRef}
             className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
           >
-            {/* Left — copy */}
             <div>
               <h2 className="text-h1 text-balance text-foreground">
                 {active.heading}
@@ -139,11 +138,7 @@ export default function ProductWalkthrough(): React.ReactElement {
                 {active.description}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button
-                  size="lg"
-                  nativeButton={false}
-                  render={<Link href="/signup" />}
-                >
+                <Button size="lg" nativeButton={false} render={<Link href="/signup" />}>
                   {active.primaryCta}
                 </Button>
                 <Button
@@ -158,7 +153,6 @@ export default function ProductWalkthrough(): React.ReactElement {
               </div>
             </div>
 
-            {/* Right — screenshot */}
             <div className="pointer-events-none relative aspect-[4/3] overflow-hidden rounded-2xl bg-secondary/50">
               <Image
                 src={active.image}
@@ -174,14 +168,15 @@ export default function ProductWalkthrough(): React.ReactElement {
           {/* Progress dots */}
           <div className="mt-8 flex items-center justify-center gap-2">
             {TABS.map((tab, i) => (
-              <button
+              <Button
                 key={tab.id}
+                variant="ghost"
                 onClick={() => switchTab(i)}
                 aria-label={tab.label}
                 className={cn(
-                  "h-1.5 rounded-full transition-all duration-300 focus-visible:outline-none",
+                  "h-1.5 rounded-full p-0 transition-all duration-300",
                   i === activeIdx
-                    ? "w-5 bg-primary"
+                    ? "w-5 bg-primary hover:bg-primary"
                     : "w-1.5 bg-muted-foreground/25 hover:bg-muted-foreground/50",
                 )}
               />

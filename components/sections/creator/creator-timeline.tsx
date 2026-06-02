@@ -25,7 +25,7 @@ const CREATOR = {
   name: "Arjun Sharma",
   niche: "Productivity & UX Design",
   location: "Pune, Maharashtra",
-  src: "/creator-profiles/himesh.jpeg",
+  src: "/creator-profiles/raj.png",
   quote: "I stopped waiting to feel ready. The first workshop changed everything.",
 };
 
@@ -82,10 +82,6 @@ export default function CreatorTimeline(): React.ReactElement {
   const lineRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const endingRef = useRef<HTMLDivElement>(null);
-  const endCardRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const leftPathRef = useRef<SVGPathElement>(null);
-  const rightPathRef = useRef<SVGPathElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -156,7 +152,7 @@ export default function CreatorTimeline(): React.ReactElement {
             onEnter: () =>
               gsap.to(dot, {
                 scale: 1.55,
-                boxShadow: "0 0 0 5px rgba(0,137,123,0.18)",
+                boxShadow: "0 0 0 5px oklch(0.543 0.093 177 / 0.18)",
                 duration: 0.4,
                 ease: "power2.out",
                 overwrite: true,
@@ -164,14 +160,14 @@ export default function CreatorTimeline(): React.ReactElement {
             onLeave: () =>
               gsap.to(dot, {
                 scale: 1,
-                boxShadow: "0 0 0 0px rgba(0,137,123,0)",
+                boxShadow: "0 0 0 0px oklch(0.543 0.093 177 / 0)",
                 duration: 0.35,
                 overwrite: true,
               }),
             onEnterBack: () =>
               gsap.to(dot, {
                 scale: 1.55,
-                boxShadow: "0 0 0 5px rgba(0,137,123,0.18)",
+                boxShadow: "0 0 0 5px oklch(0.543 0.093 177 / 0.18)",
                 duration: 0.4,
                 ease: "power2.out",
                 overwrite: true,
@@ -179,7 +175,7 @@ export default function CreatorTimeline(): React.ReactElement {
             onLeaveBack: () =>
               gsap.to(dot, {
                 scale: 1,
-                boxShadow: "0 0 0 0px rgba(0,137,123,0)",
+                boxShadow: "0 0 0 0px oklch(0.543 0.093 177 / 0)",
                 duration: 0.35,
                 overwrite: true,
               }),
@@ -206,53 +202,8 @@ export default function CreatorTimeline(): React.ReactElement {
         );
       }
 
-      // ── 5. Teal border trace — scrub-linked, reverses with scroll like the line
-      const lp = leftPathRef.current;
-      const rp = rightPathRef.current;
-      const card = endCardRef.current;
-      if (card && lp && rp) {
-        const pad = isMobile ? 20 : 48;
-        const r = 16;
-        const w = card.offsetWidth;
-        const h = card.offsetHeight;
-        const W = w + pad * 2;
-        const H = h + pad * 2;
-        const cr = r + pad;
-
-        svgRef.current?.setAttribute("viewBox", `0 0 ${W} ${H}`);
-
-        lp.setAttribute(
-          "d",
-          `M ${W / 2} 0 L ${cr} 0 Q 0 0 0 ${cr} L 0 ${H - cr} Q 0 ${H} ${cr} ${H} L ${W / 2} ${H}`,
-        );
-        rp.setAttribute(
-          "d",
-          `M ${W / 2} 0 L ${W - cr} 0 Q ${W} 0 ${W} ${cr} L ${W} ${H - cr} Q ${W} ${H} ${W - cr} ${H} L ${W / 2} ${H}`,
-        );
-
-        [lp, rp].forEach((p) => {
-          const len = p.getTotalLength();
-          p.setAttribute("stroke-dasharray", `${len}`);
-          gsap.fromTo(
-            p,
-            { strokeDashoffset: len },
-            {
-              strokeDashoffset: 0,
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 88%",
-                end: "top 12%",
-                scrub: 2,
-              },
-            },
-          );
-        });
-      }
-
     }, sectionRef);
 
-    ScrollTrigger.refresh();
     return () => ctx.revert();
   }, []);
 
@@ -261,15 +212,15 @@ export default function CreatorTimeline(): React.ReactElement {
   return (
     <section
       ref={sectionRef}
-      className="section-py relative overflow-hidden bg-background"
+      className="relative overflow-hidden bg-background py-12 md:py-16"
     >
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-border" />
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-border" />
 
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12 xl:px-16">
+      <div className="page-container">
 
         {/* ── Section heading ──────────────────────────────────────────────────── */}
-        <div className="mb-20 max-w-2xl mx-auto text-center">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="text-label text-primary mb-5">The Creonex Path</p>
           <h2 className="text-h1 text-foreground text-balance">
             One idea.{" "}
@@ -283,7 +234,7 @@ export default function CreatorTimeline(): React.ReactElement {
         </div>
 
         {/* ── Two-column grid — items-center vertically centers the image ──────── */}
-        <div className="grid items-center lg:grid-cols-[380px_1fr] xl:grid-cols-[440px_1fr] lg:gap-24 xl:gap-34">
+        <div className="mx-auto grid max-w-5xl items-center lg:grid-cols-[300px_1fr] xl:grid-cols-[340px_1fr] lg:gap-20 xl:gap-28">
 
           {/* ──────────────── LEFT: creator image (centered by grid) ─────────── */}
           <div className="hidden lg:block">
@@ -303,7 +254,7 @@ export default function CreatorTimeline(): React.ReactElement {
               </div>
 
               {/* Creator info */}
-              <div className="mt-6">
+              <div className="mt-4">
                 <p className="font-display text-lg font-semibold tracking-tight text-foreground">
                   {CREATOR.name}
                 </p>
@@ -319,7 +270,7 @@ export default function CreatorTimeline(): React.ReactElement {
               </div>
 
               {/* Quote */}
-              <div className="mt-6">
+              <div className="mt-4">
                 <div className="h-px bg-border/50" />
                 <blockquote className="py-4">
                   <p className="font-display text-sm font-medium leading-relaxed text-foreground/70">
@@ -373,7 +324,7 @@ export default function CreatorTimeline(): React.ReactElement {
               <div
                 key={i}
                 ref={(el) => { cardRefs.current[i] = el; }}
-                className="group relative pb-12 pl-10 last:pb-0"
+                className="group relative pb-7 pl-10 last:pb-0"
               >
                 {/* Dot */}
                 <div
@@ -414,13 +365,12 @@ export default function CreatorTimeline(): React.ReactElement {
         {/* end grid */}
 
         {/* ── Ending — centered below the full grid ────────────────────────────── */}
-        <div ref={endingRef} className="mt-20 md:mt-28 flex justify-center">
+        <div ref={endingRef} className="mx-auto mt-10 flex max-w-5xl justify-center md:mt-14">
           <div className="relative w-full max-w-2xl">
 
             {/* Card */}
             <div
-              ref={endCardRef}
-              className="dark group/card relative w-full overflow-hidden rounded-2xl border border-border bg-background px-10 py-12 text-center transition-colors duration-300 md:py-16"
+              className="dark group/card relative w-full overflow-hidden rounded-2xl border border-border bg-background px-8 py-10 text-center transition-colors duration-300 md:py-12"
             >
               {/* Teal glows — intensify on card hover */}
               <div
@@ -454,41 +404,6 @@ export default function CreatorTimeline(): React.ReactElement {
                 </Button>
               </div>
             </div>
-
-            {/* Animated teal border */}
-            <svg
-              ref={svgRef}
-              aria-hidden
-              className="pointer-events-none absolute -inset-5 lg:-inset-12 z-10 w-[calc(100%+2.5rem)] lg:w-[calc(100%+6rem)] h-[calc(100%+2.5rem)] lg:h-[calc(100%+6rem)] overflow-visible"
-            >
-              <defs>
-                <filter id="teal-glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
-                  <feFlood floodColor="var(--color-primary)" floodOpacity="0.2" result="color" />
-                  <feComposite in="color" in2="blur" operator="in" result="glow" />
-                  <feMerge>
-                    <feMergeNode in="glow" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-              <path
-                ref={leftPathRef}
-                fill="none"
-                className="stroke-primary"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                filter="url(#teal-glow)"
-              />
-              <path
-                ref={rightPathRef}
-                fill="none"
-                className="stroke-primary"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                filter="url(#teal-glow)"
-              />
-            </svg>
 
           </div>
         </div>
