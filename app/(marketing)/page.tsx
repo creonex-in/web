@@ -23,7 +23,7 @@ export default function Page(): React.ReactElement {
       <main>
         <UserHero />
         <CategoryGrid />
-        {/* <CinematicGallery showViewProfile /> */}
+        <CinematicGallery showViewProfile />
         <LearningShowcase />
         <HowItWorks />
         <UpcomingSessions />

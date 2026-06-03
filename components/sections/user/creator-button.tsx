@@ -69,7 +69,7 @@ export default function CreatorButton(): React.ReactElement {
             <Button
               size="lg"
               nativeButton={false}
-              render={<Link href="/creators" />}
+              render={<Link href="/creator" />}
               className="rounded-full px-10"
             >
               Start Teaching Today
