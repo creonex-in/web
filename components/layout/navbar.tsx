@@ -73,14 +73,14 @@ const LEARNER_CONFIG: NavConfig = {
     ],
   },
   plainLinks: [
-    { label: "For Creators", href: "/creators"     },
+    { label: "For Creators", href: "/creator"      },
     { label: "How It Works", href: "#how-it-works" },
   ],
   ctaText: "Get Started Free",
   mobileLinks: [
     { label: "Browse Topics",  href: "#explore"      },
     { label: "How It Works",   href: "#how-it-works" },
-    { label: "For Creators",   href: "/creators"     },
+    { label: "For Creators",   href: "/creator"      },
     { label: "Get Started",    href: "/signup"       },
   ],
 };
@@ -117,7 +117,7 @@ const CREATOR_CONFIG: NavConfig = {
 };
 
 function getNavConfig(pathname: string): NavConfig {
-  return pathname === "/creators" ? CREATOR_CONFIG : LEARNER_CONFIG;
+  return pathname === "/creator" ? CREATOR_CONFIG : LEARNER_CONFIG;
 }
 
 gsap.registerPlugin(ScrollTrigger);

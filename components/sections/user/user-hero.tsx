@@ -48,21 +48,6 @@ export default function UserHero(): React.ReactElement {
             <HeroSearch />
           </div>
 
-          {/* Social proof — z-0 so search dropdown always wins */}
-          <div className="u-hero-item relative z-0 mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {STATS.map(({ value, label }, i) => (
-              <div key={label} className="flex items-center gap-4">
-                <div className="flex flex-col items-center gap-0.5">
-                  <span className="text-h3 text-foreground">{value}</span>
-                  <span className="text-xs text-muted-foreground">{label}</span>
-                </div>
-                {i < STATS.length - 1 && (
-                  <div className="h-8 w-px bg-border" />
-                )}
-              </div>
-            ))}
-          </div>
-
         </div>
       </div>
     </section>
