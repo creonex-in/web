@@ -2,7 +2,7 @@
 
 import { useFormContext } from 'react-hook-form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPhone, faCalendarDays, faUsers, faFileLines } from '@fortawesome/free-solid-svg-icons'
+import { faPhone, faCalendarDays, faUsers, faFileLines, faBullseye } from '@fortawesome/free-solid-svg-icons'
 import type { OfferType } from '@/types/offer'
 import type { OfferFormValues } from './index'
 import { formatCurrency } from '@/lib/utils'
@@ -12,6 +12,8 @@ const typeConfig: Record<OfferType, { label: string; icon: typeof faPhone }> = {
   workshop: { label: 'Workshop', icon: faCalendarDays },
   group: { label: 'Group Call', icon: faUsers },
   digital: { label: 'Digital', icon: faFileLines },
+  community: { label: 'Community', icon: faUsers },
+  coaching_plan: { label: 'Coaching Plan', icon: faBullseye },
 }
 
 export function Step4Review(): React.ReactElement {

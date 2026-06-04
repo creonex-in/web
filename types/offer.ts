@@ -1,4 +1,4 @@
-export type OfferType = '1:1' | 'workshop' | 'group' | 'digital'
+export type OfferType = '1:1' | 'workshop' | 'group' | 'digital' | 'community' | 'coaching_plan'
 export type OfferStatus = 'live' | 'draft' | 'scheduled' | 'ended'
 
 export interface Offer {
@@ -16,4 +16,8 @@ export interface Offer {
   duration: number
   createdAt: string
   image?: string
+  memberCount?: number
+  billingCycle?: 'monthly' | 'quarterly' | 'yearly'
+  sessionCount?: number
+  programDuration?: string
 }

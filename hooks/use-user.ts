@@ -1,20 +1,42 @@
-"use client";
-import { useQuery, type UseQueryResult } from "@tanstack/react-query";
-import { http, HttpError } from "@/lib/http";
-import { queryKeys } from "@/lib/tanstack/query-keys";
-import { endpoints } from "@/lib/endpoints";
-import { isRetryable } from "@/lib/errors";
-import type { User } from "@/types";
+'use client'
+import { useAuth } from '@clerk/nextjs'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { userService } from '@/services/user.service'
+import type { UserContext } from '@/types/api'
 
-export function useGetMe(initialData?: User): UseQueryResult<User, HttpError> {
-  return useQuery<User, HttpError>({
-    queryKey: queryKeys.users.me(),
-    // On client, http() routes through /api proxy which attaches the Bearer token server-side.
-    queryFn: (): Promise<User> => http<User>(endpoints.users.me),
-    // RSC prefetch passes server data here — prevents a redundant client fetch on mount.
+export const userKeys = {
+  me: () => ['user', 'me'] as const,
+  creatorProfile: () => ['user', 'creator-profile'] as const,
+  learnerProfile: () => ['user', 'learner-profile'] as const,
+}
+
+export function useMe(initialData?: UserContext) {
+  const { getToken } = useAuth()
+
+  return useQuery({
+    queryKey: userKeys.me(),
+    queryFn: async () => {
+      const token = await getToken()
+      if (!token) throw new Error('Unauthenticated')
+      return userService.getMe(token)
+    },
     initialData,
-    initialDataUpdatedAt: initialData ? Date.now() : undefined,
-    // Only retry on 5xx (transient backend errors) — 4xx errors won't resolve on retry.
-    retry: (failureCount, error) => isRetryable(error) && failureCount < 2,
-  });
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+export function useAddCreatorRole() {
+  const { getToken } = useAuth()
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async () => {
+      const token = await getToken()
+      if (!token) throw new Error('Unauthenticated')
+      return userService.addCreatorRole(token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: userKeys.me() })
+    },
+  })
 }

@@ -1,21 +1,17 @@
-// Server-only data access layer — called from RSC pages to prefetch data.
-// Passes result as initialData to client hooks, avoiding a second network round-trip.
-import "server-only";
-import { http } from "@/lib/http";
-import { endpoints } from "@/lib/endpoints";
-import { isUnauthorized } from "@/lib/errors";
-import { getAuthHeaders } from "@/dal/lib/getAuthHeaders";
-import type { User } from "@/types";
+import 'server-only'
+import { auth } from '@clerk/nextjs/server'
+import { userService } from '@/services/user.service'
+import { isUnauthorized } from '@/lib/api'
+import type { UserContext } from '@/types/api'
 
-export async function getMe(): Promise<User | null> {
+export async function getMe(): Promise<UserContext | null> {
+  const { getToken } = await auth()
+  const token = await getToken()
+  if (!token) return null
   try {
-    const headers = await getAuthHeaders();
-    // No token = unauthenticated session — return null, not an error.
-    if (!headers) return null;
-    return await http<User>(endpoints.users.me, { headers });
+    return await userService.getMe(token)
   } catch (e) {
-    // 401 from backend means token was invalid/expired — treat as unauthenticated.
-    if (isUnauthorized(e)) return null;
-    throw e;
+    if (isUnauthorized(e)) return null
+    throw e
   }
 }

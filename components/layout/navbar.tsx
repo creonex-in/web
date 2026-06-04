@@ -60,29 +60,29 @@ const LEARNER_CONFIG: NavConfig = {
   megaLeft: {
     heading: "Browse",
     items: [
-      { icon: faCalendarCheck, label: "Sessions",  description: "Book 1-on-1 time with verified experts",        href: "#sessions"    },
-      { icon: faBook,          label: "Courses",   description: "Self-paced learning with lifetime access",      href: "#courses"     },
-      { icon: faUsers,         label: "Community", description: "Join expert-led paid communities",              href: "#community"   },
+      { icon: faCalendarCheck, label: "Sessions", description: "Book 1-on-1 time with verified experts", href: "#sessions" },
+      { icon: faBook, label: "Courses", description: "Self-paced learning with lifetime access", href: "#courses" },
+      { icon: faUsers, label: "Community", description: "Join expert-led paid communities", href: "#community" },
     ],
   },
   megaRight: {
     heading: "Discover",
     items: [
-      { icon: faMagnifyingGlass, label: "Browse Topics", description: "Explore 1,800+ experts by category",    href: "#explore"      },
-      { icon: faCirclePlay,      label: "How It Works",  description: "From search to skill in 3 steps",       href: "#how-it-works" },
-      { icon: faTag,             label: "Pricing",       description: "Transparent, no-surprise pricing",      href: "#pricing"      },
+      { icon: faMagnifyingGlass, label: "Browse Topics", description: "Explore 1,800+ experts by category", href: "#explore" },
+      { icon: faCirclePlay, label: "How It Works", description: "From search to skill in 3 steps", href: "#how-it-works" },
+      { icon: faTag, label: "Pricing", description: "Transparent, no-surprise pricing", href: "#pricing" },
     ],
   },
   plainLinks: [
-    { label: "For Creators", href: "/creators"     },
+    { label: "For Creators", href: "/creators" },
     { label: "How It Works", href: "#how-it-works" },
   ],
   ctaText: "Get Started Free",
   mobileLinks: [
-    { label: "Browse Topics",  href: "#explore"      },
-    { label: "How It Works",   href: "#how-it-works" },
-    { label: "For Creators",   href: "/creators"     },
-    { label: "Get Started",    href: "/sign-up"      },
+    { label: "Browse Topics", href: "#explore" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "For Creators", href: "/creators" },
+    { label: "Get Started", href: "/sign-up" },
   ],
 };
 
@@ -91,29 +91,29 @@ const CREATOR_CONFIG: NavConfig = {
   megaLeft: {
     heading: "Earn",
     items: [
-      { icon: faCalendarCheck, label: "Sessions",         description: "Let learners book 1-on-1 time with you",   href: "#sessions"  },
-      { icon: faBook,          label: "Courses",          description: "Record once, earn every week",             href: "#courses"   },
-      { icon: faFileLines,     label: "Digital Products", description: "Sell templates, guides, and resources",    href: "#products"  },
+      { icon: faCalendarCheck, label: "Sessions", description: "Let learners book 1-on-1 time with you", href: "#sessions" },
+      { icon: faBook, label: "Courses", description: "Record once, earn every week", href: "#courses" },
+      { icon: faFileLines, label: "Digital Products", description: "Sell templates, guides, and resources", href: "#products" },
     ],
   },
   megaRight: {
     heading: "Platform",
     items: [
-      { icon: faChartLine,    label: "Analytics",   description: "Track earnings and student growth",             href: "#analytics"    },
-      { icon: faShieldHalved, label: "Payments",    description: "UPI payouts, invoices, auto-settlements",      href: "#payments"     },
-      { icon: faBolt,         label: "How It Works",description: "Profile to first sale in minutes",             href: "#how-it-works" },
+      { icon: faChartLine, label: "Analytics", description: "Track earnings and student growth", href: "#analytics" },
+      { icon: faShieldHalved, label: "Payments", description: "UPI payouts, invoices, auto-settlements", href: "#payments" },
+      { icon: faBolt, label: "How It Works", description: "Profile to first sale in minutes", href: "#how-it-works" },
     ],
   },
   plainLinks: [
     { label: "How It Works", href: "#how-it-works" },
-    { label: "For Learners", href: "/"             },
+    { label: "For Learners", href: "/" },
   ],
   ctaText: "Start Teaching",
   mobileLinks: [
-    { label: "Features",      href: "#features"     },
-    { label: "How It Works",  href: "#how-it-works" },
-    { label: "For Learners",  href: "/"             },
-    { label: "Start Teaching",href: "/sign-up/creator" },
+    { label: "Features", href: "#features" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "For Learners", href: "/" },
+    { label: "Start Teaching", href: "/sign-up/creator" },
   ],
 };
 
@@ -269,7 +269,7 @@ export default function Navbar(): JSX.Element {
                     Login
                   </Button>
                 </Link>
-                <Link href={pathname === '/creators' ? '/sign-up/creator' : '/sign-up'}>
+                <Link href={pathname === '/creators' ? '/sign-up?intent=creator' : '/sign-up?intent=learner'}>
                   <Button className="cursor-pointer" variant="default" size="lg">
                     {config.ctaText}
                   </Button>
@@ -290,7 +290,7 @@ export default function Navbar(): JSX.Element {
             <MobileNav
               links={config.mobileLinks}
               ctaText={config.ctaText}
-              ctaHref={pathname === '/creators' ? '/sign-up/creator' : '/sign-up'}
+              ctaHref={pathname === '/creators' ? '/sign-up?intent=creator' : '/sign-up?intent=learner'}
             />
           </div>
 

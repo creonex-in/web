@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClock, faPhone, faCalendarDays, faUsers, faFileLines } from '@fortawesome/free-solid-svg-icons'
+import { faClock, faPhone, faCalendarDays, faUsers, faFileLines, faBullseye } from '@fortawesome/free-solid-svg-icons'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -15,6 +15,8 @@ const offerTypeIcon: Record<OfferType, IconDefinition> = {
   workshop: faCalendarDays,
   group: faUsers,
   digital: faFileLines,
+  community: faUsers,
+  coaching_plan: faBullseye,
 }
 
 const statusVariant: Record<BookingStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {

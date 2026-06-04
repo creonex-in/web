@@ -27,6 +27,7 @@ export interface Creator {
   sessionPrice: number
   workshopPrice?: number
   isLive: boolean
+  inBoost?: boolean
   tags: string[]
   signals: CQSSignals
 }

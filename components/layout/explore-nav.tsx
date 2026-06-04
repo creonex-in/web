@@ -2,19 +2,33 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter, usePathname } from 'next/navigation'
 import { UserButton, useAuth } from '@clerk/nextjs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { buttonVariants } from '@/components/ui/button'
 import { CreatorDashboardButton } from '@/components/layout/creator-dashboard-button'
+import HeroSearch from '@/components/shared/hero-search'
 
 export function ExploreNav(): React.ReactElement {
   const { isSignedIn, isLoaded } = useAuth()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleSearch = (query: string) => {
+    if (!query.trim()) return
+    if (pathname === '/explore') {
+      router.replace(`/explore?q=${encodeURIComponent(query.trim())}`)
+    } else {
+      router.push(`/explore?q=${encodeURIComponent(query.trim())}`)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
-      <nav className="page-container flex h-14 items-center gap-3">
+      <nav className="flex h-14 w-full items-center gap-3 px-3 sm:px-5 justify-between">
 
+        {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2">
           <Image src="/logo.webp" alt="Creonex" width={28} height={28} className="size-7 object-contain" priority />
           <span className="hidden text-base font-bold tracking-tight sm:block">
@@ -22,23 +36,24 @@ export function ExploreNav(): React.ReactElement {
           </span>
         </Link>
 
-        <div className="flex flex-1 items-center gap-2 rounded-lg border border-border bg-muted px-3 py-2 md:max-w-xl">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="shrink-0 text-sm text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search creators, topics, niches..."
-            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-          />
+        {/* HeroSearch — desktop, full functionality */}
+        <div className="flex min-w-0 flex-1 max-sm:hidden max-w-sm">
+          <HeroSearch onSearch={handleSearch} className="w-full" />
         </div>
 
-        {/* Desktop auth — hidden on mobile (bottom nav handles it) */}
-        <div className="hidden items-center gap-2 md:flex">
+        {/* Search icon — mobile only */}
+        <Link href="/explore" className="shrink-0 sm:hidden text-muted-foreground">
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="size-5" />
+        </Link>
+
+        {/* Auth — desktop */}
+        <div className="flex shrink-0 items-center gap-2 max-sm:hidden">
           {isLoaded && !isSignedIn && (
             <>
               <Link href="/sign-in" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
                 Login
               </Link>
-              <Link href="/sign-up" className={buttonVariants({ variant: 'default', size: 'sm' })}>
+              <Link href="/sign-up?intent=learner" className={buttonVariants({ variant: 'default', size: 'sm' })}>
                 Sign Up
               </Link>
             </>
@@ -51,9 +66,9 @@ export function ExploreNav(): React.ReactElement {
           )}
         </div>
 
-        {/* Mobile — only UserButton (bottom nav handles everything else) */}
+        {/* UserButton — mobile */}
         {isLoaded && isSignedIn && (
-          <div className="flex items-center md:hidden">
+          <div className="shrink-0 sm:hidden">
             <UserButton />
           </div>
         )}

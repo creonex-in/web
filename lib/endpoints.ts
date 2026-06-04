@@ -1,8 +1,14 @@
-// Single source of truth for all API endpoint paths.
-// Used by both DAL (server) and hooks (client) — never hardcode paths elsewhere.
-
 export const endpoints = {
   users: {
-    me: "/users/me",
+    me: () => '/api/v1/users/me',
+    addCreatorRole: () => '/api/v1/users/add-creator-role',
+    creatorProfile: () => '/api/v1/users/me/creator-profile',
+    learnerProfile: () => '/api/v1/users/me/learner-profile',
   },
-} as const;
+  onboarding: {
+    learnerStep1: () => '/api/v1/onboarding/learner/step-1',
+    creatorStep1: () => '/api/v1/onboarding/creator/step-1',
+    creatorStep2: () => '/api/v1/onboarding/creator/step-2',
+    creatorStep3: () => '/api/v1/onboarding/creator/step-3',
+  },
+} as const

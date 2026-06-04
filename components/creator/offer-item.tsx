@@ -7,6 +7,7 @@ import {
   faCalendarDays,
   faUsers,
   faFileLines,
+  faBullseye,
   faPen,
   faEye,
   faEyeSlash,
@@ -31,6 +32,8 @@ const offerTypeConfig: Record<OfferType, { icon: IconDefinition; label: string }
   workshop: { icon: faCalendarDays, label: 'Workshop' },
   group: { icon: faUsers, label: 'Group' },
   digital: { icon: faFileLines, label: 'Digital' },
+  community: { icon: faUsers, label: 'Community' },
+  coaching_plan: { icon: faBullseye, label: 'Coaching Plan' },
 }
 
 const statusConfig: Record<OfferStatus, { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' }> = {
