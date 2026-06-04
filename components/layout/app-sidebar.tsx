@@ -28,6 +28,7 @@ import {
   faBolt,
   faChartColumn,
   faComments,
+  faUserPen,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   Sidebar,
@@ -39,6 +40,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
@@ -110,7 +112,10 @@ const creatorNav: NavGroup[] = [
   },
   {
     section: 'Account',
-    items: [{ title: 'Settings', href: '/creator/settings', icon: faGear }],
+    items: [
+      { title: 'Edit Profile', href: '/creator/edit-profile', icon: faUserPen },
+      { title: 'Settings', href: '/creator/settings', icon: faGear },
+    ],
   },
 ]
 
@@ -126,11 +131,16 @@ export function AppSidebar({
   userInitials = 'MV',
 }: AppSidebarProps): React.ReactElement {
   const pathname = usePathname()
+  const { isMobile, setOpenMobile } = useSidebar()
   const nav = role === 'creator' ? creatorNav : learnerNav
+
+  function handleNavigate(): void {
+    if (isMobile) setOpenMobile(false)
+  }
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="h-14 justify-center border-b border-sidebar-border px-3">
+      <SidebarHeader className="h-14 justify-center px-3">
         <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
           <Image
             src="/logo.webp"
@@ -159,7 +169,8 @@ export function AppSidebar({
                     <SidebarMenuButton
                       isActive={active}
                       tooltip={item.title}
-                      className="h-9 gap-3"
+                      className="h-9 gap-3 rounded-lg data-active:bg-primary/10 data-active:font-semibold data-active:text-primary data-active:hover:bg-primary/15"
+                      onClick={handleNavigate}
                       render={<Link href={item.href} />}
                     >
                       <FontAwesomeIcon icon={item.icon} className="size-4" />

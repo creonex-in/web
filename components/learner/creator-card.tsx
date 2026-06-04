@@ -25,7 +25,7 @@ export function CreatorCard({ creator, index = 0 }: CreatorCardProps): React.Rea
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index, 6) * 0.04, ease: 'easeOut' }}
-      className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 transition-shadow hover:shadow-sm"
+      className="flex flex-col gap-3 rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
     >
       <div className="flex items-start gap-3">
         <div className="relative">
@@ -80,7 +80,7 @@ export function CreatorCard({ creator, index = 0 }: CreatorCardProps): React.Rea
         </div>
         <Link
           href={`/creator/${creator.username}`}
-          className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'text-xs')}
+          className={cn(buttonVariants({ variant: 'default', size: 'sm' }))}
         >
           Book now
         </Link>

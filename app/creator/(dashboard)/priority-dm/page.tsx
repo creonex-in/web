@@ -39,10 +39,10 @@ export default function PriorityDMPage(): React.ReactElement {
 
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="mb-4">
-            <TabsTrigger value="pending" className="text-xs">
+            <TabsTrigger value="pending">
               Pending {pending.length > 0 && `(${pending.length})`}
             </TabsTrigger>
-            <TabsTrigger value="answered" className="text-xs">
+            <TabsTrigger value="answered">
               Answered
             </TabsTrigger>
           </TabsList>

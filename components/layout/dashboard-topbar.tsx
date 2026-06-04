@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SidebarTrigger } from '@/components/ui/sidebar'
-import { Separator } from '@/components/ui/separator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '@/components/ui/button'
@@ -32,10 +31,9 @@ export function DashboardTopbar({
   }
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-3 backdrop-blur sm:gap-3 sm:px-4">
+    <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background px-3 sm:gap-3 sm:px-4">
       <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="h-4" />
-      <h1 className="shrink-0 text-sm font-medium">{title}</h1>
+      <h1 className="shrink-0 font-display text-base font-semibold tracking-tight">{title}</h1>
 
       {showSearch && (
         <form onSubmit={submit} className="relative mx-auto hidden w-full max-w-md md:block">

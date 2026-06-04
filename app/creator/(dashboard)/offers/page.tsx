@@ -43,7 +43,7 @@ export default function OffersPage(): React.ReactElement {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-4">
             {tabs.map((t) => (
-              <TabsTrigger key={t.value} value={t.value} className="text-xs">
+              <TabsTrigger key={t.value} value={t.value}>
                 {t.label}
               </TabsTrigger>
             ))}

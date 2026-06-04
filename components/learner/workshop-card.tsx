@@ -27,7 +27,7 @@ export function WorkshopCard({ offer, creator, index = 0 }: WorkshopCardProps): 
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index, 6) * 0.04 }}
-      className="flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-sm"
+      className="flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-shadow hover:shadow-md"
     >
       {offer.image && (
         <div className="relative aspect-[16/9] w-full bg-muted">
@@ -104,7 +104,7 @@ export function WorkshopCard({ offer, creator, index = 0 }: WorkshopCardProps): 
 
       <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
         <p className="text-sm font-semibold">{formatCurrency(offer.price)}</p>
-        <Button size="sm" className="h-8 text-xs" disabled={isFull}>
+        <Button size="sm" disabled={isFull}>
           {isFull ? 'Full' : 'Register'}
         </Button>
       </div>

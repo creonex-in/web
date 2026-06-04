@@ -38,7 +38,7 @@ export default function BookingsPage(): React.ReactElement {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-4">
             {statusTabs.map((t) => (
-              <TabsTrigger key={t.value} value={t.value} className="text-xs">
+              <TabsTrigger key={t.value} value={t.value}>
                 {t.label}
               </TabsTrigger>
             ))}

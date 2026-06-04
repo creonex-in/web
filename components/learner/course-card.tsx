@@ -21,7 +21,7 @@ export function CourseCard({ course, index = 0 }: CourseCardProps): React.ReactE
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index, 6) * 0.04 }}
-      className="flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-sm"
+      className="flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-shadow hover:shadow-md"
     >
       <div className="relative aspect-[16/9] w-full bg-muted">
         <Image
@@ -84,7 +84,7 @@ export function CourseCard({ course, index = 0 }: CourseCardProps): React.ReactE
             <p className="text-sm font-semibold">{formatCurrency(course.price)}</p>
             <p className="text-[10px] text-muted-foreground">one-time · lifetime access</p>
           </div>
-          <Button size="sm" className="text-xs">
+          <Button size="sm">
             Enroll
           </Button>
         </div>

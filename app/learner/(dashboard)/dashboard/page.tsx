@@ -6,9 +6,9 @@ import { CourseCard } from '@/components/learner/course-card'
 import { WorkshopCard } from '@/components/learner/workshop-card'
 import { LiveBanner } from '@/components/learner/live-banner'
 import { ContinueLearning } from '@/components/learner/continue-learning'
+import { UpcomingAgenda, type AgendaItem } from '@/components/learner/upcoming-agenda'
 import { SectionHeader } from '@/components/shared/section-header'
 import { WelcomeHero } from '@/components/shared/welcome-hero'
-import { QuickActions } from '@/components/shared/quick-actions'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,11 +18,11 @@ import {
   faCalendarDays,
   faBookOpen,
   faCompass,
-  faFolderOpen,
 } from '@fortawesome/free-solid-svg-icons'
 import { mockCreators, liveCreators } from '@/data/mock-creators'
 import { topCourses } from '@/data/mock-courses'
 import { mockOffers } from '@/data/mock-offers'
+import { mockPurchases } from '@/data/mock-purchases'
 import { continueLearning } from '@/data/mock-resources'
 
 export const metadata: Metadata = {
@@ -37,10 +37,42 @@ export default function LearnerHomePage(): React.ReactElement {
     .filter((o) => o.type === 'workshop' || o.type === 'group')
     .slice(0, 3)
 
+  const upcomingAgenda: AgendaItem[] = [
+    ...mockPurchases
+      .filter((p) => !p.completed)
+      .map<AgendaItem>((p) => ({
+        id: `s-${p.id}`,
+        title: p.offerTitle,
+        host: p.creatorName,
+        hostInitials: p.creatorInitials,
+        date: p.purchasedAt,
+        kind: p.offerType === 'workshop' ? 'workshop' : 'session',
+        href: '/learner/sessions',
+      })),
+    ...mockOffers
+      .filter((o) => (o.type === 'workshop' || o.type === 'group') && o.date)
+      .map<AgendaItem>((o) => {
+        const host = mockCreators.find((c) =>
+          c.tags.some((t) => o.title.toLowerCase().includes(t.toLowerCase()))
+        )
+        return {
+          id: `w-${o.id}`,
+          title: o.title,
+          host: host?.name ?? 'Creonex Live',
+          hostInitials: host?.initials ?? 'CL',
+          date: o.date as string,
+          duration: o.duration,
+          kind: o.type as 'workshop' | 'group',
+          href: '/learner/workshops',
+          seatsLeft: o.seatsLeft,
+        }
+      }),
+  ].slice(0, 6)
+
   return (
     <>
       <DashboardTopbar title="Discover" showSearch />
-      <div className="space-y-10 p-4 sm:p-6">
+      <div className="space-y-10 p-4 sm:p-6 lg:p-8">
 
         <WelcomeHero
           name="Arjun Kumar"
@@ -58,14 +90,16 @@ export default function LearnerHomePage(): React.ReactElement {
           }
         />
 
-        <QuickActions
-          actions={[
-            { label: 'Explore', description: 'Search everything', icon: faCompass, href: '/learner/explore' },
-            { label: 'Find experts', description: 'Book 1:1 mentorship', icon: faUserTie, href: '/learner/search' },
-            { label: 'Browse courses', description: 'Self-paced learning', icon: faGraduationCap, href: '/learner/courses' },
-            { label: 'My resources', description: 'PDFs, guides & more', icon: faFolderOpen, href: '/learner/resources' },
-          ]}
-        />
+        {/* Upcoming — sessions & workshops the learner must attend */}
+        <section className="space-y-4">
+          <SectionHeader
+            icon={faCalendarDays}
+            title="Upcoming Sessions & Workshops"
+            description="Everything you've signed up for in the coming days — don't miss it."
+            viewAllHref="/learner/sessions"
+          />
+          <UpcomingAgenda items={upcomingAgenda} />
+        </section>
 
         {liveCreators.length > 0 && (
           <div className="space-y-2">
