@@ -4,7 +4,8 @@ import { JSX, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
+import { CreatorDashboardButton } from "@/components/layout/creator-dashboard-button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -73,15 +74,15 @@ const LEARNER_CONFIG: NavConfig = {
     ],
   },
   plainLinks: [
-    { label: "For Creators", href: "/creator"      },
+    { label: "For Creators", href: "/creators"     },
     { label: "How It Works", href: "#how-it-works" },
   ],
   ctaText: "Get Started Free",
   mobileLinks: [
     { label: "Browse Topics",  href: "#explore"      },
     { label: "How It Works",   href: "#how-it-works" },
-    { label: "For Creators",   href: "/creator"      },
-    { label: "Get Started",    href: "/signup"       },
+    { label: "For Creators",   href: "/creators"     },
+    { label: "Get Started",    href: "/sign-up"      },
   ],
 };
 
@@ -112,12 +113,12 @@ const CREATOR_CONFIG: NavConfig = {
     { label: "Features",      href: "#features"     },
     { label: "How It Works",  href: "#how-it-works" },
     { label: "For Learners",  href: "/"             },
-    { label: "Start Teaching",href: "/signup"       },
+    { label: "Start Teaching",href: "/sign-up/creator" },
   ],
 };
 
 function getNavConfig(pathname: string): NavConfig {
-  return pathname === "/creator" ? CREATOR_CONFIG : LEARNER_CONFIG;
+  return pathname === "/creators" ? CREATOR_CONFIG : LEARNER_CONFIG;
 }
 
 gsap.registerPlugin(ScrollTrigger);
@@ -263,19 +264,24 @@ export default function Navbar(): JSX.Element {
           <div className="hidden items-center gap-2 lg:flex">
             {isLoaded && !isSignedIn && (
               <>
-                <SignInButton>
+                <Link href="/sign-in">
                   <Button className="cursor-pointer" variant="outline" size="lg">
                     Login
                   </Button>
-                </SignInButton>
-                <SignUpButton>
+                </Link>
+                <Link href={pathname === '/creators' ? '/sign-up/creator' : '/sign-up'}>
                   <Button className="cursor-pointer" variant="default" size="lg">
                     {config.ctaText}
                   </Button>
-                </SignUpButton>
+                </Link>
               </>
             )}
-            {isLoaded && isSignedIn && <UserButton />}
+            {isLoaded && isSignedIn && (
+              <div className="flex items-center gap-2">
+                <CreatorDashboardButton />
+                <UserButton />
+              </div>
+            )}
           </div>
 
           {/* Mobile */}

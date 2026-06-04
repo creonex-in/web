@@ -1,21 +1,121 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
-const isProtectedRoute = createRouteMatcher([
-  "/dashboard(.*)",
-  "/onboarding(.*)",
-  "/my-courses(.*)",
-  "/sessions(.*)",
-  "/studio(.*)",
-  "/analytics(.*)",
-]);
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/creators',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/explore(.*)',
+  '/c/(.*)',
+])
+
+const isCreatorRoute = createRouteMatcher([
+  '/dashboard(.*)',
+  '/analytics(.*)',
+  '/bookings(.*)',
+  '/calendar(.*)',
+  '/collaborate(.*)',
+  '/cqs(.*)',
+  '/offers(.*)',
+  '/payouts(.*)',
+  '/edit-profile(.*)',
+  '/auto-dm(.*)',
+  '/priority-dm(.*)',
+  '/testimonials(.*)',
+])
+
+const isLearnerRoute = createRouteMatcher([
+  '/sessions(.*)',
+  '/purchases(.*)',
+  '/downloads(.*)',
+  '/bookmarks(.*)',
+  '/workshops(.*)',
+  '/courses(.*)',
+  '/notes(.*)',
+])
+
+const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) await auth.protect();
-});
+  if (isPublicRoute(req)) return NextResponse.next()
+
+  const { userId, sessionClaims } = await auth()
+
+  if (!userId) {
+    const signInUrl = new URL('/sign-in', req.url)
+    signInUrl.searchParams.set('redirect_url', req.url)
+    return NextResponse.redirect(signInUrl)
+  }
+
+  const metadata = (sessionClaims as Record<string, unknown>)
+    ?.metadata as {
+      roles?: ('learner' | 'creator')[]
+      onboarding_complete?: boolean
+      onboarding_step?: number
+    } | undefined
+
+  const roles = metadata?.roles ?? ['learner']
+  const onboardingComplete = metadata?.onboarding_complete ?? false
+  const onboardingStep = metadata?.onboarding_step ?? 1
+  const isCreator = roles.includes('creator')
+  const isLearner = roles.includes('learner')
+
+  // ── Onboarding protection ──
+  if (isOnboardingRoute(req)) {
+    const isCreatorOnboarding = req.nextUrl.pathname.startsWith(
+      '/onboarding/creator',
+    )
+    const isLearnerOnboarding = req.nextUrl.pathname.startsWith(
+      '/onboarding/learner',
+    )
+
+    if (isCreatorOnboarding && !isCreator) {
+      return NextResponse.redirect(new URL('/explore', req.url))
+    }
+    if (isLearnerOnboarding && !isLearner) {
+      return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
+    if (onboardingComplete) {
+      return NextResponse.redirect(
+        new URL(isCreator ? '/dashboard' : '/explore', req.url),
+      )
+    }
+    return NextResponse.next()
+  }
+
+  // ── Creator route protection ──
+  if (isCreatorRoute(req)) {
+    if (!isCreator) {
+      return NextResponse.redirect(new URL('/explore', req.url))
+    }
+    if (!onboardingComplete) {
+      return NextResponse.redirect(
+        new URL(`/onboarding/creator/step-${onboardingStep}`, req.url),
+      )
+    }
+    return NextResponse.next()
+  }
+
+  // ── Learner route protection ──
+  if (isLearnerRoute(req)) {
+    if (!isLearner) {
+      return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
+    if (!onboardingComplete) {
+      return NextResponse.redirect(
+        new URL(`/onboarding/learner/step-${onboardingStep}`, req.url),
+      )
+    }
+    return NextResponse.next()
+  }
+
+  return NextResponse.next()
+})
 
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)",
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
   ],
-};
+}

@@ -92,29 +92,29 @@ const creatorNav: NavGroup[] = [
   {
     section: 'Manage',
     items: [
-      { title: 'Dashboard', href: '/creator/dashboard', icon: faTableColumns },
-      { title: 'Bookings', href: '/creator/bookings', icon: faCalendar },
-      { title: 'Priority DM', href: '/creator/priority-dm', icon: faEnvelope },
-      { title: 'My Offers', href: '/creator/offers', icon: faBox },
-      { title: 'Calendar', href: '/creator/calendar', icon: faCalendarDays },
-      { title: 'Auto DM', href: '/creator/auto-dm', icon: faBolt },
-      { title: 'Payouts', href: '/creator/payouts', icon: faWallet },
+      { title: 'Dashboard', href: '/dashboard', icon: faTableColumns },
+      { title: 'Bookings', href: '/bookings', icon: faCalendar },
+      { title: 'Priority DM', href: '/priority-dm', icon: faEnvelope },
+      { title: 'My Offers', href: '/offers', icon: faBox },
+      { title: 'Calendar', href: '/calendar', icon: faCalendarDays },
+      { title: 'Auto DM', href: '/auto-dm', icon: faBolt },
+      { title: 'Payouts', href: '/payouts', icon: faWallet },
     ],
   },
   {
     section: 'Grow',
     items: [
-      { title: 'Analytics', href: '/creator/analytics', icon: faChartColumn },
-      { title: 'CQS Score', href: '/creator/cqs', icon: faStar },
-      { title: 'Collaborate', href: '/creator/collaborate', icon: faUsers },
-      { title: 'Testimonials', href: '/creator/testimonials', icon: faComments },
+      { title: 'Analytics', href: '/analytics', icon: faChartColumn },
+      { title: 'CQS Score', href: '/cqs', icon: faStar },
+      { title: 'Collaborate', href: '/collaborate', icon: faUsers },
+      { title: 'Testimonials', href: '/testimonials', icon: faComments },
     ],
   },
   {
     section: 'Account',
     items: [
-      { title: 'Edit Profile', href: '/creator/edit-profile', icon: faUserPen },
-      { title: 'Settings', href: '/creator/settings', icon: faGear },
+      { title: 'Edit Profile', href: '/edit-profile', icon: faUserPen },
+      { title: 'Settings', href: '/settings', icon: faGear },
     ],
   },
 ]
