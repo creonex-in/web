@@ -19,7 +19,7 @@ export function ContinueLearning({ course, index = 0 }: ContinueLearningProps): 
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index, 6) * 0.04 }}
-      className="flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-sm sm:flex-row"
+      className="flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-shadow hover:shadow-md sm:flex-row"
     >
       <div className="relative aspect-[16/9] w-full bg-muted sm:aspect-auto sm:w-44 sm:shrink-0">
         <Image
@@ -49,8 +49,8 @@ export function ContinueLearning({ course, index = 0 }: ContinueLearningProps): 
         </p>
 
         <div className="mt-auto pt-2">
-          <Button size="sm" className="text-xs">
-            <FontAwesomeIcon icon={faPlay} className="mr-1.5 size-3" />
+          <Button size="sm">
+            <FontAwesomeIcon icon={faPlay} className="mr-1.5 size-3.5" />
             Resume
           </Button>
         </div>

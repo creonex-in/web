@@ -4,17 +4,11 @@ import { EarningsChart } from '@/components/creator/earnings-chart'
 import { InsightBox } from '@/components/creator/insight-box'
 import { BookingRow } from '@/components/creator/booking-row'
 import { WelcomeHero } from '@/components/shared/welcome-hero'
-import { QuickActions } from '@/components/shared/quick-actions'
+import { ProfileLinkButton } from '@/components/creator/profile-link-button'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faPlus,
-  faShareNodes,
-  faBox,
-  faClock,
-  faChartColumn,
-} from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { creatorMetrics } from '@/data/mock-earnings'
 import { mockBookings } from '@/data/mock-bookings'
 import { formatCurrency, cn } from '@/lib/utils'
@@ -31,14 +25,9 @@ export default function CreatorDashboardPage(): React.ReactElement {
     <>
       <DashboardTopbar
         title="Dashboard"
-        action={
-          <Link href="/creator/offers/new" className={cn(buttonVariants({ size: 'sm' }), 'text-xs')}>
-            <FontAwesomeIcon icon={faPlus} className="size-3.5 mr-1" />
-            New offer
-          </Link>
-        }
+        action={<ProfileLinkButton username="meerav" />}
       />
-      <div className="space-y-6 p-4 sm:p-6">
+      <div className="space-y-8 p-4 sm:p-6 lg:p-8">
         <WelcomeHero
           name="Meera Venkatesh"
           initials="MV"
@@ -50,28 +39,19 @@ export default function CreatorDashboardPage(): React.ReactElement {
           ]}
           action={
             <>
-              <Link href="/creator/offers/new" className={cn(buttonVariants({ size: 'sm' }), 'text-xs')}>
-                <FontAwesomeIcon icon={faPlus} className="mr-1 size-3.5" />
+              <Link href="/creator/offers/new" className={cn(buttonVariants({ size: 'sm' }))}>
+                <FontAwesomeIcon icon={faPlus} className="mr-1 size-4" />
                 New offer
               </Link>
               <Link
                 href="/creator/dashboard"
-                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'text-xs')}
+                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
               >
                 <FontAwesomeIcon icon={faShareNodes} className="mr-1 size-3.5" />
                 Share page
               </Link>
             </>
           }
-        />
-
-        <QuickActions
-          actions={[
-            { label: 'New offer', description: 'Create a session or course', icon: faPlus, href: '/creator/offers/new' },
-            { label: 'My offers', description: 'Manage your listings', icon: faBox, href: '/creator/offers' },
-            { label: 'Set availability', description: 'Update your calendar', icon: faClock, href: '/creator/calendar' },
-            { label: 'View analytics', description: 'Track your growth', icon: faChartColumn, href: '/creator/analytics' },
-          ]}
         />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">

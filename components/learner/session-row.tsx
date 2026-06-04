@@ -20,7 +20,7 @@ export function SessionRow({ purchase, index = 0 }: SessionRowProps): React.Reac
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card hover:bg-accent/20 transition-colors"
+      className="flex items-center gap-4 p-4 rounded-2xl border border-border/60 bg-card shadow-sm hover:bg-accent/20 transition-colors"
     >
       <Avatar className="size-9 shrink-0">
         <AvatarFallback className="bg-muted text-xs font-medium">
@@ -52,7 +52,7 @@ export function SessionRow({ purchase, index = 0 }: SessionRowProps): React.Reac
         {purchase.completed ? 'Done' : 'Upcoming'}
       </Badge>
       {!purchase.rated && purchase.completed && (
-        <Button size="sm" variant="outline" className="h-7 text-xs shrink-0">
+        <Button size="sm" variant="outline" className="shrink-0">
           Rate
         </Button>
       )}

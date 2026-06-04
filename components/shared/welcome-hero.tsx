@@ -36,9 +36,9 @@ export function WelcomeHero({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
       className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/10 via-card to-card p-5 sm:p-6"
     >
       {/* soft brand glow */}
@@ -52,10 +52,10 @@ export function WelcomeHero({
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-lg font-semibold tracking-tight sm:text-xl">
+            <p className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
               {greeting}, {firstName} 👋
             </p>
-            <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>
+            <p className="mt-1 text-sm text-muted-foreground sm:text-base">{subtitle}</p>
           </div>
         </div>
 
@@ -66,8 +66,8 @@ export function WelcomeHero({
         <div className="relative mt-5 grid grid-cols-2 gap-3 sm:flex sm:gap-6">
           {stats.map((s) => (
             <div key={s.label} className="sm:border-l sm:border-border sm:pl-6 sm:first:border-0 sm:first:pl-0">
-              <p className="text-xl font-semibold tracking-tight">{s.value}</p>
-              <p className="text-xs text-muted-foreground">{s.label}</p>
+              <p className="font-display text-xl font-semibold tracking-tight sm:text-2xl">{s.value}</p>
+              <p className="text-xs text-muted-foreground sm:text-sm">{s.label}</p>
             </div>
           ))}
         </div>

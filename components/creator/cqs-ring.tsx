@@ -38,7 +38,7 @@ export function CQSRing({ score, size = 96, showLabel = true }: CQSRingProps): R
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="hsl(var(--border))"
+            stroke="var(--border)"
             strokeWidth={6}
           />
           <circle
@@ -47,7 +47,7 @@ export function CQSRing({ score, size = 96, showLabel = true }: CQSRingProps): R
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="hsl(var(--primary))"
+            stroke="var(--primary)"
             strokeWidth={6}
             strokeLinecap="round"
             strokeDasharray={circumference}

@@ -21,12 +21,12 @@ export function SectionHeader({
   return (
     <div className="flex items-end justify-between gap-4">
       <div className="flex items-start gap-3">
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <FontAwesomeIcon icon={icon} className="size-4" />
         </div>
         <div>
-          <h2 className="text-base font-semibold tracking-tight">{title}</h2>
-          <p className="text-xs text-muted-foreground sm:text-sm">{description}</p>
+          <h2 className="font-display text-lg font-semibold tracking-tight sm:text-xl">{title}</h2>
+          <p className="text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
       {viewAllHref && (

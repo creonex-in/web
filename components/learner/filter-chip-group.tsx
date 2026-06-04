@@ -23,10 +23,10 @@ export function FilterChipGroup({ chips, value, onChange }: FilterChipGroupProps
           whileTap={{ scale: 0.95 }}
           onClick={() => onChange(chip.value)}
           className={cn(
-            'cursor-pointer rounded-full border border-transparent px-3.5 py-1.5 text-xs font-medium transition-colors',
+            'cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-colors',
             value === chip.value
-              ? 'bg-primary text-primary-foreground shadow-sm'
-              : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
+              ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+              : 'border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground'
           )}
         >
           {chip.label}

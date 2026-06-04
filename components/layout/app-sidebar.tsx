@@ -12,7 +12,6 @@ import {
   faCalendarDays,
   faVideo,
   faBagShopping,
-  faHeart,
   faTableColumns,
   faCalendar,
   faBox,
@@ -29,6 +28,7 @@ import {
   faBolt,
   faChartColumn,
   faComments,
+  faUserPen,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   Sidebar,
@@ -40,6 +40,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
@@ -58,33 +59,32 @@ const learnerNav: NavGroup[] = [
   {
     section: 'Discover',
     items: [
-      { title: 'Home', href: '/home', icon: faHouse },
-      { title: 'Search', href: '/explore', icon: faMagnifyingGlass },
-      { title: '1:1 Experts', href: '/search', icon: faUserTie },
-      { title: 'Courses', href: '/courses', icon: faGraduationCap },
-      { title: 'Workshops', href: '/workshops', icon: faCalendarDays },
+      { title: 'Home', href: '/learner/dashboard', icon: faHouse },
+      { title: 'Search', href: '/learner/explore', icon: faMagnifyingGlass },
+      { title: '1:1 Experts', href: '/learner/search', icon: faUserTie },
+      { title: 'Courses', href: '/learner/courses', icon: faGraduationCap },
+      { title: 'Workshops', href: '/learner/workshops', icon: faCalendarDays },
     ],
   },
   {
     section: 'My Activity',
     items: [
-      { title: 'My Sessions', href: '/sessions', icon: faVideo },
-      { title: 'Purchases', href: '/purchases', icon: faBagShopping },
-      { title: 'Saved', href: '/saved', icon: faHeart },
+      { title: 'My Sessions', href: '/learner/sessions', icon: faVideo },
+      { title: 'Purchases', href: '/learner/purchases', icon: faBagShopping },
     ],
   },
   {
     section: 'Library',
     items: [
-      { title: 'Resources', href: '/resources', icon: faFolderOpen },
-      { title: 'Downloads', href: '/downloads', icon: faDownload },
-      { title: 'Bookmarks', href: '/bookmarks', icon: faBookmark },
-      { title: 'Notes', href: '/notes', icon: faNoteSticky },
+      { title: 'Resources', href: '/learner/resources', icon: faFolderOpen },
+      { title: 'Downloads', href: '/learner/downloads', icon: faDownload },
+      { title: 'Bookmarks', href: '/learner/bookmarks', icon: faBookmark },
+      { title: 'Notes', href: '/learner/notes', icon: faNoteSticky },
     ],
   },
   {
     section: 'Account',
-    items: [{ title: 'Settings', href: '/settings', icon: faGear }],
+    items: [{ title: 'Settings', href: '/learner/settings', icon: faGear }],
   },
 ]
 
@@ -112,7 +112,10 @@ const creatorNav: NavGroup[] = [
   },
   {
     section: 'Account',
-    items: [{ title: 'Settings', href: '/creator/settings', icon: faGear }],
+    items: [
+      { title: 'Edit Profile', href: '/creator/edit-profile', icon: faUserPen },
+      { title: 'Settings', href: '/creator/settings', icon: faGear },
+    ],
   },
 ]
 
@@ -128,11 +131,16 @@ export function AppSidebar({
   userInitials = 'MV',
 }: AppSidebarProps): React.ReactElement {
   const pathname = usePathname()
+  const { isMobile, setOpenMobile } = useSidebar()
   const nav = role === 'creator' ? creatorNav : learnerNav
+
+  function handleNavigate(): void {
+    if (isMobile) setOpenMobile(false)
+  }
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="h-14 justify-center border-b border-sidebar-border px-3">
+      <SidebarHeader className="h-14 justify-center px-3">
         <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
           <Image
             src="/logo.webp"
@@ -161,7 +169,8 @@ export function AppSidebar({
                     <SidebarMenuButton
                       isActive={active}
                       tooltip={item.title}
-                      className="h-9 gap-3"
+                      className="h-9 gap-3 rounded-lg data-active:bg-primary/10 data-active:font-semibold data-active:text-primary data-active:hover:bg-primary/15"
+                      onClick={handleNavigate}
                       render={<Link href={item.href} />}
                     >
                       <FontAwesomeIcon icon={item.icon} className="size-4" />
