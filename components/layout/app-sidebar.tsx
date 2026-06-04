@@ -12,7 +12,6 @@ import {
   faCalendarDays,
   faVideo,
   faBagShopping,
-  faHeart,
   faTableColumns,
   faCalendar,
   faBox,
@@ -58,33 +57,32 @@ const learnerNav: NavGroup[] = [
   {
     section: 'Discover',
     items: [
-      { title: 'Home', href: '/home', icon: faHouse },
-      { title: 'Search', href: '/explore', icon: faMagnifyingGlass },
-      { title: '1:1 Experts', href: '/search', icon: faUserTie },
-      { title: 'Courses', href: '/courses', icon: faGraduationCap },
-      { title: 'Workshops', href: '/workshops', icon: faCalendarDays },
+      { title: 'Home', href: '/learner/dashboard', icon: faHouse },
+      { title: 'Search', href: '/learner/explore', icon: faMagnifyingGlass },
+      { title: '1:1 Experts', href: '/learner/search', icon: faUserTie },
+      { title: 'Courses', href: '/learner/courses', icon: faGraduationCap },
+      { title: 'Workshops', href: '/learner/workshops', icon: faCalendarDays },
     ],
   },
   {
     section: 'My Activity',
     items: [
-      { title: 'My Sessions', href: '/sessions', icon: faVideo },
-      { title: 'Purchases', href: '/purchases', icon: faBagShopping },
-      { title: 'Saved', href: '/saved', icon: faHeart },
+      { title: 'My Sessions', href: '/learner/sessions', icon: faVideo },
+      { title: 'Purchases', href: '/learner/purchases', icon: faBagShopping },
     ],
   },
   {
     section: 'Library',
     items: [
-      { title: 'Resources', href: '/resources', icon: faFolderOpen },
-      { title: 'Downloads', href: '/downloads', icon: faDownload },
-      { title: 'Bookmarks', href: '/bookmarks', icon: faBookmark },
-      { title: 'Notes', href: '/notes', icon: faNoteSticky },
+      { title: 'Resources', href: '/learner/resources', icon: faFolderOpen },
+      { title: 'Downloads', href: '/learner/downloads', icon: faDownload },
+      { title: 'Bookmarks', href: '/learner/bookmarks', icon: faBookmark },
+      { title: 'Notes', href: '/learner/notes', icon: faNoteSticky },
     ],
   },
   {
     section: 'Account',
-    items: [{ title: 'Settings', href: '/settings', icon: faGear }],
+    items: [{ title: 'Settings', href: '/learner/settings', icon: faGear }],
   },
 ]
 

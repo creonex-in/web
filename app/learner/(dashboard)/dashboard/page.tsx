@@ -1,5 +1,4 @@
-'use client'
-
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { DashboardTopbar } from '@/components/layout/dashboard-topbar'
 import { CreatorCard } from '@/components/learner/creator-card'
@@ -26,6 +25,11 @@ import { topCourses } from '@/data/mock-courses'
 import { mockOffers } from '@/data/mock-offers'
 import { continueLearning } from '@/data/mock-resources'
 
+export const metadata: Metadata = {
+  title: 'Dashboard — Creonex',
+  description: 'Discover courses, book expert sessions, and continue learning.',
+}
+
 export default function LearnerHomePage(): React.ReactElement {
   const sessionCreators = mockCreators.slice(0, 3)
   const courses = topCourses.slice(0, 3)
@@ -47,7 +51,7 @@ export default function LearnerHomePage(): React.ReactElement {
             { label: 'Experts live now', value: liveCreators.length.toString() },
           ]}
           action={
-            <Link href="/explore" className={cn(buttonVariants({ size: 'sm' }), 'text-xs')}>
+            <Link href="/learner/explore" className={cn(buttonVariants({ size: 'sm' }), 'text-xs')}>
               <FontAwesomeIcon icon={faCompass} className="mr-1 size-3.5" />
               Explore
             </Link>
@@ -56,10 +60,10 @@ export default function LearnerHomePage(): React.ReactElement {
 
         <QuickActions
           actions={[
-            { label: 'Explore', description: 'Search everything', icon: faCompass, href: '/explore' },
-            { label: 'Find experts', description: 'Book 1:1 mentorship', icon: faUserTie, href: '/search' },
-            { label: 'Browse courses', description: 'Self-paced learning', icon: faGraduationCap, href: '/courses' },
-            { label: 'My resources', description: 'PDFs, guides & more', icon: faFolderOpen, href: '/resources' },
+            { label: 'Explore', description: 'Search everything', icon: faCompass, href: '/learner/explore' },
+            { label: 'Find experts', description: 'Book 1:1 mentorship', icon: faUserTie, href: '/learner/search' },
+            { label: 'Browse courses', description: 'Self-paced learning', icon: faGraduationCap, href: '/learner/courses' },
+            { label: 'My resources', description: 'PDFs, guides & more', icon: faFolderOpen, href: '/learner/resources' },
           ]}
         />
 
@@ -78,7 +82,7 @@ export default function LearnerHomePage(): React.ReactElement {
               icon={faBookOpen}
               title="Continue Learning"
               description="Pick up where you left off."
-              viewAllHref="/resources"
+              viewAllHref="/learner/resources"
             />
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               {continueLearning.map((c, i) => (
@@ -94,7 +98,7 @@ export default function LearnerHomePage(): React.ReactElement {
             icon={faUserTie}
             title="Book a 1:1 Session"
             description="Personal mentorship with verified experts — billed per session."
-            viewAllHref="/search"
+            viewAllHref="/learner/search"
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {sessionCreators.map((creator, i) => (
@@ -109,7 +113,7 @@ export default function LearnerHomePage(): React.ReactElement {
             icon={faGraduationCap}
             title="Courses by Top Experts"
             description="Self-paced, one-time payment, lifetime access. Learn anytime."
-            viewAllHref="/courses"
+            viewAllHref="/learner/courses"
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {courses.map((course, i) => (
@@ -124,7 +128,7 @@ export default function LearnerHomePage(): React.ReactElement {
             icon={faCalendarDays}
             title="Live Workshops"
             description="Scheduled group sessions. Join live and learn with others."
-            viewAllHref="/workshops"
+            viewAllHref="/learner/workshops"
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {workshops.map((offer, i) => {
