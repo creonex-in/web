@@ -13,16 +13,16 @@ export function ExploreNav(): React.ReactElement {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
-      <nav className="page-container flex h-14 items-center justify-between gap-4">
+      <nav className="page-container flex h-14 items-center gap-3">
 
         <Link href="/" className="flex shrink-0 items-center gap-2">
           <Image src="/logo.webp" alt="Creonex" width={28} height={28} className="size-7 object-contain" priority />
-          <span className="text-base font-bold tracking-tight">
+          <span className="hidden text-base font-bold tracking-tight sm:block">
             creo<span className="text-primary">nex</span>
           </span>
         </Link>
 
-        <div className="flex flex-1 max-w-xl items-center gap-2 rounded-lg border border-border bg-muted px-3 py-2">
+        <div className="flex flex-1 items-center gap-2 rounded-lg border border-border bg-muted px-3 py-2 md:max-w-xl">
           <FontAwesomeIcon icon={faMagnifyingGlass} className="shrink-0 text-sm text-muted-foreground" />
           <input
             type="text"
@@ -31,7 +31,8 @@ export function ExploreNav(): React.ReactElement {
           />
         </div>
 
-        <div className="flex shrink-0 items-center gap-2">
+        {/* Desktop auth — hidden on mobile (bottom nav handles it) */}
+        <div className="hidden items-center gap-2 md:flex">
           {isLoaded && !isSignedIn && (
             <>
               <Link href="/sign-in" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
@@ -49,6 +50,13 @@ export function ExploreNav(): React.ReactElement {
             </>
           )}
         </div>
+
+        {/* Mobile — only UserButton (bottom nav handles everything else) */}
+        {isLoaded && isSignedIn && (
+          <div className="flex items-center md:hidden">
+            <UserButton />
+          </div>
+        )}
 
       </nav>
     </header>

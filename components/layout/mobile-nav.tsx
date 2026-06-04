@@ -2,10 +2,10 @@
 
 import { JSX, useState } from "react";
 import Link from "next/link";
-import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrip, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
@@ -18,11 +18,18 @@ import {
 interface MobileNavProps {
   links: ReadonlyArray<{ label: string; href: string }>;
   ctaText?: string;
+  ctaHref?: string;
 }
 
-export default function MobileNav({ links, ctaText = "Get Started Free" }: MobileNavProps): JSX.Element {
+export default function MobileNav({
+  links,
+  ctaText = "Get Started Free",
+  ctaHref = "/sign-up",
+}: MobileNavProps): JSX.Element {
   const [open, setOpen] = useState(false);
   const { isSignedIn, isLoaded } = useAuth();
+
+  function close() { setOpen(false) }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -31,10 +38,7 @@ export default function MobileNav({ links, ctaText = "Get Started Free" }: Mobil
           <Button variant="ghost" size="icon" aria-label="Toggle menu" />
         }
       >
-        <FontAwesomeIcon
-          icon={open ? faXmark : faGrip}
-          className="size-4"
-        />
+        <FontAwesomeIcon icon={open ? faXmark : faGrip} className="size-4" />
       </SheetTrigger>
 
       <SheetContent side="right" className="w-72 p-0">
@@ -51,7 +55,7 @@ export default function MobileNav({ links, ctaText = "Get Started Free" }: Mobil
             <Link
               key={href}
               href={href}
-              onClick={() => setOpen(false)}
+              onClick={close}
               className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               {label}
@@ -63,22 +67,20 @@ export default function MobileNav({ links, ctaText = "Get Started Free" }: Mobil
 
         {isLoaded && !isSignedIn && (
           <div className="flex flex-col gap-2 px-6 py-5">
-            <SignInButton>
-              <Button
-                variant="outline"
-                className="w-full cursor-pointer"
-              >
-                Login
-              </Button>
-            </SignInButton>
-            <SignUpButton>
-              <Button
-                variant="default"
-                className="w-full cursor-pointer"
-              >
-                {ctaText}
-              </Button>
-            </SignUpButton>
+            <Link
+              href="/sign-in"
+              onClick={close}
+              className={buttonVariants({ variant: "outline", className: "w-full" })}
+            >
+              Login
+            </Link>
+            <Link
+              href={ctaHref}
+              onClick={close}
+              className={buttonVariants({ variant: "default", className: "w-full" })}
+            >
+              {ctaText}
+            </Link>
           </div>
         )}
       </SheetContent>

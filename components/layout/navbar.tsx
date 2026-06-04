@@ -287,7 +287,11 @@ export default function Navbar(): JSX.Element {
           {/* Mobile */}
           <div className="flex items-center gap-4 lg:hidden">
             {isLoaded && isSignedIn && <UserButton />}
-            <MobileNav links={config.mobileLinks} ctaText={config.ctaText} />
+            <MobileNav
+              links={config.mobileLinks}
+              ctaText={config.ctaText}
+              ctaHref={pathname === '/creators' ? '/sign-up/creator' : '/sign-up'}
+            />
           </div>
 
         </div>
