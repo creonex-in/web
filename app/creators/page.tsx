@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import PageTransition from "@/components/shared/page-transition";
+import MarketingShell from "@/components/layout/marketing-shell";
 import HeroSection from "@/components/sections/creator/hero-section";
 import CreonexIdeology from "@/components/sections/creator/creonex-ideology";
-import CinematicGallery from "@/components/sections/creator/creators-gallery";
+import CinematicGallery from "@/components/sections/shared/creators-gallery";
 import CreatorTimeline from "@/components/sections/creator/creator-timeline";
 import ProductWalkthrough from "@/components/sections/creator/product-walkthrough";
 import HowItWorks from "@/components/sections/creator/how-it-works";
 import MonetizeSection from "@/components/sections/creator/monetize-section";
 import PlatformInfrastructure from "@/components/sections/creator/platform-infrastructure";
-import Faqs from "@/components/sections/creator/faqs";
+import Faqs from "@/components/sections/shared/faqs";
 import Testimonials from "@/components/sections/creator/testimonials";
 
 export const metadata: Metadata = {
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     "Sell courses, host sessions, and build your community. One platform built for micro-creators across India.",
 };
 
-export default function CreatorsPage(): React.ReactElement {
+export default function CreatorLandingPage(): React.ReactElement {
   return (
-    <PageTransition>
+    <MarketingShell>
       <main>
         <HeroSection />
         <CreonexIdeology />
@@ -32,6 +32,6 @@ export default function CreatorsPage(): React.ReactElement {
         <Testimonials />
         <Faqs />
       </main>
-    </PageTransition>
+    </MarketingShell>
   );
 }

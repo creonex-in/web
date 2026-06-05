@@ -25,16 +25,104 @@ This repo contains **only the frontend**. All data persistence, auth logic, and 
 
 ---
 
+## Route Structure
+
+```
+app/
+├── page.tsx                        → /           learner landing (SSG)
+├── explore/page.tsx                → /explore    main discovery feed (SSR + TanStack)
+├── creators/page.tsx               → /creators   creator landing (SSG)
+├── c/[username]/page.tsx           → /c/:username public creator profile (ISR 1800s)
+├── settings/page.tsx               → /settings   role-aware settings (CSR, auth required)
+│
+├── (auth)/                         URL prefix: none
+│   ├── sign-up/page.tsx            → /sign-up    role chooser screen
+│   ├── sign-up/learner/page.tsx    → /sign-up/learner
+│   ├── sign-up/creator/page.tsx    → /sign-up/creator
+│   └── sign-in/page.tsx            → /sign-in
+│
+├── (learner)/                      URL prefix: none — top navbar layout, no sidebar
+│   ├── sessions/page.tsx           → /sessions
+│   ├── purchases/page.tsx          → /purchases
+│   ├── downloads/page.tsx          → /downloads
+│   ├── bookmarks/page.tsx          → /bookmarks
+│   ├── workshops/page.tsx          → /workshops
+│   ├── courses/page.tsx            → /courses
+│   └── notes/page.tsx              → /notes
+│
+├── (creator)/                      URL prefix: none — sidebar layout
+│   ├── dashboard/page.tsx          → /dashboard
+│   ├── analytics/page.tsx          → /analytics
+│   ├── bookings/page.tsx           → /bookings
+│   ├── calendar/page.tsx           → /calendar
+│   ├── collaborate/page.tsx        → /collaborate
+│   ├── cqs/page.tsx                → /cqs
+│   ├── offers/page.tsx             → /offers
+│   ├── offers/new/page.tsx         → /offers/new
+│   ├── payouts/page.tsx            → /payouts
+│   ├── edit-profile/page.tsx       → /edit-profile
+│   ├── auto-dm/page.tsx            → /auto-dm
+│   ├── priority-dm/page.tsx        → /priority-dm
+│   └── testimonials/page.tsx       → /testimonials
+│
+└── onboarding/                     URL prefix: /onboarding — clean shell layout
+    ├── creator/step-1 … complete
+    └── learner/step-1 … complete
+```
+
+---
+
+## Auth & Onboarding Flows
+
+### Learner Flow
+```
+/ (landing)
+  → Sign Up in navbar → /sign-up
+  → "I want to Learn" → /sign-up/learner  (Clerk SignUp)
+  → webhook: roles: ["learner"]
+  → /onboarding/learner/step-1 → step-2 → complete
+  → /explore  ← home for learners (not a dashboard)
+```
+
+### Creator Flow
+```
+/creators (creator landing)
+  → "Start Earning" → /sign-up
+  → "I want to Teach & Earn" → /sign-up/creator
+      (Clerk SignUp, unsafeMetadata: { intent: "creator" })
+  → webhook: roles: ["learner", "creator"]
+  → /onboarding/creator/step-1 → step-2 → step-3 → complete
+  → /dashboard  ← creator home
+```
+
+### Sign-In Flow (single page, both roles)
+```
+/sign-in → Clerk SignIn → on success:
+  creator + onboarding complete   → /dashboard
+  creator + onboarding incomplete → /onboarding/creator/step-{n}
+  learner + onboarding complete   → /explore
+  learner + onboarding incomplete → /onboarding/learner/step-{n}
+```
+
+### Creator ↔ Learner View Switch
+```
+/dashboard sidebar → "Switch to Learner View" → /explore
+/explore navbar    → "Switch to Creator"       → /dashboard
+```
+
+---
+
 ## Rendering Strategy
 
 | Route | Strategy | Reason |
 |-------|----------|--------|
 | `/` | SSG | Static, CDN-cacheable |
-| `/courses` | SSR + `force-dynamic` + TanStack prefetch | SEO + interactive filter state |
-| `/courses/[slug]` | ISR `revalidate: 3600` | SEO + freshness |
-| `/experts/[username]` | ISR `revalidate: 1800` | SEO |
-| `/dashboard`, `/my-courses`, `/bookings` | CSR — client-only, behind Clerk auth | No SEO needed |
-| `/login`, `/signup` | SSG | Static Clerk components |
+| `/explore` | SSR + `force-dynamic` + TanStack prefetch | SEO + interactive filter state |
+| `/creators` | SSG | Static, CDN-cacheable |
+| `/c/[username]` | ISR `revalidate: 1800` | SEO + freshness |
+| `/dashboard`, `/bookings`, `/analytics` etc. | CSR — behind Clerk auth | No SEO needed |
+| `/sign-in`, `/sign-up` | SSG | Static Clerk components |
+| `/onboarding/**` | CSR — behind Clerk auth | No SEO needed |
 
 ---
 
@@ -140,8 +228,16 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
-  "/my-courses(.*)",
+  "/analytics(.*)",
   "/bookings(.*)",
+  "/calendar(.*)",
+  "/offers(.*)",
+  "/payouts(.*)",
+  "/sessions(.*)",
+  "/purchases(.*)",
+  "/downloads(.*)",
+  "/onboarding(.*)",
+  "/settings(.*)",
 ]);
 
 export default clerkMiddleware((auth, req) => {
