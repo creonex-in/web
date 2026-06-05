@@ -13,24 +13,24 @@ export default async function OnboardingLayout({
 
   return (
     <div className="flex min-h-screen flex-col bg-muted/40">
-      <header className="flex h-14 shrink-0 items-center border-b border-border bg-background px-6">
+      <header className="flex h-16 shrink-0 items-center border-b border-border/60 bg-background/80 px-5 backdrop-blur-sm sm:px-8">
         <Link
           href="/"
-          className="flex items-center gap-2 transition-opacity hover:opacity-70"
+          className="flex items-center gap-2.5 transition-opacity hover:opacity-70"
         >
           <Image
             src="/logo.webp"
             alt="Creonex"
-            width={28}
-            height={28}
-            className="size-7 object-contain"
+            width={30}
+            height={30}
+            className="size-[30px] object-contain"
           />
-          <span className="text-base font-bold tracking-tight">Creonex</span>
+          <span className="font-display text-lg font-bold tracking-tight">Creonex</span>
         </Link>
       </header>
 
-      <main className="flex flex-1 items-start justify-center px-4 py-10">
-        <div className="w-full max-w-[28rem]">{children}</div>
+      <main className="flex flex-1 items-start justify-center px-4 py-10 sm:items-center sm:py-14">
+        <div className="w-full max-w-[44rem]">{children}</div>
       </main>
     </div>
   )

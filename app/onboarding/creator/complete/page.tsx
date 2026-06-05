@@ -49,14 +49,14 @@ export default function CreatorCompletePage(): React.ReactElement {
       )
     }
     if (headlineRef.current) {
-      tl.from(headlineRef.current, { opacity: 0, y: 12, duration: 0.35 }, '-=0.1')
+      tl.fromTo(headlineRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, clearProps: 'all' }, '-=0.1')
     }
     if (urlBoxRef.current) {
-      tl.from(urlBoxRef.current, { opacity: 0, y: 8, duration: 0.3 }, '-=0.05')
+      tl.fromTo(urlBoxRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, clearProps: 'all' }, '-=0.05')
     }
-    tl.from('.action-card', { opacity: 0, y: 10, stagger: 0.1, duration: 0.3 }, '-=0.05')
+    tl.fromTo('.action-card', { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.3, clearProps: 'all' }, '-=0.05')
     if (ctaRef.current) {
-      tl.from(ctaRef.current, { opacity: 0, y: 8, duration: 0.3 }, '-=0.05')
+      tl.fromTo(ctaRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, clearProps: 'all' }, '-=0.05')
     }
   }, [])
 
@@ -87,12 +87,12 @@ export default function CreatorCompletePage(): React.ReactElement {
         <FontAwesomeIcon icon={faCheck} className="size-6 text-primary" />
       </div>
 
-      <h1 ref={headlineRef} className="text-center text-2xl font-bold tracking-tight">
+      <h1 ref={headlineRef} className="text-center font-display text-2xl font-bold tracking-tight">
         Your profile is live! 🚀
       </h1>
 
       {/* Profile URL */}
-      <div ref={urlBoxRef} className="flex items-center justify-between gap-3 rounded-lg bg-muted px-4 py-3">
+      <div ref={urlBoxRef} className="flex items-center justify-between gap-3 rounded-xl bg-muted px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           <FontAwesomeIcon icon={faLink} className="size-4 shrink-0 text-muted-foreground" />
           <span className="truncate font-mono text-sm">creonex.in/c/{username}</span>
@@ -108,21 +108,21 @@ export default function CreatorCompletePage(): React.ReactElement {
 
       {/* Action cards */}
       <div className="space-y-2">
-        <Link href="/edit-profile" className="action-card flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent">
+        <Link href="/edit-profile" className="action-card flex items-center gap-3 rounded-2xl border border-border/70 bg-card p-3.5 transition-colors hover:bg-accent">
           <FontAwesomeIcon icon={faImage} className="size-4 shrink-0 text-muted-foreground" />
           <div>
             <p className="text-sm font-medium">Add a profile photo</p>
             <p className="text-xs text-muted-foreground">Profiles with photos get 3× more bookings</p>
           </div>
         </Link>
-        <Link href="/dashboard" className="action-card flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent">
+        <Link href="/dashboard" className="action-card flex items-center gap-3 rounded-2xl border border-border/70 bg-card p-3.5 transition-colors hover:bg-accent">
           <FontAwesomeIcon icon={faStar} className="size-4 shrink-0 text-muted-foreground" />
           <div>
             <p className="text-sm font-medium">Complete your first session</p>
             <p className="text-xs text-muted-foreground">Accept bookings and start earning</p>
           </div>
         </Link>
-        <div className="action-card flex items-center gap-3 rounded-lg border border-border bg-card p-3">
+        <div className="action-card flex items-center gap-3 rounded-2xl border border-border/70 bg-card p-3.5">
           <FontAwesomeIcon icon={faBolt} className="size-4 shrink-0 text-muted-foreground" />
           <div>
             <p className="text-sm font-medium">Respond within 1 hour</p>

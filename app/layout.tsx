@@ -41,7 +41,7 @@ export default function RootLayout({
       className={`${bricolage.variable} ${geist.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased">
+      <body className="overflow-x-hidden antialiased">
         <ClerkProvider>
           <ThemeProvider
             attribute="class"

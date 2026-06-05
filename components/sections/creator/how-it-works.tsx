@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,7 +14,6 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { Button } from "@/components/ui/button";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -75,8 +74,6 @@ const STEPS: Step[] = [
   },
 ];
 
-const AUTO_DELAY = 4;
-
 // ─── Carousel ────────────────────────────────────────────────────────────────
 
 interface CarouselProps {
@@ -84,44 +81,50 @@ interface CarouselProps {
 }
 
 function Carousel({ images }: CarouselProps): React.ReactElement {
-  const slideEls   = useRef<(HTMLDivElement | null)[]>([]);
-  const progressEl = useRef<HTMLDivElement>(null);
-  const timerRef   = useRef<gsap.core.Tween | null>(null);
-  const idxRef     = useRef(0);
-  const count      = images.length;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const slideEls = useRef<(HTMLDivElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+  const count = images.length;
 
-  const goTo = useCallback((next: number) => {
-    timerRef.current?.kill();
-    gsap.killTweensOf(progressEl.current);
+  /*
+    useGSAP handles context creation + cleanup automatically.
+    contextSafe wraps event handlers so any tweens they create are
+    tracked by the same context and killed on unmount — no manual
+    cleanup, no stale tweens.
+  */
+  const { contextSafe } = useGSAP(
+    () => {
+      const slides = slideEls.current.filter(
+        (el): el is HTMLDivElement => el !== null,
+      );
+      gsap.set(slides, { xPercent: (i: number) => i * 100 });
+    },
+    { scope: containerRef },
+  );
 
-    const n = ((next % count) + count) % count;
-    idxRef.current = n;
+  const goTo = contextSafe((next: number) => {
+    const n = Math.max(0, Math.min(next, count - 1));
+    if (n === active) return;
+    setActive(n);
 
-    const targets = slideEls.current.filter((el): el is HTMLDivElement => el !== null);
-    gsap.to(targets, {
-      xPercent: (i) => (i - n) * 100,
-      duration: 0.55,
-      ease: "power2.inOut",
-    });
-
-    gsap.fromTo(
-      progressEl.current,
-      { scaleX: 0 },
-      { scaleX: 1, duration: AUTO_DELAY, ease: "none", transformOrigin: "left" },
+    const slides = slideEls.current.filter(
+      (el): el is HTMLDivElement => el !== null,
     );
 
-    timerRef.current = gsap.delayedCall(AUTO_DELAY, () => goTo(n + 1));
-  }, [count]);
-
-  useEffect(() => {
-    const targets = slideEls.current.filter((el): el is HTMLDivElement => el !== null);
-    gsap.set(targets, { xPercent: (i) => i * 100 });
-    goTo(0);
-    return () => { timerRef.current?.kill(); };
-  }, [goTo]);
+    gsap.to(slides, {
+      xPercent: (i: number) => (i - n) * 100,
+      duration: 0.55,
+      ease: "power3.out",
+      overwrite: true,
+    });
+  });
 
   return (
-    <div className="group relative aspect-[16/10] overflow-hidden rounded-2xl bg-card">
+    <div
+      ref={containerRef}
+      className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-card"
+    >
+      {/* Slides */}
       {images.map((img, i) => (
         <div
           key={i}
@@ -138,7 +141,7 @@ function Carousel({ images }: CarouselProps): React.ReactElement {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 border border-dashed border-border/30">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
               <div className="flex w-24 flex-col overflow-hidden rounded border border-dashed border-border/40">
                 <div className="flex items-center gap-1 border-b border-border/30 px-1.5 py-1">
                   <div className="h-1 w-1 rounded-full bg-border/40" />
@@ -148,36 +151,50 @@ function Carousel({ images }: CarouselProps): React.ReactElement {
                 <div className="h-8" />
               </div>
               <span className="text-[10px] text-muted-foreground/35">
-                Web screenshot · {i + 1} / {count}
+                Screenshot · {i + 1} / {count}
               </span>
             </div>
           )}
         </div>
       ))}
 
-      {/* Arrows */}
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        onClick={() => goTo(idxRef.current - 1)}
-        aria-label="Previous"
-        className="absolute left-3 top-1/2 z-10 -translate-y-1/2 bg-background/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 group-hover:opacity-100"
+      {/* Arrows — always visible on mobile, hover-reveal on desktop,
+           disabled (dimmed) at the first / last slide */}
+      <button
+        type="button"
+        onClick={() => goTo(active - 1)}
+        disabled={active === 0}
+        aria-label="Previous slide"
+        className="absolute left-2.5 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-all duration-200 hover:bg-black/55 disabled:opacity-20 disabled:cursor-default lg:opacity-0 lg:group-hover:opacity-100 lg:group-hover:disabled:opacity-20"
       >
         <FontAwesomeIcon icon={faChevronLeft} className="h-3 w-3" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        onClick={() => goTo(idxRef.current + 1)}
-        aria-label="Next"
-        className="absolute right-3 top-1/2 z-10 -translate-y-1/2 bg-background/60 opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-background/90 group-hover:opacity-100"
+      </button>
+      <button
+        type="button"
+        onClick={() => goTo(active + 1)}
+        disabled={active === count - 1}
+        aria-label="Next slide"
+        className="absolute right-2.5 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-all duration-200 hover:bg-black/55 disabled:opacity-20 disabled:cursor-default lg:opacity-0 lg:group-hover:opacity-100 lg:group-hover:disabled:opacity-20"
       >
         <FontAwesomeIcon icon={faChevronRight} className="h-3 w-3" />
-      </Button>
+      </button>
 
-      {/* Progress line */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-white/10">
-        <div ref={progressEl} className="h-full origin-left bg-primary/70" />
+      {/* Dot indicators */}
+      <div className="absolute inset-x-0 bottom-3 z-10 flex items-center justify-center gap-1.5">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            aria-current={i === active ? "true" : undefined}
+            className={[
+              "size-1.5 rounded-full transition-all duration-300",
+              i === active
+                ? "scale-125 bg-white/80"
+                : "bg-white/30 hover:bg-white/60",
+            ].join(" ")}
+          />
+        ))}
       </div>
     </div>
   );
@@ -192,12 +209,12 @@ export default function HowItWorks(): React.ReactElement {
     () => {
       gsap.fromTo(
         ".how-card",
-        { y: 40, opacity: 0 },
+        { y: 48, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 0.7,
-          stagger: 0.1,
+          stagger: 0.12,
           ease: "power3.out",
           clearProps: "all",
           scrollTrigger: {
@@ -212,33 +229,42 @@ export default function HowItWorks(): React.ReactElement {
   );
 
   return (
-    <section ref={sectionRef} id="how-it-works" className="dark section-py bg-background">
+    <section
+      ref={sectionRef}
+      id="how-it-works"
+      className="dark bg-background py-20 md:py-28 lg:py-32"
+    >
       <div className="page-container">
-
-        <div className="mx-auto mb-14 max-w-2xl text-center">
+        {/* Heading */}
+        <div className="mx-auto mb-16 max-w-2xl text-center md:mb-20">
           <p className="text-label mb-4 text-primary">How It Works</p>
           <h2 className="text-display text-balance text-foreground">
             Simple steps to{" "}
             <span className="text-primary">earning online.</span>
           </h2>
           <p className="text-body mx-auto mt-5 max-w-lg text-muted-foreground">
-            No waiting, no approvals. Publish your knowledge and start earning the same day.
+            No waiting, no approvals. Publish your knowledge and start
+            earning the same day.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Cards */}
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((step) => (
-            <div key={step.number} className="how-card flex flex-col gap-5">
+            <div key={step.number} className="how-card flex flex-col gap-6">
               <Carousel images={step.images} />
               <div>
-                <p className="text-label mb-2 text-primary">Step {parseInt(step.number, 10)}</p>
+                <p className="text-label mb-2 text-primary">
+                  Step {parseInt(step.number, 10)}
+                </p>
                 <h3 className="text-h3 mb-2 text-foreground">{step.title}</h3>
-                <p className="text-body-sm text-muted-foreground">{step.description}</p>
+                <p className="text-body-sm text-muted-foreground">
+                  {step.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

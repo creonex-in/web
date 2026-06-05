@@ -1,8 +1,6 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useUser } from '@clerk/nextjs'
@@ -34,7 +32,6 @@ import { cn } from '@/lib/utils'
 export function CreatorStep2Form(): React.ReactElement {
   const router = useRouter()
   const { user } = useUser()
-  const containerRef = useRef<HTMLDivElement>(null)
   const [tagInput, setTagInput] = useState('')
   const [tags, setTags] = useState<string[]>([])
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
@@ -73,11 +70,6 @@ export function CreatorStep2Form(): React.ReactElement {
       // sessionStorage unavailable — leave bio empty
     }
   }, [setValue])
-
-  useGSAP(() => {
-    if (!containerRef.current) return
-    gsap.from(containerRef.current, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.out' })
-  }, [])
 
   const getNicheSuggestions = (): string[] => {
     try {
@@ -137,7 +129,7 @@ export function CreatorStep2Form(): React.ReactElement {
   const suggestions = getNicheSuggestions()
 
   return (
-    <div ref={containerRef} className="w-full max-w-[28rem] space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="w-full space-y-8 rounded-3xl border border-border/60 bg-card p-6 shadow-xl shadow-black/[0.04] duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-9">
       <OnboardingProgressBar currentStep={2} totalSteps={3} label="Your profile" />
 
       <button
@@ -149,10 +141,10 @@ export function CreatorStep2Form(): React.ReactElement {
         Back
       </button>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
         {/* Bio */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Tell learners about yourself</label>
+        <div className="space-y-3">
+          <label className="font-display text-[0.9375rem] font-semibold tracking-tight">Tell learners about yourself</label>
           <p className="text-xs text-muted-foreground">We&apos;ve given you a head start — edit it to feel like you</p>
           <Textarea
             {...register('bio')}
@@ -182,10 +174,10 @@ export function CreatorStep2Form(): React.ReactElement {
         </div>
 
         {/* Tags */}
-        <div className="space-y-3">
-          <div>
-            <label className="text-sm font-medium">What specific topics do you teach?</label>
-            <p className="mt-0.5 text-xs text-muted-foreground">Up to 5 tags — e.g. Figma, LeetCode, Quant</p>
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <label className="font-display text-[0.9375rem] font-semibold tracking-tight">What specific topics do you teach?</label>
+            <p className="text-xs text-muted-foreground">Up to 5 tags — e.g. Figma, LeetCode, Quant</p>
           </div>
 
           <div className="flex gap-2">
@@ -196,10 +188,10 @@ export function CreatorStep2Form(): React.ReactElement {
                 if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput) }
               }}
               placeholder="Add a tag"
-              className="flex-1"
+              className="h-12 flex-1"
               maxLength={30}
             />
-            <Button type="button" variant="outline" size="sm" onClick={() => addTag(tagInput)}>
+            <Button type="button" variant="outline" onClick={() => addTag(tagInput)} className="h-12 px-5">
               Add
             </Button>
           </div>
@@ -240,7 +232,7 @@ export function CreatorStep2Form(): React.ReactElement {
         {/* Photo */}
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">Add a profile photo</label>
+            <label className="font-display text-[0.9375rem] font-semibold tracking-tight">Add a profile photo</label>
             <Badge variant="secondary" className="text-[10px]">Optional</Badge>
           </div>
 
