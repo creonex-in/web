@@ -262,19 +262,23 @@ export default function ExploreTopics(): React.ReactElement {
 
   useGSAP(
     () => {
-      gsap.from(".category-card", {
-        opacity: 0,
-        y: 40,
-        duration: 1.2,
-        stagger: 0.08,
-        ease: "power4.out",
-        clearProps: "all",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 78%",
-          once: true,
+      gsap.fromTo(
+        ".category-card",
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          stagger: 0.08,
+          ease: "power4.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 78%",
+            once: true,
+          },
         },
-      });
+      );
     },
     { scope: sectionRef },
   );

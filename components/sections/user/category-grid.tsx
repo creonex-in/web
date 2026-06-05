@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
@@ -32,19 +33,23 @@ export default function CategoryGrid(): React.ReactElement {
 
   useGSAP(
     () => {
-      gsap.from(".category-card", {
-        opacity: 0,
-        y: 28,
-        duration: 1,
-        stagger: 0.08,
-        ease: "power4.out",
-        clearProps: "all",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 78%",
-          once: true,
+      gsap.fromTo(
+        ".category-card",
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.08,
+          ease: "power4.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 78%",
+            once: true,
+          },
         },
-      });
+      );
     },
     { scope: sectionRef },
   );
@@ -74,7 +79,12 @@ export default function CategoryGrid(): React.ReactElement {
 
         {/* CTA */}
         <div className="mt-10 flex justify-center">
-          <Button className="cursor-pointer rounded-full px-8 font-semibold" size="lg">
+          <Button
+            size="lg"
+            nativeButton={false}
+            render={<Link href="/courses" />}
+            className="cursor-pointer rounded-full px-8 font-semibold"
+          >
             Explore all categories
             <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
           </Button>

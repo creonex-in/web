@@ -79,7 +79,7 @@ export default function CreonexIdeology(): React.ReactElement {
           </Button>
         </div>
 
-        <div ref={visualRef} className="mt-16 md:mt-20">
+        <div ref={visualRef} className="mt-8 md:mt-10">
           <div ref={imageRef} className="mx-auto w-full overflow-hidden rounded-2xl border border-border shadow-xl sm:w-[76%]">
             <div className="relative aspect-video w-full bg-card">
               <Image
@@ -89,6 +89,19 @@ export default function CreonexIdeology(): React.ReactElement {
                 className="object-cover"
                 sizes="(max-width: 720px) 100vw, 72vw"
               />
+
+              {/* CTA overlaid inside the image, bottom-center */}
+              <div className="absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black/60 to-transparent p-6 sm:p-8">
+                <Button
+                  size="lg"
+                  nativeButton={false}
+                  render={<Link href="/signup" />}
+                  className="rounded-full bg-white px-10 text-black shadow-lg transition-all duration-500 ease-out hover:scale-[1.03] hover:bg-primary hover:text-primary-foreground"
+                >
+                  Start your page
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 transition-transform duration-300 group-hover/button:translate-x-1" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>

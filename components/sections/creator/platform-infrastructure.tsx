@@ -141,19 +141,23 @@ export default function PlatformInfrastructure(): React.ReactElement {
 
   useGSAP(
     () => {
-      gsap.from(".bento-card", {
-        autoAlpha: 0,
-        y: 24,
-        duration: 0.65,
-        stagger: { each: 0.07, from: "start" },
-        ease: "power3.out",
-        clearProps: "opacity,visibility,transform",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 82%",
-          once: true,
+      gsap.fromTo(
+        ".bento-card",
+        { autoAlpha: 0, y: 24 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: { each: 0.07, from: "start" },
+          ease: "power3.out",
+          clearProps: "opacity,visibility,transform",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 82%",
+            once: true,
+          },
         },
-      });
+      );
     },
     { scope: sectionRef },
   );

@@ -200,20 +200,8 @@ export default function HowItWorks(): React.ReactElement {
       });
     });
 
-    // ── Mobile / tablet (<lg): clean vertical fade-up, no scroll-jacking ──────
-    mm.add("(max-width: 1023px)", () => {
-      cards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { autoAlpha: 0, y: 32 },
-          {
-            autoAlpha: 1, y: 0, duration: 0.6, ease: "power3.out",
-            clearProps: "all",
-            scrollTrigger: { trigger: card, start: "top 85%", once: true },
-          },
-        );
-      });
-    });
+    // ── Mobile / tablet (<lg): plain static cards, no animation ──────────────
+    // Intentionally no GSAP here — cards render as a normal vertical stack.
 
     return () => mm.revert();
   }, { scope: sectionRef });

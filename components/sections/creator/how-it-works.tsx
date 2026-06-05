@@ -190,18 +190,23 @@ export default function HowItWorks(): React.ReactElement {
 
   useGSAP(
     () => {
-      gsap.from(".how-card", {
-        y: 40,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 72%",
-          once: true,
+      gsap.fromTo(
+        ".how-card",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power3.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 72%",
+            once: true,
+          },
         },
-      });
+      );
     },
     { scope: sectionRef },
   );

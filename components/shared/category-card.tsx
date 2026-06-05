@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export type CategoryCardData = {
   id: string;
@@ -19,7 +20,11 @@ export default function CategoryCard({ cat }: Props): React.ReactElement {
   const [imgErr, setImgErr] = useState(false);
 
   return (
-    <div className="category-card group cursor-pointer bg-muted">
+    <Link
+      href={`/courses?category=${cat.id}`}
+      aria-label={`${cat.label} — ${cat.experts} experts, ${cat.courses} courses`}
+      className="category-card group block cursor-pointer rounded-md bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
       {/* Image */}
       <div className="relative h-72 overflow-hidden md:h-80 lg:h-96">
         {!imgErr ? (
@@ -45,6 +50,6 @@ export default function CategoryCard({ cat }: Props): React.ReactElement {
           {cat.experts} experts · {cat.courses} courses
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

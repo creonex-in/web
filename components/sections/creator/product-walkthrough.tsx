@@ -104,10 +104,14 @@ export default function ProductWalkthrough(): React.ReactElement {
 
           {/* Tab strip */}
           <div className="mb-10 border-b border-border">
-            <div className="flex">
+            <div className="flex" role="tablist" aria-label="Product features">
               {TABS.map((tab, i) => (
                 <Button
                   key={tab.id}
+                  role="tab"
+                  id={`pw-tab-${tab.id}`}
+                  aria-selected={activeIdx === i}
+                  aria-controls={`pw-panel-${tab.id}`}
                   variant="ghost"
                   size="sm"
                   onClick={() => switchTab(i)}
@@ -128,6 +132,9 @@ export default function ProductWalkthrough(): React.ReactElement {
           {/* Content */}
           <div
             ref={contentRef}
+            role="tabpanel"
+            id={`pw-panel-${active.id}`}
+            aria-labelledby={`pw-tab-${active.id}`}
             className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
           >
             <div>
