@@ -1,5 +1,5 @@
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/layout/app-sidebar'
+import { AppSidebar } from '@/components/dashboard/shared/app-sidebar'
 import { Toaster } from '@/components/ui/sonner'
 
 export default function CreatorLayout({ children }: { children: React.ReactNode }): React.ReactElement {
