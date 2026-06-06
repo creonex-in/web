@@ -1,8 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -22,7 +20,6 @@ import { cn } from '@/lib/utils'
 
 export function LearnerStep1Form(): React.ReactElement {
   const router = useRouter()
-  const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedGoal, setSelectedGoal] = useState<string | null>(null)
   const { mutateAsync, isPending } = useSaveLearnerStep1()
@@ -45,17 +42,11 @@ export function LearnerStep1Form(): React.ReactElement {
     inputRef.current?.focus()
   }, [])
 
-  useGSAP(() => {
-    if (!containerRef.current) return
-    gsap.from(containerRef.current, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.out' })
-    gsap.from('.goal-card', { opacity: 0, y: 12, stagger: 0.04, duration: 0.35, ease: 'power2.out', delay: 0.15 })
-  }, [])
-
   const onSubmit = async (data: LearnerStep1Form) => {
     try {
       await mutateAsync(data)
       const match = document.cookie.match(/creonex_redirect_url=([^;]+)/)
-      const redirectUrl = match ? decodeURIComponent(match[1]) : '/explore'
+      const redirectUrl = match ? decodeURIComponent(match[1]) : '/learner/dashboard'
       router.push(redirectUrl)
     } catch {
       toast.error('Something went wrong. Please try again.')
@@ -63,12 +54,12 @@ export function LearnerStep1Form(): React.ReactElement {
   }
 
   return (
-    <div ref={containerRef} className="w-full max-w-[28rem] space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="w-full space-y-8 rounded-3xl border border-border/60 bg-card p-6 shadow-xl shadow-black/[0.04] duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-9">
       <OnboardingProgressBar currentStep={1} totalSteps={1} label="About you" />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-2">
-          <label className="text-sm font-medium">What&apos;s your name?</label>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
+        <div className="space-y-3">
+          <label className="font-display text-[0.9375rem] font-semibold tracking-tight">What&apos;s your name?</label>
           <div className="relative">
             <FontAwesomeIcon
               icon={faUser}
@@ -81,7 +72,7 @@ export function LearnerStep1Form(): React.ReactElement {
                 ;(inputRef as React.MutableRefObject<HTMLInputElement | null>).current = el
               }}
               placeholder="Your full name"
-              className="pl-10"
+              className="h-12 pl-10"
             />
           </div>
           {errors.fullName && (
@@ -89,16 +80,16 @@ export function LearnerStep1Form(): React.ReactElement {
           )}
         </div>
 
-        <div className="space-y-3">
-          <div>
-            <label className="text-sm font-medium">What brings you to Creonex?</label>
-            <p className="mt-0.5 text-xs text-muted-foreground">Pick your main goal</p>
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <label className="font-display text-[0.9375rem] font-semibold tracking-tight">What brings you to Creonex?</label>
+            <p className="text-xs text-muted-foreground">Pick your main goal</p>
           </div>
           <Controller
             name="goalType"
             control={control}
             render={({ field }) => (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {GOAL_OPTIONS.map((opt) => {
                   const isSelected = field.value === opt.value
                   return (
@@ -110,11 +101,11 @@ export function LearnerStep1Form(): React.ReactElement {
                         setSelectedGoal(opt.value)
                       }}
                       className={cn(
-                        'goal-card flex items-center gap-3 rounded-lg border p-3 text-left transition-all duration-150',
-                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                        'flex items-center gap-3 rounded-2xl border p-3.5 text-left transition-colors duration-150',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                         isSelected
                           ? 'border-primary bg-primary/5 text-primary'
-                          : 'border-border bg-background text-foreground hover:border-primary/50',
+                          : 'border-border bg-background text-foreground hover:border-primary/50 hover:bg-muted/40',
                       )}
                     >
                       <FontAwesomeIcon

@@ -1,42 +1,44 @@
-import { SignIn } from '@clerk/nextjs'
-import type { Metadata } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
+import { SignIn, ClerkLoaded, ClerkLoading } from "@clerk/nextjs"
+import Link from "next/link"
+import type { Metadata } from "next"
+import { AuthFormSkeleton } from "@/features/auth/components/auth-form-skeleton"
 
-export const metadata: Metadata = { title: 'Sign In — Creonex' }
+export const metadata: Metadata = { title: "Sign In — Creonex" }
 
 export default function SignInPage(): React.ReactElement {
   return (
-    <main className="relative flex min-h-screen flex-col items-center px-4 pt-14">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(ellipse_70%_100%_at_50%_0%,#00897B18,transparent)]" />
+    <>
+      <ClerkLoading>
+        <AuthFormSkeleton />
+      </ClerkLoading>
 
-      <Link
-        href="/"
-        className="mb-5 flex items-center gap-2.5 transition-opacity hover:opacity-70"
-      >
-        <Image
-          src="/logo.webp"
-          alt="Creonex"
-          width={36}
-          height={36}
-          className="size-9 object-contain"
-          priority
+      <ClerkLoaded>
+        <SignIn
+          routing="hash"
+          fallbackRedirectUrl="/sign-in/redirect"
+          signUpUrl="/sign-up"
+          appearance={{
+            elements: {
+              rootBox: "w-full max-w-[27rem]",
+              cardBox: "!shadow-none w-full",
+              card: "!bg-transparent !shadow-none !border-0 !p-2 w-full",
+              input: "!h-11 !text-sm",
+              inputWrapper: "!h-11",
+              footer: "!hidden",
+            },
+          }}
         />
-        <span className="text-xl font-bold tracking-tight">Creonex</span>
-      </Link>
 
-      <SignIn
-        routing="hash"
-        fallbackRedirectUrl="/sign-in/redirect"
-        signUpUrl="/sign-up"
-        appearance={{
-          elements: {
-            rootBox: 'w-full max-w-[26rem]',
-            card: 'rounded-2xl border border-border shadow-sm',
-            footer: 'hidden',
-          },
-        }}
-      />
-    </main>
+        <p className="mt-8 w-full max-w-[26rem] text-center text-[0.8125rem] text-muted-foreground">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/sign-up"
+            className="font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            Create one
+          </Link>
+        </p>
+      </ClerkLoaded>
+    </>
   )
 }

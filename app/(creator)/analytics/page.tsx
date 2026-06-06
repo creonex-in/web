@@ -1,6 +1,6 @@
-import { DashboardTopbar } from '@/components/layout/dashboard-topbar'
-import { MetricCard } from '@/components/creator/metric-card'
-import { EarningsChart } from '@/components/creator/earnings-chart'
+import { DashboardTopbar } from '@/components/dashboard/shared/dashboard-topbar'
+import { MetricCard } from '@/components/dashboard/creator/metric-card'
+import { EarningsChart } from '@/components/dashboard/creator/earnings-chart'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   faEye,

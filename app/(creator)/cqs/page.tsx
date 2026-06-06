@@ -1,7 +1,7 @@
-import { DashboardTopbar } from '@/components/layout/dashboard-topbar'
-import { CQSRing } from '@/components/creator/cqs-ring'
-import { CQSSignalBar } from '@/components/creator/cqs-signal-bar'
-import { InsightBox } from '@/components/creator/insight-box'
+import { DashboardTopbar } from '@/components/dashboard/shared/dashboard-topbar'
+import { CQSRing } from '@/components/dashboard/creator/cqs-ring'
+import { CQSSignalBar } from '@/components/dashboard/creator/cqs-signal-bar'
+import { InsightBox } from '@/components/dashboard/creator/insight-box'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { mockCreators } from '@/data/mock-creators'
 

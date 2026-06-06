@@ -6,7 +6,6 @@ const isPublicRoute = createRouteMatcher([
   '/creators',
   '/sign-in(.*)',
   '/sign-up(.*)',
-  '/explore(.*)',
   '/c/(.*)',
 ])
 
@@ -25,15 +24,7 @@ const isCreatorRoute = createRouteMatcher([
   '/testimonials(.*)',
 ])
 
-const isLearnerRoute = createRouteMatcher([
-  '/sessions(.*)',
-  '/purchases(.*)',
-  '/downloads(.*)',
-  '/bookmarks(.*)',
-  '/workshops(.*)',
-  '/courses(.*)',
-  '/notes(.*)',
-])
+const isLearnerRoute = createRouteMatcher(['/learner(.*)'])
 
 const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)'])
 
@@ -71,14 +62,14 @@ export default clerkMiddleware(async (auth, req) => {
     )
 
     if (isCreatorOnboarding && !isCreator) {
-      return NextResponse.redirect(new URL('/explore', req.url))
+      return NextResponse.redirect(new URL('/learner/dashboard', req.url))
     }
     if (isLearnerOnboarding && !isLearner) {
       return NextResponse.redirect(new URL('/sign-in', req.url))
     }
     if (onboardingComplete) {
       return NextResponse.redirect(
-        new URL(isCreator ? '/dashboard' : '/explore', req.url),
+        new URL(isCreator ? '/dashboard' : '/learner/dashboard', req.url),
       )
     }
     return NextResponse.next()
@@ -87,7 +78,7 @@ export default clerkMiddleware(async (auth, req) => {
   // ── Creator route protection ──
   if (isCreatorRoute(req)) {
     if (!isCreator) {
-      return NextResponse.redirect(new URL('/explore', req.url))
+      return NextResponse.redirect(new URL('/learner/dashboard', req.url))
     }
     if (!onboardingComplete) {
       return NextResponse.redirect(

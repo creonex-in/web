@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { DashboardTopbar } from '@/components/layout/dashboard-topbar'
-import { OfferItem } from '@/components/creator/offer-item'
-import { EmptyState } from '@/components/shared/empty-state'
+import { DashboardTopbar } from '@/components/dashboard/shared/dashboard-topbar'
+import { OfferItem } from '@/components/dashboard/creator/offer-item'
+import { EmptyState } from '@/components/dashboard/shared/empty-state'
 import { buttonVariants } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

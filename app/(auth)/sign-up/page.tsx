@@ -1,64 +1,63 @@
-import { SignUp } from '@clerk/nextjs'
-import type { Metadata } from 'next'
-import { cookies } from 'next/headers'
-import Image from 'next/image'
-import Link from 'next/link'
+import { SignUp, ClerkLoaded, ClerkLoading } from "@clerk/nextjs"
+import Link from "next/link"
+import type { Metadata } from "next"
+import { cookies } from "next/headers"
+import { AuthFormSkeleton } from "@/features/auth/components/auth-form-skeleton"
 
-export const metadata: Metadata = { title: 'Sign Up — Creonex' }
+export const metadata: Metadata = { title: "Sign Up — Creonex" }
 
-export default async function SignUpPage({ searchParams }: { searchParams: Promise<{ intent: "creator" | "learner", redirect_url: string | undefined }> }): Promise<React.ReactElement> {
+export default async function SignUpPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ intent: "creator" | "learner"; redirect_url: string | undefined }>
+}): Promise<React.ReactElement> {
   const { intent, redirect_url } = await searchParams
-  const isCreator = intent === 'creator'
+  const isCreator = intent === "creator"
 
-  // Store redirect_url in cookie for after onboarding
   if (redirect_url) {
     const cookieStore = await cookies()
-    cookieStore.set('creonex_redirect_url', redirect_url, {
+    cookieStore.set("creonex_redirect_url", redirect_url, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 10,
-      path: '/',
+      path: "/",
     })
   }
 
-
   return (
-    <main className="relative flex min-h-screen flex-col items-center px-4 pt-14 ">
+    <>
+      <ClerkLoading>
+        <AuthFormSkeleton />
+      </ClerkLoading>
 
-      {/* Subtle teal radial at top */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(ellipse_70%_100%_at_50%_0%,#00897B18,transparent)]" />
-
-      {/* Logo */}
-      <Link
-        href="/"
-        className="mb-5 flex items-center gap-2.5 transition-opacity hover:opacity-70"
-      >
-        <Image
-          src="/logo.webp"
-          alt="Creonex"
-          width={36}
-          height={36}
-          className="size-9 object-contain"
-          priority
+      <ClerkLoaded>
+        <SignUp
+          routing="hash"
+          fallbackRedirectUrl="/sign-up/callback"
+          unsafeMetadata={{ intent: isCreator ? "creator" : "learner" }}
+          signInUrl="/sign-in"
+          appearance={{
+            elements: {
+              rootBox: "w-full max-w-[27rem]",
+              cardBox: "!shadow-none w-full",
+              card: "!bg-transparent !shadow-none !border-0 !p-2 w-full",
+              input: "!h-11 !text-sm",
+              inputWrapper: "!h-11",
+              footer: "!hidden",
+            },
+          }}
         />
-        <span className="text-xl font-bold tracking-tight">Creonex</span>
-      </Link>
 
-      {/* Clerk form */}
-      <SignUp
-        routing="hash"
-        fallbackRedirectUrl="/sign-up/callback"
-        unsafeMetadata={{ intent: isCreator ? "creator" : "learner" }}
-        appearance={{
-          elements: {
-            rootBox: 'w-full max-w-[26rem]',
-            card: 'rounded-2xl border border-border shadow-sm',
-            footer: 'hidden',
-          },
-        }}
-        signInUrl='/sign-in'
-      />
-
-    </main>
+        <p className="mt-8 w-full max-w-[26rem] text-center text-[0.8125rem] text-muted-foreground">
+          Already have an account?{" "}
+          <Link
+            href="/sign-in"
+            className="font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            Sign in
+          </Link>
+        </p>
+      </ClerkLoaded>
+    </>
   )
 }

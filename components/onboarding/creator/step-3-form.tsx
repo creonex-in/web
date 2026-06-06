@@ -1,8 +1,5 @@
 'use client'
-import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -31,8 +28,6 @@ import { cn } from '@/lib/utils'
 
 export function CreatorStep3Form(): React.ReactElement {
   const router = useRouter()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const feePreviewRef = useRef<HTMLDivElement>(null)
   const { mutateAsync, isPending } = useSaveCreatorStep3()
 
   const {
@@ -60,23 +55,6 @@ export function CreatorStep3Form(): React.ReactElement {
 
   const fee = Math.round((price ?? 0) * PLATFORM_FEE_PERCENT / 100)
   const payout = (price ?? 0) - fee
-
-  useGSAP(() => {
-    if (!containerRef.current) return
-    gsap.from(containerRef.current, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.out' })
-    if (feePreviewRef.current) {
-      gsap.set(feePreviewRef.current, { opacity: 0, y: 8 })
-    }
-  }, [])
-
-  useGSAP(() => {
-    if (!feePreviewRef.current) return
-    if ((price ?? 0) > 0) {
-      gsap.to(feePreviewRef.current, { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' })
-    } else {
-      gsap.to(feePreviewRef.current, { opacity: 0, y: 8, duration: 0.15 })
-    }
-  }, [price])
 
   const autoFillTitle = (type: OfferType) => {
     try {
@@ -111,7 +89,7 @@ export function CreatorStep3Form(): React.ReactElement {
   }
 
   return (
-    <div ref={containerRef} className="w-full max-w-[28rem] space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="w-full space-y-8 rounded-3xl border border-border/60 bg-card p-6 shadow-xl shadow-black/[0.04] duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-9">
       <OnboardingProgressBar currentStep={3} totalSteps={3} label="Your first offer" />
 
       <button
@@ -123,15 +101,15 @@ export function CreatorStep3Form(): React.ReactElement {
         Back
       </button>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
         {/* Offer type */}
-        <div className="space-y-3">
-          <label className="text-sm font-medium">What type of offer?</label>
+        <div className="space-y-4">
+          <label className="font-display text-[0.9375rem] font-semibold tracking-tight">What type of offer?</label>
           <Controller
             name="offerType"
             control={control}
             render={({ field }) => (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {OFFER_TYPE_OPTIONS.map((opt) => {
                   const isSelected = field.value === opt.value
                   return (
@@ -170,13 +148,14 @@ export function CreatorStep3Form(): React.ReactElement {
         </div>
 
         {/* Title */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Offer title</label>
+        <div className="space-y-3">
+          <label className="font-display text-[0.9375rem] font-semibold tracking-tight">Offer title</label>
           <div className="relative">
             <Input
               {...register('title')}
               placeholder="e.g. 1:1 DSA Interview Prep"
               maxLength={TITLE_MAX_LENGTH}
+              className="h-12 pr-16"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] tabular-nums text-muted-foreground">
               {titleValue?.length ?? 0} / {TITLE_MAX_LENGTH}
@@ -186,8 +165,8 @@ export function CreatorStep3Form(): React.ReactElement {
         </div>
 
         {/* Price */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Price (₹)</label>
+        <div className="space-y-3">
+          <label className="font-display text-[0.9375rem] font-semibold tracking-tight">Price (₹)</label>
           <div className="relative">
             <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
               ₹
@@ -197,12 +176,12 @@ export function CreatorStep3Form(): React.ReactElement {
               type="number"
               min={99}
               placeholder="499"
-              className="pl-8"
+              className="h-12 pl-8"
             />
           </div>
           {errors.price && <p className="text-xs text-destructive">{errors.price.message}</p>}
 
-          <div ref={feePreviewRef} className="rounded-lg bg-muted px-3 py-2.5">
+          <div className="rounded-xl bg-muted px-4 py-3">
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground">You set</span>
               <span className="font-medium">₹{price > 0 ? price : 0}</span>
@@ -220,8 +199,8 @@ export function CreatorStep3Form(): React.ReactElement {
 
         {/* Duration — hidden for digital */}
         {offerType !== 'digital' && (
-          <div className="space-y-3">
-            <label className="text-sm font-medium">Session duration</label>
+          <div className="space-y-4">
+            <label className="font-display text-[0.9375rem] font-semibold tracking-tight">Session duration</label>
             <Controller
               name="durationMinutes"
               control={control}

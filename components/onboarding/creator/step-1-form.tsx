@@ -1,8 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -34,7 +32,6 @@ interface Props {
 
 export function CreatorStep1Form({ defaultName }: Props): React.ReactElement {
   const router = useRouter()
-  const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedNiches, setSelectedNiches] = useState<NicheValue[]>([])
   const { mutateAsync, isPending } = useSaveCreatorStep1()
@@ -60,11 +57,6 @@ export function CreatorStep1Form({ defaultName }: Props): React.ReactElement {
     inputRef.current?.focus()
   }, [])
 
-  useGSAP(() => {
-    if (!containerRef.current) return
-    gsap.from(containerRef.current, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.out' })
-  }, [])
-
   const onSubmit = async (data: CreatorStep1Form) => {
     try {
       await mutateAsync(data)
@@ -83,12 +75,12 @@ export function CreatorStep1Form({ defaultName }: Props): React.ReactElement {
   }
 
   return (
-    <div ref={containerRef} className="w-full max-w-[28rem] space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="w-full space-y-8 rounded-3xl border border-border/60 bg-card p-6 shadow-xl shadow-black/[0.04] duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-9">
       <OnboardingProgressBar currentStep={1} totalSteps={3} label="Your expertise" />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-2">
-          <label className="text-sm font-medium">What&apos;s your name?</label>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
+        <div className="space-y-3">
+          <label className="font-display text-[0.9375rem] font-semibold tracking-tight">What&apos;s your name?</label>
           <div className="relative">
             <FontAwesomeIcon
               icon={faUser}
@@ -101,7 +93,7 @@ export function CreatorStep1Form({ defaultName }: Props): React.ReactElement {
                 ;(inputRef as React.MutableRefObject<HTMLInputElement | null>).current = el
               }}
               placeholder="Your full name"
-              className="pl-10"
+              className="h-12 pl-10"
             />
           </div>
           {errors.fullName && (
@@ -109,10 +101,10 @@ export function CreatorStep1Form({ defaultName }: Props): React.ReactElement {
           )}
         </div>
 
-        <div className="space-y-3">
-          <div>
-            <label className="text-sm font-medium">Primary area of expertise</label>
-            <p className="mt-0.5 text-xs text-muted-foreground">Pick the one you know best</p>
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <label className="font-display text-[0.9375rem] font-semibold tracking-tight">Primary area of expertise</label>
+            <p className="text-xs text-muted-foreground">Pick the one you know best</p>
           </div>
           <Controller
             name="primaryNiche"
@@ -132,8 +124,8 @@ export function CreatorStep1Form({ defaultName }: Props): React.ReactElement {
           />
         </div>
 
-        <div className="space-y-3">
-          <label className="text-sm font-medium">Years of experience</label>
+        <div className="space-y-4">
+          <label className="font-display text-[0.9375rem] font-semibold tracking-tight">Years of experience</label>
           <Controller
             name="experienceYears"
             control={control}

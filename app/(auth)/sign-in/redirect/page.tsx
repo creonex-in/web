@@ -24,5 +24,5 @@ export default async function SignInRedirectPage(): Promise<never> {
   }
 
   if (isCreator) redirect('/dashboard')
-  redirect('/explore')
+  redirect('/learner/dashboard')
 }
