@@ -41,10 +41,10 @@ export default async function LearnerCompletePage(): Promise<React.ReactElement>
       </div>
 
       <Link
-        href="/explore"
+        href="/learner/dashboard"
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
       >
-        Explore Creonex
+        Go to my dashboard
         <FontAwesomeIcon icon={faArrowRight} className="size-4" />
       </Link>
     </div>

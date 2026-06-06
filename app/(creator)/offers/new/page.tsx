@@ -1,5 +1,5 @@
-import { DashboardTopbar } from '@/components/layout/dashboard-topbar'
-import { OfferForm } from '@/components/creator/offer-form'
+import { DashboardTopbar } from '@/components/dashboard/shared/dashboard-topbar'
+import { OfferForm } from '@/components/dashboard/creator/offer-form'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const metadata = { title: 'New Offer — Creonex' }

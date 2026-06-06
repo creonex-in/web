@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'motion/react'
-import { DashboardTopbar } from '@/components/layout/dashboard-topbar'
+import { DashboardTopbar } from '@/components/dashboard/shared/dashboard-topbar'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Switch } from '@/components/ui/switch'

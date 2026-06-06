@@ -46,7 +46,7 @@ export function LearnerStep1Form(): React.ReactElement {
     try {
       await mutateAsync(data)
       const match = document.cookie.match(/creonex_redirect_url=([^;]+)/)
-      const redirectUrl = match ? decodeURIComponent(match[1]) : '/explore'
+      const redirectUrl = match ? decodeURIComponent(match[1]) : '/learner/dashboard'
       router.push(redirectUrl)
     } catch {
       toast.error('Something went wrong. Please try again.')

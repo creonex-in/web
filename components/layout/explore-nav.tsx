@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { buttonVariants } from '@/components/ui/button'
 import { CreatorDashboardButton } from '@/components/layout/creator-dashboard-button'
-import HeroSearch from '@/components/shared/hero-search'
+import HeroSearch from '@/components/landing/shared/hero-search'
 
 export function ExploreNav(): React.ReactElement {
   const { isSignedIn, isLoaded } = useAuth()
@@ -17,10 +17,10 @@ export function ExploreNav(): React.ReactElement {
 
   const handleSearch = (query: string) => {
     if (!query.trim()) return
-    if (pathname === '/explore') {
-      router.replace(`/explore?q=${encodeURIComponent(query.trim())}`)
+    if (pathname === '/learner/search') {
+      router.replace(`/learner/search?q=${encodeURIComponent(query.trim())}`)
     } else {
-      router.push(`/explore?q=${encodeURIComponent(query.trim())}`)
+      router.push(`/learner/search?q=${encodeURIComponent(query.trim())}`)
     }
   }
 
@@ -42,7 +42,7 @@ export function ExploreNav(): React.ReactElement {
         </div>
 
         {/* Search icon — mobile only */}
-        <Link href="/explore" className="shrink-0 sm:hidden text-muted-foreground">
+        <Link href="/learner/search" className="shrink-0 sm:hidden text-muted-foreground">
           <FontAwesomeIcon icon={faMagnifyingGlass} className="size-5" />
         </Link>
 
