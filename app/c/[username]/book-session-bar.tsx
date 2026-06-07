@@ -21,7 +21,7 @@ export function BookSessionBar({ name }: { name: string }): React.ReactElement {
         <p className="text-[11px] text-gray-400 leading-none mb-0.5">{name}</p>
         <p className="text-[13px] font-semibold text-gray-900 leading-none">1:1 Session · ₹2,500</p>
       </div>
-      <button className="bg-violet-600 text-white rounded-xl px-5 py-2.5 text-[13px] font-semibold hover:bg-violet-700 active:scale-95 transition-all flex items-center gap-2 shrink-0">
+      <button className="bg-violet-600 text-white rounded-full px-5 py-2.5 text-[13px] font-semibold hover:bg-violet-700 active:scale-95 transition-all flex items-center gap-2 shrink-0">
         <FontAwesomeIcon icon={faCalendarCheck} className="size-3.5" />
         Book Now
       </button>

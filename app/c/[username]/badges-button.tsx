@@ -63,7 +63,7 @@ export function BadgesButton(): React.ReactElement {
           <div className="flex flex-col items-center gap-1">
             <button
               onClick={() => setOpen(true)}
-              className="w-12 h-12 rounded-xl bg-gray-100 hover:bg-gray-200 active:scale-95 transition-all flex items-center justify-center text-[12px] font-bold text-gray-500 shrink-0"
+              className="w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-95 transition-all flex items-center justify-center text-[12px] font-bold text-gray-500 shrink-0"
             >
               +{remaining}
             </button>

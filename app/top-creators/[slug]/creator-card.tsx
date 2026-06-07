@@ -5,7 +5,6 @@ import { motion, useMotionTemplate, useMotionValue } from 'motion/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar, faUsers, faArrowRight, faBolt } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
 import type { Creator } from '@/types/creator'
 import { formatFollowers, formatCurrency, cn } from '@/lib/utils'
 import { getCQSBadgeVariant } from '@/lib/cqs'
@@ -22,7 +21,7 @@ interface Props {
 
 export default function CreatorCard({ creator, index, pageSize }: Props): React.ReactElement {
   const badgeVariant = getCQSBadgeVariant(creator.cqsTier)
-  
+
   // Premium Mouse-tracking Spotlight Effect
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -46,6 +45,10 @@ export default function CreatorCard({ creator, index, pageSize }: Props): React.
       onMouseMove={handleMouseMove}
       className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border/60 bg-card p-3 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_32px_64px_-16px_rgba(var(--primary-rgb),0.08)]"
     >
+      <Link href={`/c/${creator.username}`} className="absolute inset-0 z-20">
+        <span className="sr-only">View {creator.name}&apos;s profile</span>
+      </Link>
+
       {/* Interactive Background Spotlight Radial Gradient */}
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -110,7 +113,7 @@ export default function CreatorCard({ creator, index, pageSize }: Props): React.
                 {creator.niche}
               </p>
             </div>
-            
+
             {/* Minimal Price Tag Over Backdrop */}
             <div className="rounded-md bg-white/10 px-2 py-1 backdrop-blur-md border border-white/10 text-xs font-bold text-white tracking-tight">
               {formatCurrency(creator.sessionPrice)}
@@ -132,8 +135,7 @@ export default function CreatorCard({ creator, index, pageSize }: Props): React.
             </div>
           </div>
 
-          <Link
-            href={`/creator/${creator.username}`}
+          <div
             className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background px-3.5 py-1.5 text-[11px] font-semibold text-muted-foreground shadow-xs transition-all duration-300 group-hover:border-primary/40 group-hover:bg-primary group-hover:text-primary-foreground"
           >
             Open
@@ -141,7 +143,7 @@ export default function CreatorCard({ creator, index, pageSize }: Props): React.
               icon={faArrowRight}
               className="size-2.5 transition-transform duration-300 group-hover:translate-x-0.5"
             />
-          </Link>
+          </div>
         </div>
       </div>
     </motion.div>

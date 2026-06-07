@@ -1,291 +1,219 @@
 "use client";
 
-import { useRef, useState, useMemo, useCallback } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
-gsap.registerPlugin(useGSAP);
-
-// ── Types & Data ──────────────────────────────────────────────────────────────
-
-type BadgeVariant = "popular" | "soon" | "future";
-
-type MonetizeCard = {
-  id: string;
-  image: string;
-  title: string;
-  description: string;
-  badge?: string;
-  badgeVariant?: BadgeVariant;
-};
-
-const CARDS: MonetizeCard[] = [
+const WAYS_TO_EARN = [
   {
-    id: "workshops",
-    image: "/showcase/course-preview.png",
-    title: "Live Workshops",
-    description: "Host group sessions and share your knowledge at scale.",
-    badge: "Popular",
-    badgeVariant: "popular",
-  },
-  {
-    id: "sessions",
-    image: "/showcase/expert-session.png",
-    title: "1:1 Sessions",
-    description: "Personalized consultations with individual learners.",
-  },
-  {
-    id: "digital",
-    image: "/showcase/course-preview.png",
-    title: "Digital Products",
-    description: "Sell templates, guides, and resources on your own terms.",
+    id: "calls",
+    title: "1:1 Calls",
+    tagline: "Live consultation sessions",
+    description: "Offer personalized one-on-one sessions and get booked directly through your profile.",
+    features: [
+      "Calendar availability management",
+      "Google Calendar sync",
+      "Automatic meeting links",
+      "Booking confirmations & reminders",
+      "Secure escrow payments",
+      "No-show protection",
+    ],
+    image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1200&q=80",
+    color: "from-blue-500/20 to-blue-600/0",
   },
   {
     id: "courses",
-    image: "/showcase/expert-session.png",
     title: "Courses",
-    description: "Pre-recorded video courses that earn while you sleep.",
-    badge: "Coming Soon",
-    badgeVariant: "soon",
+    tagline: "Pre-recorded structured learning",
+    description: "Create and sell self-paced courses that students can access anytime.",
+    features: [
+      "Course & module builder",
+      "Video hosting & streaming",
+      "Student progress tracking",
+      "Completion certificates",
+      "Multiple lesson formats",
+      "Refund management",
+    ],
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1200&q=80",
+    color: "from-primary/30 to-primary/0",
   },
   {
-    id: "memberships",
-    image: "/showcase/course-preview.png",
-    title: "Memberships",
-    description: "Recurring revenue through gated community access.",
-    badge: "Future",
-    badgeVariant: "future",
+    id: "digital",
+    title: "Digital Products",
+    tagline: "PDFs, templates & toolkits",
+    description: "Sell downloadable resources and digital assets with instant delivery.",
+    features: [
+      "Multiple file format support",
+      "Instant downloads",
+      "Secure file access",
+      "Product quantity limits",
+      "File updates for buyers",
+      "Download protection",
+    ],
+    image: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=1200&q=80",
+    color: "from-emerald-500/20 to-emerald-600/0",
   },
   {
-    id: "collaborations",
-    image: "/showcase/expert-session.png",
+    id: "webinars",
+    title: "Webinars",
+    tagline: "Live group sessions at scale",
+    description: "Host live workshops, masterclasses, and group learning sessions.",
+    features: [
+      "Seat limits",
+      "Early-bird pricing",
+      "Live Q&A management",
+      "Session recordings",
+      "Resource sharing",
+      "Waitlist management",
+    ],
+    image: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?auto=format&fit=crop&w=1200&q=80",
+    color: "from-purple-500/20 to-purple-600/0",
+  },
+  {
+    id: "communities",
+    title: "Paid Communities",
+    tagline: "Recurring revenue from your tribe",
+    description: "Build a private membership community with recurring subscriptions.",
+    features: [
+      "Monthly & yearly subscriptions",
+      "Private community spaces",
+      "Resource library",
+      "Member engagement tools",
+      "Moderation controls",
+      "Revenue analytics",
+    ],
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+    color: "from-pink-500/20 to-pink-600/0",
+  },
+  {
+    id: "collab",
     title: "Collaborations",
-    description: "Co-create and co-sell content with fellow creators.",
-  },
+    tagline: "Automated revenue sharing",
+    description: "Co-create courses, host joint webinars, or run affiliate sales with instant split payments.",
+    features: [
+      "Revenue split management",
+      "Joint product launches",
+      "Affiliate partnerships",
+      "Referral tracking",
+      "Automated payouts",
+      "Collaboration analytics",
+    ],
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80",
+    color: "from-amber-500/20 to-amber-600/0",
+  }
 ];
 
-const BADGE_CLASS: Record<BadgeVariant, string> = {
-  popular: "bg-primary text-primary-foreground",
-  soon:    "border border-border bg-secondary text-secondary-foreground",
-  future:  "border border-border bg-muted text-muted-foreground",
-};
-
-// Visible cards per breakpoint — matches Tailwind sm/lg
-const getVisibleCount = (): number => {
-  if (typeof window === "undefined") return 3;
-  if (window.innerWidth >= 1024) return 3;
-  if (window.innerWidth >= 640) return 2;
-  return 1;
-};
-
-// ── Card ──────────────────────────────────────────────────────────────────────
-
-function CardImage({ src, alt }: { src: string; alt: string }): React.ReactElement {
-  const [errored, setErrored] = useState(false);
-
-  if (!errored) {
-    return (
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          onError={() => setErrored(true)}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className="aspect-[4/3] w-full bg-muted">
-      <div className="flex h-full flex-col gap-3 p-5">
-        <div className="h-2 w-2/3 rounded-full bg-border" />
-        <div className="h-2 w-1/2 rounded-full bg-border/60" />
-        <div className="mt-2 flex-1 rounded-lg bg-border/30" />
-      </div>
-    </div>
-  );
-}
-
-function FeatureCard({ card }: { card: MonetizeCard }): React.ReactElement {
-  return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_8px_32px_oklch(0_0_0/0.10)]">
-      <CardImage src={card.image} alt={card.title} />
-
-      <div className="flex flex-col gap-2.5 p-6 md:p-7">
-        {card.badge && card.badgeVariant && (
-          <span
-            className={cn(
-              "w-fit rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
-              BADGE_CLASS[card.badgeVariant],
-            )}
-          >
-            {card.badge}
-          </span>
-        )}
-        <h3 className="text-h4 text-foreground">{card.title}</h3>
-        <p className="text-body-sm text-muted-foreground">{card.description}</p>
-      </div>
-    </article>
-  );
-}
-
-// ── Section ───────────────────────────────────────────────────────────────────
-
 export default function MonetizeSection(): React.ReactElement {
-  const sectionRef   = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null); // overflow-hidden clip
-  const trackRef     = useRef<HTMLDivElement>(null); // translating flex row
-
-  const [visibleCount, setVisibleCount] = useState(getVisibleCount);
-  const [currentPage, setCurrentPage]   = useState(0);
-
-  // Chunk CARDS into pages based on how many cards are visible
-  const pages = useMemo<MonetizeCard[][]>(() => {
-    const result: MonetizeCard[][] = [];
-    for (let i = 0; i < CARDS.length; i += visibleCount) {
-      result.push(CARDS.slice(i, i + visibleCount));
-    }
-    return result;
-  }, [visibleCount]);
-
-  const pageCount = pages.length;
-
-  // Navigate to a specific page — translates track by exact container width
-  const goToPage = useCallback(
-    (page: number) => {
-      const container = containerRef.current;
-      const track     = trackRef.current;
-      if (!container || !track) return;
-
-      const clamped = gsap.utils.clamp(0, pageCount - 1, page);
-      gsap.to(track, {
-        x:        -clamped * container.offsetWidth,
-        duration: 0.55,
-        ease:     "power3.inOut",
-      });
-      setCurrentPage(clamped);
-    },
-    [pageCount],
-  );
-
-  // Handle responsive recalculation on resize
-  useGSAP(
-    () => {
-      const update = () => {
-        const count = getVisibleCount();
-        setVisibleCount((prev) => {
-          if (prev === count) return prev;
-          // Reset carousel position when layout changes
-          setCurrentPage(0);
-          gsap.set(trackRef.current, { x: 0 });
-          return count;
-        });
-      };
-
-      window.addEventListener("resize", update, { passive: true });
-      return () => window.removeEventListener("resize", update);
-    },
-    { scope: sectionRef },
-  );
-
-  // Grid class derived from visible count — no hardcoded logic in JSX
-  const gridClass = cn(
-    "grid w-full flex-shrink-0 gap-5",
-    visibleCount === 1 && "grid-cols-1",
-    visibleCount === 2 && "grid-cols-2",
-    visibleCount >= 3 && "grid-cols-3",
-  );
+  const [activeTabId, setActiveTabId] = useState(WAYS_TO_EARN[1].id); // Default to Courses
+  
+  const activeTab = WAYS_TO_EARN.find(t => t.id === activeTabId) || WAYS_TO_EARN[1];
 
   return (
-    <section ref={sectionRef} className="section-py border-t border-border bg-background">
-
-      {/* Header */}
-      <div className="page-container mb-12 text-center">
-        <p className="text-label mb-3 text-primary">Earn your way</p>
-        <h2 className="text-h1 text-balance text-foreground">
-          Monetize & expertise{" "}
-          <span className="text-primary">your way.</span>
-        </h2>
-        <p className="text-body mx-auto mt-4 max-w-sm text-muted-foreground">
-          Six revenue streams. One platform. You own everything.
-        </p>
-      </div>
-
-      {/* Carousel — all inside page-container */}
+    <section className="bg-background pt-12 pb-24 md:pt-16 md:pb-32 overflow-hidden">
       <div className="page-container">
-
-      {/* Clip + track */}
-        <div ref={containerRef} className="overflow-hidden">
-          <div ref={trackRef} className="flex will-change-transform">
-            {pages.map((pageCards, pageIdx) => (
-              <div key={pageIdx} className={gridClass}>
-                {pageCards.map((card) => (
-                  <FeatureCard key={card.id} card={card} />
-                ))}
-              </div>
-            ))}
+        
+        {/* Header */}
+        <div className="mx-auto max-w-4xl text-center mb-10">
+          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
+            <span className="h-2 w-2 rounded-full bg-primary mr-2"></span>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Create</span>
           </div>
+          <h2 className="text-3xl font-black tracking-tight text-foreground sm:text-4xl md:text-5xl mb-4 text-balance">
+            Everything Your Audience Needs,<br/> In One Platform
+          </h2>
+          <p className="text-base md:text-lg font-medium text-muted-foreground max-w-2xl mx-auto text-balance">
+            From your first digital download to a full-scale academy—create unlimited products, reach a wider audience, and build multiple income streams.
+          </p>
         </div>
 
-        {/* Navigation */}
-        <div className="mt-8 flex items-center justify-center gap-6">
-
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => goToPage(currentPage - 1)}
-            disabled={currentPage === 0}
-            aria-label="Previous page"
-            className="rounded-full bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
-          >
-            <FontAwesomeIcon icon={faChevronLeft} className="h-3 w-3" />
-          </Button>
-
-          {/* Dots — one per page, not per card */}
-          <div className="flex items-center gap-2" role="tablist" aria-label="Carousel pages">
-            {Array.from({ length: pageCount }, (_, i) => (
-              <Button
-                key={i}
-                variant="ghost"
-                role="tab"
-                aria-selected={i === currentPage}
-                aria-label={`Page ${i + 1} of ${pageCount}`}
-                onClick={() => goToPage(i)}
+        {/* Tabs */}
+        <div className="flex justify-center mb-10 overflow-x-auto scrollbar-hide">
+          <div className="flex space-x-2 border-b border-border/50 pb-px">
+            {WAYS_TO_EARN.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTabId(tab.id)}
                 className={cn(
-                  "h-1.5 rounded-full p-0 transition-all duration-300",
-                  i === currentPage
-                    ? "w-6 bg-primary hover:bg-primary"
-                    : "w-1.5 bg-border hover:bg-muted-foreground",
+                  "relative px-6 py-4 text-sm font-semibold transition-colors whitespace-nowrap outline-none",
+                  activeTabId === tab.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
-              />
+              >
+                {tab.title}
+                {activeTabId === tab.id && (
+                  <motion.div
+                    layoutId="activeTabIndicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full shadow-sm shadow-primary"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </button>
             ))}
           </div>
-
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => goToPage(currentPage + 1)}
-            disabled={currentPage >= pageCount - 1}
-            aria-label="Next page"
-            className="rounded-full bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
-          >
-            <FontAwesomeIcon icon={faChevronRight} className="h-3 w-3" />
-          </Button>
-
         </div>
-      </div>
 
+        {/* Massive Card */}
+        <div className="relative mx-auto max-w-6xl rounded-[2.5rem] border border-border/80 bg-card p-6 md:p-12 shadow-2xl overflow-hidden min-h-[500px]">
+          
+          {/* Bottom Ambient Glow based on active tab color */}
+          <div className={cn("absolute bottom-0 left-0 right-0 h-3/4 bg-gradient-to-t opacity-20 blur-[100px] transition-colors duration-1000", activeTab.color)} />
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="relative z-10 grid gap-12 lg:grid-cols-2 lg:gap-12 items-center h-full"
+            >
+              {/* Left Content */}
+              <div>
+                <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+                  {activeTab.title}: {activeTab.tagline}
+                </h3>
+                <p className="text-lg text-muted-foreground mb-8">
+                  {activeTab.description}
+                </p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 mb-10">
+                  {activeTab.features.map((feature, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <FontAwesomeIcon icon={faCheckCircle} className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                      <span className="text-sm font-medium text-foreground/80">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex gap-4">
+                  <Button nativeButton={false} render={<Link href="/signup" />} className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20">
+                    Start Building
+                  </Button>
+                  <Button nativeButton={false} render={<Link href="#demo" />} variant="outline" className="rounded-full px-8 font-bold border-border bg-transparent hover:bg-muted text-foreground">
+                    Learn More
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right Image Container */}
+              <div className="relative h-[350px] lg:h-[450px] w-full rounded-[2rem] overflow-hidden border border-border/50 shadow-2xl bg-black">
+                <Image
+                  src={activeTab.image}
+                  alt={activeTab.title}
+                  fill
+                  className="object-cover opacity-80 transition-transform duration-1000 hover:scale-105"
+                />
+                <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[2rem] pointer-events-none" />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+      </div>
     </section>
   );
 }

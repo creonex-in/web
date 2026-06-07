@@ -122,7 +122,7 @@ export default async function TopCreatorsPage({ params }: Props): Promise<React.
             <div className="flex flex-wrap items-end justify-between gap-4">
               <h1 className="text-4xl font-black tracking-tight sm:text-5xl">
                 Top{' '}
-                <span className="bg-linear-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                   {categoryTitle}
                 </span>{' '}
                 Creators

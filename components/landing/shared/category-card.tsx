@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,36 +14,30 @@ interface Props {
 }
 
 export default function CategoryCard({ cat }: Props): React.ReactElement {
-  const [imgErr, setImgErr] = useState(false);
-
   return (
     <Link
-      href={`/courses?category=${cat.id}`}
-      aria-label={`${cat.label} — ${cat.experts} experts, ${cat.courses} courses`}
-      className="category-card group block cursor-pointer rounded-md bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      href={`/top-creators/${cat.id}`}
+      aria-label={`${cat.label} — ${cat.experts} experts`}
+      className="group relative flex aspect-[4/5] w-full flex-col justify-end overflow-hidden rounded-2xl bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:aspect-[3/4] lg:aspect-[4/5] shadow-sm transition-all hover:shadow-xl hover:-translate-y-1"
     >
       {/* Image */}
-      <div className="relative h-72 overflow-hidden md:h-80 lg:h-96">
-        {!imgErr ? (
-          <Image
-            src={cat.imageSrc}
-            alt={cat.label}
-            fill
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            sizes="(max-width: 768px) 50vw, 25vw"
-            onError={() => setImgErr(true)}
-          />
-        ) : (
-          <div className="h-full w-full bg-muted" />
-        )}
-      </div>
+      <Image
+        src={cat.imageSrc}
+        alt={cat.label}
+        fill
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        sizes="(max-width: 768px) 50vw, 25vw"
+      />
+      
+      {/* Dark gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
 
-      {/* Text */}
-      <div className="px-4 pb-4 pt-3 md:px-5 md:pb-5 md:pt-4">
-        <h3 className="text-sm font-medium tracking-tight text-foreground md:text-base">
+      {/* Text inside image */}
+      <div className="relative z-10 p-5 md:p-6">
+        <h3 className="text-lg font-bold tracking-tight text-white md:text-xl">
           {cat.label}
         </h3>
-        <p className="mt-1 text-xs text-muted-foreground">
+        <p className="mt-1.5 text-xs font-medium text-white/80 md:text-sm">
           {cat.experts} experts · {cat.courses} courses
         </p>
       </div>

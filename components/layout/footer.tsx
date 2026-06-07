@@ -6,17 +6,25 @@ import {
   faInstagram,
   faLinkedinIn,
   faXTwitter,
+  faCcVisa,
+  faCcMastercard,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
-const PRODUCT_LINKS = [
-  { label: "Sell Sessions", href: "#sessions" },
-  { label: "Publish Courses", href: "#courses" },
-  { label: "Build Community", href: "#community" },
-  { label: "Creator Tools", href: "#creators" },
-  { label: "Pricing", href: "/signup" },
+const CREATOR_LINKS = [
+  { label: "Become a Creator", href: "/creators" },
+  { label: "Monetization", href: "/creators#monetize" },
+  { label: "Payments Ecosystem", href: "/creators#payments" },
+  { label: "Mobile App (Waitlist)", href: "/creators#app" },
+];
+
+const LEARNER_LINKS = [
+  { label: "Find Top Mentors", href: "/mentors" },
+  { label: "Browse Courses", href: "/courses" },
+  { label: "1:1 Sessions", href: "/sessions" },
+  { label: "Success Stories", href: "/#testimonials" },
 ];
 
 const COMPANY_LINKS = [
@@ -51,10 +59,10 @@ export default function Footer(): React.ReactElement {
 
       {/* ── Main content ──────────────────────────────────────────────────────── */}
       <div className="page-container pt-16 pb-10 md:pt-20">
-        <div className="grid grid-cols-1 gap-y-12 md:grid-cols-4 md:gap-x-10 lg:gap-x-16 xl:gap-x-20">
+        <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-12 xl:gap-x-16">
 
           {/* Brand column */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 sm:col-span-2 md:col-span-3 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 w-fit">
               <Image
                 src="/logo.webp"
@@ -87,18 +95,30 @@ export default function Footer(): React.ReactElement {
                 </Link>
               ))}
             </div>
-
-            {/* Copyright */}
-            <p className="text-body-sm text-muted-foreground/60 mt-auto">
-              © {new Date().getFullYear()} Creonex Inc.
-            </p>
           </div>
 
-          {/* Product links */}
+          {/* For Creators */}
           <div>
-            <p className="text-label text-muted-foreground/50 mb-5">Product</p>
+            <p className="text-label text-muted-foreground/50 mb-5 uppercase tracking-wider">For Creators</p>
             <ul className="space-y-3.5">
-              {PRODUCT_LINKS.map(({ label, href }) => (
+              {CREATOR_LINKS.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="text-body-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* For Learners */}
+          <div>
+            <p className="text-label text-muted-foreground/50 mb-5 uppercase tracking-wider">For Learners</p>
+            <ul className="space-y-3.5">
+              {LEARNER_LINKS.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
@@ -113,7 +133,7 @@ export default function Footer(): React.ReactElement {
 
           {/* Company links */}
           <div>
-            <p className="text-label text-muted-foreground/50 mb-5">Company</p>
+            <p className="text-label text-muted-foreground/50 mb-5 uppercase tracking-wider">Company</p>
             <ul className="space-y-3.5">
               {COMPANY_LINKS.map(({ label, href }) => (
                 <li key={label}>
@@ -130,7 +150,7 @@ export default function Footer(): React.ReactElement {
 
           {/* Legal links */}
           <div>
-            <p className="text-label text-muted-foreground/50 mb-5">Legal</p>
+            <p className="text-label text-muted-foreground/50 mb-5 uppercase tracking-wider">Legal</p>
             <ul className="space-y-3.5">
               {LEGAL_LINKS.map(({ label, href }) => (
                 <li key={label}>
@@ -145,6 +165,26 @@ export default function Footer(): React.ReactElement {
             </ul>
           </div>
 
+        </div>
+
+        {/* ── Bottom Bar: Copyright & Payments ─────────────────────────────────── */}
+        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
+          <p className="text-sm text-muted-foreground/60">
+            © {new Date().getFullYear()} Creonex Inc. All rights reserved.
+          </p>
+
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-medium text-muted-foreground/50">
+              100% Secure Payments
+            </span>
+            <div className="flex items-center gap-3 text-muted-foreground/40">
+              <FontAwesomeIcon icon={faCcVisa} className="h-6 w-8" />
+              <FontAwesomeIcon icon={faCcMastercard} className="h-6 w-8" />
+              <div className="flex h-6 items-center rounded border border-white/10 px-2 text-[11px] font-bold tracking-wider">
+                UPI
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

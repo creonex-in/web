@@ -6,8 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { CreatorDashboardButton } from "@/components/layout/creator-dashboard-button";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -33,7 +31,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import MobileNav from "@/components/layout/mobile-nav";
 import { cn } from "@/lib/utils";
-import { useGSAP } from "@gsap/react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -121,8 +118,6 @@ function getNavConfig(pathname: string): NavConfig {
   return pathname === "/creators" ? CREATOR_CONFIG : LEARNER_CONFIG;
 }
 
-gsap.registerPlugin(ScrollTrigger);
-
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function MegaItem({ item }: { item: NavItem }): JSX.Element {
@@ -146,23 +141,30 @@ function MegaItem({ item }: { item: NavItem }): JSX.Element {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+import { useEffect } from "react";
+
 export default function Navbar(): JSX.Element {
   const { isSignedIn, isLoaded } = useAuth();
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const config = getNavConfig(pathname);
 
-  useGSAP(() => {
+  useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
 
-    ScrollTrigger.create({
-      start: "20px top",
-      onEnter: () => header.setAttribute("data-scrolled", ""),
-      onLeaveBack: () => header.removeAttribute("data-scrolled"),
-    });
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        header.setAttribute("data-scrolled", "");
+      } else {
+        header.removeAttribute("data-scrolled");
+      }
+    };
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (

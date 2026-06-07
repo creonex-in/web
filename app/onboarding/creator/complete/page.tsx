@@ -1,8 +1,6 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -19,10 +17,6 @@ import { Button } from '@/components/ui/button'
 
 export default function CreatorCompletePage(): React.ReactElement {
   const router = useRouter()
-  const circleRef = useRef<SVGCircleElement>(null)
-  const headlineRef = useRef<HTMLHeadingElement>(null)
-  const urlBoxRef = useRef<HTMLDivElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
   const [username, setUsername] = useState('')
   const [copied, setCopied] = useState(false)
 
@@ -38,28 +32,6 @@ export default function CreatorCompletePage(): React.ReactElement {
     }
   }, [])
 
-  useGSAP(() => {
-    const tl = gsap.timeline()
-
-    if (circleRef.current) {
-      tl.fromTo(
-        circleRef.current,
-        { strokeDashoffset: 125.66 },
-        { strokeDashoffset: 0, duration: 0.8, ease: 'power2.out' },
-      )
-    }
-    if (headlineRef.current) {
-      tl.fromTo(headlineRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, clearProps: 'all' }, '-=0.1')
-    }
-    if (urlBoxRef.current) {
-      tl.fromTo(urlBoxRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, clearProps: 'all' }, '-=0.05')
-    }
-    tl.fromTo('.action-card', { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.3, clearProps: 'all' }, '-=0.05')
-    if (ctaRef.current) {
-      tl.fromTo(ctaRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, clearProps: 'all' }, '-=0.05')
-    }
-  }, [])
-
   const handleCopy = async () => {
     await navigator.clipboard.writeText(`https://creonex.in/c/${username}`)
     setCopied(true)
@@ -72,7 +44,6 @@ export default function CreatorCompletePage(): React.ReactElement {
       <div className="relative mx-auto flex size-16 items-center justify-center">
         <svg viewBox="0 0 64 64" fill="none" className="absolute inset-0 size-full -rotate-90">
           <circle
-            ref={circleRef}
             cx="32"
             cy="32"
             r="20"
@@ -80,19 +51,19 @@ export default function CreatorCompletePage(): React.ReactElement {
             strokeWidth="3"
             className="text-primary"
             strokeDasharray="125.66"
-            strokeDashoffset="125.66"
+            strokeDashoffset="0"
             strokeLinecap="round"
           />
         </svg>
         <FontAwesomeIcon icon={faCheck} className="size-6 text-primary" />
       </div>
 
-      <h1 ref={headlineRef} className="text-center font-display text-2xl font-bold tracking-tight">
+      <h1 className="text-center font-display text-2xl font-bold tracking-tight">
         Your profile is live! 🚀
       </h1>
 
       {/* Profile URL */}
-      <div ref={urlBoxRef} className="flex items-center justify-between gap-3 rounded-xl bg-muted px-4 py-3">
+      <div className="flex items-center justify-between gap-3 rounded-xl bg-muted px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           <FontAwesomeIcon icon={faLink} className="size-4 shrink-0 text-muted-foreground" />
           <span className="truncate font-mono text-sm">creonex.in/c/{username}</span>
@@ -131,7 +102,7 @@ export default function CreatorCompletePage(): React.ReactElement {
         </div>
       </div>
 
-      <div ref={ctaRef}>
+      <div>
         <Button className="w-full gap-2" onClick={() => router.push('/dashboard')}>
           <FontAwesomeIcon icon={faRocket} className="size-4" />
           Go to my creator dashboard

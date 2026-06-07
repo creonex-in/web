@@ -202,13 +202,13 @@ export default function CreatorProfilePage(): React.ReactElement {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <button className="bg-[#111] hover:bg-black text-white px-6 py-2 rounded-[10px] text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center">
+                  <button className="bg-[#111] hover:bg-black text-white px-6 py-2 rounded-full text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center">
                     Follow
                   </button>
-                  <button className="bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-6 py-2 rounded-[10px] text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center">
-                    Get in touch
+                  <button className="bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-6 py-2 rounded-full text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center">
+                    Book Session
                   </button>
-                  <button className="sm:hidden flex items-center justify-center w-9 h-9 rounded-[10px] bg-gray-50 border border-gray-200 text-gray-500 transition-colors">
+                  <button className="sm:hidden flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 border border-gray-200 text-gray-500 transition-colors">
                     <FontAwesomeIcon icon={faShareNodes} className="size-4" />
                   </button>
                 </div>
@@ -357,7 +357,7 @@ export default function CreatorProfilePage(): React.ReactElement {
                     <h3 className="text-[18px] font-extrabold mb-2 relative z-10">Book a 1:1 Session</h3>
                     <p className="text-[13px] text-gray-400 font-medium mb-6 relative z-10 leading-snug">Get a personalised action plan to land your dream design role.</p>
                   </div>
-                  <button className="w-full bg-white text-black hover:bg-gray-100 rounded-[10px] px-4 py-3 text-[13px] font-extrabold transition-all active:scale-95 flex items-center justify-center gap-2 relative z-10">
+                  <button className="w-full bg-white text-black hover:bg-gray-100 rounded-full px-4 py-3 text-[13px] font-extrabold transition-all active:scale-95 flex items-center justify-center gap-2 relative z-10">
                     <FontAwesomeIcon icon={faCalendarCheck} className="size-3.5" />
                     Book Session — ₹2,500
                   </button>

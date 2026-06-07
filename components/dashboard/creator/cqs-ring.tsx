@@ -1,7 +1,5 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
 import { getCQSTier, getCQSColor } from '@/lib/cqs'
 import { cn } from '@/lib/utils'
 
@@ -12,22 +10,12 @@ interface CQSRingProps {
 }
 
 export function CQSRing({ score, size = 96, showLabel = true }: CQSRingProps): React.ReactElement {
-  const circleRef = useRef<SVGCircleElement>(null)
   const tier = getCQSTier(score)
   const colorClass = getCQSColor(tier)
 
   const radius = (size - 12) / 2
   const circumference = 2 * Math.PI * radius
   const targetDash = (score / 100) * circumference
-
-  useEffect(() => {
-    if (!circleRef.current) return
-    gsap.fromTo(
-      circleRef.current,
-      { strokeDashoffset: circumference },
-      { strokeDashoffset: circumference - targetDash, duration: 1.4, ease: 'power3.out', delay: 0.3 }
-    )
-  }, [score, circumference, targetDash])
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -42,7 +30,6 @@ export function CQSRing({ score, size = 96, showLabel = true }: CQSRingProps): R
             strokeWidth={6}
           />
           <circle
-            ref={circleRef}
             cx={size / 2}
             cy={size / 2}
             r={radius}
@@ -51,7 +38,10 @@ export function CQSRing({ score, size = 96, showLabel = true }: CQSRingProps): R
             strokeWidth={6}
             strokeLinecap="round"
             strokeDasharray={circumference}
-            strokeDashoffset={circumference}
+            style={{ 
+              strokeDashoffset: circumference - targetDash,
+              transition: "stroke-dashoffset 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s"
+            }}
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">

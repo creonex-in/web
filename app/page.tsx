@@ -5,11 +5,10 @@ import CategoryGrid from "@/components/landing/user/category-grid";
 import LearningShowcase from "@/components/landing/user/learning-showcase";
 import HowItWorks from "@/components/landing/user/how-it-works";
 import CreatorButton from "@/components/landing/user/creator-button";
-import CinematicGallery from "@/components/landing/shared/creators-gallery";
-import UpcomingSessions from "@/components/landing/user/upcoming-sessions";
-import PaymentsTrust from "@/components/landing/user/payments-trust";
+import FeaturedCreators from "@/components/landing/user/featured-creators";
 import Testimonials from "@/components/landing/user/testimonials";
 import Faqs from "@/components/landing/shared/faqs";
+import FinalCta from "@/components/landing/user/final-cta";
 
 export const metadata: Metadata = {
   title: "Creonex — Learn from India's Best Creators",
@@ -22,15 +21,14 @@ export default function LearnerLandingPage(): React.ReactElement {
     <MarketingShell>
       <main>
         <UserHero />
+        <FeaturedCreators />
         <CategoryGrid />
-        <CinematicGallery showViewProfile />
         <LearningShowcase />
         <HowItWorks />
-        <UpcomingSessions />
-        <PaymentsTrust />
         <CreatorButton />
         <Testimonials />
         <Faqs />
+        <FinalCta />
       </main>
     </MarketingShell>
   );

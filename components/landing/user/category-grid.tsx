@@ -1,95 +1,53 @@
-"use client";
-
-import { useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 import CategoryCard, { type CategoryCardData } from "@/components/landing/shared/category-card";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const CATEGORIES: CategoryCardData[] = [
-  { id: "design",  label: "UI/UX Design",   experts: 240, courses: 38, imageSrc: "/categories/category-1.png"  },
-  { id: "coding",  label: "Coding",          experts: 420, courses: 86, imageSrc: "/categories/category-2.jpeg" },
-  { id: "finance", label: "Finance",         experts: 310, courses: 52, imageSrc: "/categories/category-3.jpg"  },
-  { id: "career",  label: "Career Growth",   experts: 290, courses: 44, imageSrc: "/categories/category-4.webp" },
-  { id: "cat",     label: "CAT Prep",        experts: 180, courses: 24, imageSrc: "/categories/category-1.png"  },
-  { id: "resume",  label: "Resume Review",   experts: 150, courses: 18, imageSrc: "/categories/category-1.png"  },
-  { id: "brand",   label: "Personal Brand",  experts: 210, courses: 31, imageSrc: "/categories/category-1.png"  },
+  { id: "design", label: "UI/UX Design", experts: 240, courses: 38, imageSrc: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" },
+  { id: "coding", label: "Coding", experts: 420, courses: 86, imageSrc: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?auto=format&fit=crop&w=800&q=80" },
+  { id: "finance", label: "Finance", experts: 310, courses: 52, imageSrc: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" },
+  { id: "career", label: "Career Growth", experts: 290, courses: 44, imageSrc: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" },
 ];
-
-const VISIBLE_COUNT = 4;
 
 // ─── Section ──────────────────────────────────────────────────────────────────
 
 export default function CategoryGrid(): React.ReactElement {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      gsap.fromTo(
-        ".category-card",
-        { opacity: 0, y: 28 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.08,
-          ease: "power4.out",
-          clearProps: "all",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 78%",
-            once: true,
-          },
-        },
-      );
-    },
-    { scope: sectionRef },
-  );
-
   return (
-    <section ref={sectionRef} className="section-py bg-background">
+    <section className="py-16 md:py-24 bg-background">
       <div className="page-container">
 
         {/* Header */}
-        <div className="mx-auto mb-12 max-w-lg text-center">
-          <p className="text-label mb-3 text-primary">Categories</p>
-          <h2 className="text-h1 text-balance text-foreground">
-            1,800+ experts.{" "}
-            <span className="text-primary">One platform.</span>
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <p className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">Discover</p>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground text-balance">
+            Master any skill. <br />
+            <span className="text-muted-foreground">Guided by the best.</span>
           </h2>
-          <p className="text-body mx-auto mt-4 max-w-sm text-muted-foreground">
-            Find your mentor in under 60 seconds.
+          <p className="mx-auto mt-5 max-w-lg text-lg text-muted-foreground">
+            Find the perfect mentor to accelerate your career in under 60 seconds.
           </p>
         </div>
 
         {/* Grid — 2 cols mobile, 4 cols desktop */}
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-          {CATEGORIES.slice(0, VISIBLE_COUNT).map((cat) => (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          {CATEGORIES.map((cat) => (
             <CategoryCard key={cat.id} cat={cat} />
           ))}
         </div>
 
         {/* CTA */}
-        <div className="mt-10 flex justify-center">
-          <Button
-            size="lg"
-            nativeButton={false}
-            render={<Link href="/learner/courses" />}
-            className="cursor-pointer rounded-full px-8 font-semibold"
-          >
-            Explore all categories
-            <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
+        <div className="mt-12 flex justify-center">
+          <Button size="lg" className="h-14 rounded-full px-8 text-base font-bold shadow-lg transition-transform hover:-translate-y-0.5">
+            <Link href="/top-creators">
+              Explore all categories
+              <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
-
       </div>
     </section>
   );
