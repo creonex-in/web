@@ -1,7 +1,6 @@
 export const endpoints = {
   users: {
     me: () => '/api/v1/users/me',
-    addCreatorRole: () => '/api/v1/users/add-creator-role',
     creatorProfile: () => '/api/v1/users/me/creator-profile',
     learnerProfile: () => '/api/v1/users/me/learner-profile',
   },
