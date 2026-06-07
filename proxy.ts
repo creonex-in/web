@@ -6,7 +6,6 @@ const isPublicRoute = createRouteMatcher([
   '/creators',
   '/sign-in(.*)',
   '/sign-up(.*)',
-  '/c/(.*)',
   '/top-creators/(.*)' 
 ])
 
@@ -31,6 +30,11 @@ const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
   if (isPublicRoute(req)) return NextResponse.next()
+
+  // If it's NOT a known protected route, assume it's a public dynamic route like /[username]
+  if (!isCreatorRoute(req) && !isLearnerRoute(req) && !isOnboardingRoute(req)) {
+    return NextResponse.next()
+  }
 
   const { userId, sessionClaims } = await auth()
 

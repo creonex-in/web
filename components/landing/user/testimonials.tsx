@@ -5,7 +5,8 @@ export interface Testimonial {
   name: string;
   niche: string;
   quote: string;
-  avatarSrc: string;
+  avatarSrc?: string;
+  initials?: string;
 }
 
 const DEFAULT_USER_TESTIMONIALS: Testimonial[] = [
@@ -76,15 +77,21 @@ export default function UserTestimonials({
         <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
           
           {testimonials.map((t) => (
-            <div key={t.id} className="mb-6 break-inside-avoid rounded-2xl bg-card border border-border/50 p-8 shadow-sm">
+            <div key={t.id} className="mb-6 break-inside-avoid rounded-2xl bg-card border border-border/50 p-8 shadow-sm transition-all hover:shadow-md">
               <p className="text-[15px] leading-relaxed text-muted-foreground">
                 {t.quote}
               </p>
               
               <div className="mt-8 flex items-center gap-4">
-                <div className="relative h-10 w-10 overflow-hidden rounded-full bg-muted border border-border/50">
-                  <Image src={t.avatarSrc} alt={t.name} fill className="object-cover" />
-                </div>
+                {t.avatarSrc ? (
+                  <div className="relative h-10 w-10 overflow-hidden rounded-full bg-muted border border-border/50">
+                    <Image src={t.avatarSrc} alt={t.name} fill className="object-cover" />
+                  </div>
+                ) : (
+                  <div className="h-10 w-10 overflow-hidden rounded-full bg-foreground flex items-center justify-center text-[12px] font-bold text-background shrink-0">
+                    {t.initials || t.name.substring(0, 2).toUpperCase()}
+                  </div>
+                )}
                 <div>
                   <p className="text-sm font-semibold text-foreground">{t.name}</p>
                   <p className="text-[13px] text-muted-foreground">{t.niche}</p>

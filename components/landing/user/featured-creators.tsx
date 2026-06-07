@@ -70,7 +70,7 @@ export default function FeaturedCreators(): React.ReactElement {
         {marqueeItems.map((creator, index) => (
           <Link
             key={`${creator.id}-${index}`}
-            href={`/c/${creator.id}`}
+            href={`/${creator.id}`}
             className="group relative flex aspect-[4/5] w-[280px] sm:w-[340px] md:w-[380px] shrink-0 flex-col justify-end overflow-hidden rounded-[24px] bg-muted shadow-lg transition-transform duration-500 hover:-translate-y-2 hover:shadow-2xl"
           >
             <Image

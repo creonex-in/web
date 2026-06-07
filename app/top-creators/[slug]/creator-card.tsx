@@ -45,7 +45,7 @@ export default function CreatorCard({ creator, index, pageSize }: Props): React.
       onMouseMove={handleMouseMove}
       className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border/60 bg-card p-3 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_32px_64px_-16px_rgba(var(--primary-rgb),0.08)]"
     >
-      <Link href={`/c/${creator.username}`} className="absolute inset-0 z-20">
+      <Link href={`/${creator.username}`} className="absolute inset-0 z-20">
         <span className="sr-only">View {creator.name}&apos;s profile</span>
       </Link>
 

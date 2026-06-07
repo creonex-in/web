@@ -33,7 +33,7 @@ export default function CreatorCompletePage(): React.ReactElement {
   }, [])
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(`https://creonex.in/c/${username}`)
+    await navigator.clipboard.writeText(`https://creonex.in/${username}`)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -66,7 +66,7 @@ export default function CreatorCompletePage(): React.ReactElement {
       <div className="flex items-center justify-between gap-3 rounded-xl bg-muted px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           <FontAwesomeIcon icon={faLink} className="size-4 shrink-0 text-muted-foreground" />
-          <span className="truncate font-mono text-sm">creonex.in/c/{username}</span>
+          <span className="truncate font-mono text-sm">creonex.in/{username}</span>
         </div>
         <button
           type="button"

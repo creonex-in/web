@@ -39,7 +39,7 @@ function BadgeTile({ name, icon, gradient, size = 'sm' }: {
         <FontAwesomeIcon icon={icon} className={cn('text-white', size === 'sm' ? 'size-[18px]' : 'size-6')} />
       </div>
       <span className={cn(
-        'font-semibold text-gray-400 text-center leading-tight truncate',
+        'font-semibold text-muted-foreground text-center leading-tight truncate',
         size === 'sm' ? 'text-[8.5px] w-12' : 'text-[10px] w-16',
       )}>
         {name}
@@ -63,11 +63,11 @@ export function BadgesButton(): React.ReactElement {
           <div className="flex flex-col items-center gap-1">
             <button
               onClick={() => setOpen(true)}
-              className="w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-95 transition-all flex items-center justify-center text-[12px] font-bold text-gray-500 shrink-0"
+              className="w-12 h-12 rounded-full bg-muted hover:bg-muted/80 active:scale-95 transition-all flex items-center justify-center text-[12px] font-bold text-muted-foreground shrink-0"
             >
               +{remaining}
             </button>
-            <span className="text-[8.5px] text-gray-400 font-semibold">more</span>
+            <span className="text-[8.5px] text-muted-foreground font-semibold">more</span>
           </div>
         )}
       </div>

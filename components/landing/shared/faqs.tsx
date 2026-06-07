@@ -35,7 +35,7 @@ const FAQS: Faq[] = [
   },
 ];
 
-export default function Faqs(): React.ReactElement {
+export default function Faqs({ items = FAQS }: { items?: Faq[] } = {}): React.ReactElement {
   return (
     <section className="bg-background section-py-sm">
       <div className="page-container">
@@ -58,7 +58,7 @@ export default function Faqs(): React.ReactElement {
               {/* Right Column: Accordions */}
               <div className="lg:col-span-8">
                 <Accordion multiple={false} className="flex w-full flex-col gap-4">
-                  {FAQS.map((faq) => (
+                  {items.map((faq) => (
                     <AccordionItem
                       key={faq.question}
                       value={faq.question}
