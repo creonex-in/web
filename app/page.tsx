@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import MarketingShell from "@/components/layout/marketing-shell";
-import UserHero from "@/components/sections/user/user-hero";
-import CategoryGrid from "@/components/sections/user/category-grid";
-import LearningShowcase from "@/components/sections/user/learning-showcase";
-import HowItWorks from "@/components/sections/user/how-it-works";
-import CreatorButton from "@/components/sections/user/creator-button";
-import CinematicGallery from "@/components/sections/shared/creators-gallery";
-import UpcomingSessions from "@/components/sections/user/upcoming-sessions";
-import PaymentsTrust from "@/components/sections/user/payments-trust";
-import Testimonials from "@/components/sections/user/testimonials";
-import Faqs from "@/components/sections/shared/faqs";
+import UserHero from "@/components/landing/user/user-hero";
+import CategoryGrid from "@/components/landing/user/category-grid";
+import LearningShowcase from "@/components/landing/user/learning-showcase";
+import HowItWorks from "@/components/landing/user/how-it-works";
+import CreatorButton from "@/components/landing/user/creator-button";
+import CinematicGallery from "@/components/landing/shared/creators-gallery";
+import UpcomingSessions from "@/components/landing/user/upcoming-sessions";
+import PaymentsTrust from "@/components/landing/user/payments-trust";
+import Testimonials from "@/components/landing/user/testimonials";
+import Faqs from "@/components/landing/shared/faqs";
 
 export const metadata: Metadata = {
   title: "Creonex — Learn from India's Best Creators",

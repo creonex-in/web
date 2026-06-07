@@ -23,7 +23,7 @@ export function NicheGrid({ options, selected, onChange, maxSelect }: Props): Re
 
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {options.map((opt) => {
           const isSelected = selected.includes(opt.value)
           const isDisabled = !isSelected && selected.length >= maxSelect
@@ -35,11 +35,11 @@ export function NicheGrid({ options, selected, onChange, maxSelect }: Props): Re
               onClick={() => toggle(opt.value)}
               disabled={isDisabled}
               className={cn(
-                'relative flex items-center gap-2.5 rounded-lg border p-3 text-left transition-all duration-150',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                'relative flex min-h-[3.5rem] items-center gap-2.5 rounded-xl border px-3.5 py-3 text-left transition-all duration-150',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isSelected
                   ? 'border-primary bg-primary/5 text-primary'
-                  : 'border-border bg-card text-foreground hover:border-primary/50',
+                  : 'border-border bg-card text-foreground hover:border-primary/50 hover:bg-muted/40',
                 isDisabled && 'cursor-not-allowed opacity-40',
               )}
             >
@@ -47,7 +47,7 @@ export function NicheGrid({ options, selected, onChange, maxSelect }: Props): Re
                 icon={opt.icon}
                 className={cn('size-4 shrink-0', isSelected ? 'text-primary' : 'text-muted-foreground')}
               />
-              <span className="text-sm font-medium leading-tight">{opt.label}</span>
+              <span className="text-sm font-medium leading-snug">{opt.label}</span>
               {isSelected && (
                 <FontAwesomeIcon
                   icon={faCircleCheck}

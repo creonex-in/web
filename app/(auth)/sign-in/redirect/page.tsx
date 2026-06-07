@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 
-export default async function SignInRedirectPage(): Promise<never> {
+export default async function SignInRedirectPage() {
   const { sessionClaims } = await auth()
 
   const meta = (sessionClaims as Record<string, unknown>)
@@ -24,5 +24,7 @@ export default async function SignInRedirectPage(): Promise<never> {
   }
 
   if (isCreator) redirect('/dashboard')
-  redirect('/explore')
+  redirect('/learner/dashboard')
+
+  return null
 }

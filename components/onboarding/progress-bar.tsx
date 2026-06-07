@@ -1,8 +1,3 @@
-'use client'
-import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-
 interface Props {
   currentStep: number
   totalSteps: number
@@ -14,32 +9,22 @@ export function OnboardingProgressBar({
   totalSteps,
   label,
 }: Props): React.ReactElement {
-  const fillRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(() => {
-    if (!fillRef.current) return
-    gsap.to(fillRef.current, {
-      width: `${(currentStep / totalSteps) * 100}%`,
-      duration: 0.55,
-      ease: 'power2.out',
-    })
-  }, [currentStep, totalSteps])
+  const pct = Math.round((currentStep / totalSteps) * 100)
 
   return (
-    <div className="mb-6 space-y-2">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+        <span className="text-xs font-semibold uppercase tracking-wide text-foreground/70">
           {label}
         </span>
-        <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-          {currentStep} / {totalSteps}
+        <span className="text-xs font-medium tabular-nums text-muted-foreground">
+          Step {currentStep} of {totalSteps}
         </span>
       </div>
-      <div className="h-1 w-full overflow-hidden rounded-full bg-border">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
         <div
-          ref={fillRef}
-          className="h-full rounded-full bg-primary"
-          style={{ width: '0%' }}
+          className="h-full rounded-full bg-primary transition-[width] duration-500 ease-out"
+          style={{ width: `${pct}%` }}
         />
       </div>
     </div>
