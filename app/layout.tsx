@@ -5,6 +5,7 @@ import { ClerkProvider } from "@/providers/clerk-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { Toaster } from "sonner";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -50,9 +51,12 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <QueryProvider>
-            {children}
-            <Toaster richColors position="top-center" />
-          </QueryProvider>
+              {children}
+              <Toaster richColors position="top-center" />
+              <div className="fixed bottom-5 left-5 z-50">
+                <ThemeToggle />
+              </div>
+            </QueryProvider>
           </ThemeProvider>
         </ClerkProvider>
       </body>

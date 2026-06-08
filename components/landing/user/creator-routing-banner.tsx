@@ -1,33 +1,37 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@/components/ui/button";
+import {
+  faChalkboardUser,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function CreatorRoutingBanner(): React.ReactElement {
   return (
-    <div className="w-full bg-muted/40 border-b border-border/40 py-3 relative z-30 select-none">
-      <div className="page-container flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-        <div className="flex items-center gap-2.5">
-          <div className="hidden sm:flex h-8 w-8 items-center justify-center rounded-lg bg-foreground/5 text-foreground shrink-0">
-            <FontAwesomeIcon icon={faGraduationCap} className="h-4 w-4" />
+    <div className="w-full border-b border-primary/15 bg-primary/5">
+      <div className="page-container flex items-center justify-between gap-4 py-2.5">
+
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/15">
+            <FontAwesomeIcon icon={faChalkboardUser} className="size-3.5 text-primary" />
           </div>
-          <div>
-            <p className="text-sm font-semibold text-foreground">
-              Are you a creator? <span className="text-muted-foreground font-normal">Monetize your expertise, host 1:1 sessions, and teach on Creonex.</span>
-            </p>
-          </div>
+          <p className="truncate text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">Want to teach and earn on Creonex.</span>
+          </p>
         </div>
-        
-        <Link href="/creators">
-          <Button 
-            size="sm" 
-            variant="outline"
-            className="rounded-full bg-black text-white hover:bg-zinc-800 hover:text-white px-5 text-xs font-bold transition-all duration-300 ease-in-out hover:-translate-y-0.5 shadow-sm shrink-0"
-          >
-            Teach on Creonex
-            <FontAwesomeIcon icon={faArrowRight} className="ml-1.5 h-3 w-3" />
-          </Button>
+
+        <Link
+          href="/creators"
+          className={cn(
+            buttonVariants({ variant: "outline", size: "sm" }),
+            "shrink-0 border-primary/40 text-primary transition-colors duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground",
+          )}
+        >
+          Start Teaching
+          <FontAwesomeIcon icon={faArrowRight} className="ml-1.5 size-3" />
         </Link>
+
       </div>
     </div>
   );

@@ -207,6 +207,7 @@ export default function Navbar(): JSX.Element {
   const { isSignedIn, isLoaded } = useAuth();
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
+  const prevScrollY = useRef(0);
   const config = getNavConfig(pathname);
 
   useEffect(() => {
@@ -214,15 +215,28 @@ export default function Navbar(): JSX.Element {
     if (!header) return;
 
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      const currentY = window.scrollY;
+      const isScrollingDown = currentY > prevScrollY.current;
+
+      if (currentY > 20) {
         header.setAttribute("data-scrolled", "");
       } else {
         header.removeAttribute("data-scrolled");
       }
+
+      if (currentY < 80) {
+        header.removeAttribute("data-hidden");
+      } else if (isScrollingDown) {
+        header.setAttribute("data-hidden", "");
+      } else {
+        header.removeAttribute("data-hidden");
+      }
+
+      prevScrollY.current = currentY;
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -230,7 +244,7 @@ export default function Navbar(): JSX.Element {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-50 w-full border-b border-transparent bg-transparent transition-all duration-300 data-[scrolled]:border-border data-[scrolled]:bg-background/80 data-[scrolled]:shadow-sm data-[scrolled]:backdrop-blur-md"
+      className="sticky top-0 z-50 w-full border-b border-transparent bg-transparent transition-all duration-300 data-[scrolled]:border-border data-[scrolled]:bg-background/80 data-[scrolled]:shadow-sm data-[scrolled]:backdrop-blur-md data-[hidden]:-translate-y-full"
     >
       <nav className="page-container grid h-20 grid-cols-2 items-center gap-6 lg:grid-cols-3">
 

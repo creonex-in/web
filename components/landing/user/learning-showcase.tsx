@@ -7,9 +7,12 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
-  faPlay,
   faCalendarCheck,
-  faFileLines,
+  faVideo,
+  faGraduationCap,
+  faBookOpen,
+  faUsers,
+  faUserTie,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -35,58 +38,112 @@ type Feature = {
 
 const FEATURES: Feature[] = [
   {
-    id: "courses",
-    label: "Pre-recorded Classes",
-    icon: faPlay,
-    title: "Learn at your own pace",
+    id: "sessions",
+    label: "1:1 Expert Sessions",
+    icon: faCalendarCheck,
+    title: "Get personalized guidance from experts",
     description:
-      "Access expert-created pre-recorded classes designed to help you master skills with structured lessons — available on your schedule, forever.",
+      "Book private one-on-one sessions with creators, mentors, and industry experts for focused guidance tailored exactly to where you are in your journey.",
     benefits: [
-      "Lifetime access to courses",
-      "Structured learning paths",
-      "Learn anytime, anywhere",
-      "Expert-created content",
+      "Private sessions with verified creators",
+      "Personalized, focused attention",
+      "Doubt-solving and career advice",
+      "Book in minutes, meet via video",
     ],
-    tags: ["Self-paced", "Video lessons", "Certificates"],
+    tags: ["30 or 60 min", "Book instantly", "Video call"],
+    imageSrc: "/showcase/expert-session.png",
+    imageAlt: "Creonex expert booking interface with calendar and creator profile",
+    reversed: false,
+  },
+  {
+    id: "workshops",
+    label: "Live Workshops & Webinars",
+    icon: faVideo,
+    title: "Learn live from practitioners",
+    description:
+      "Join interactive live events where you can ask questions in real time and learn directly from experts who are actively working in the field.",
+    benefits: [
+      "Real-time Q&A with the creator",
+      "Interactive, not just a recording",
+      "Learn from active practitioners",
+      "Recordings included post-event",
+    ],
+    tags: ["Live sessions", "Real-time Q&A", "Recordings"],
+    imageSrc: "/showcase/expert-session.png",
+    imageAlt: "Creonex live workshop interface with attendees and Q&A panel",
+    reversed: true,
+  },
+  {
+    id: "courses",
+    label: "Structured Online Courses",
+    icon: faGraduationCap,
+    title: "Master skills at your own pace",
+    description:
+      "Work through step-by-step courses designed by verified creators — structured from beginner to advanced, available on your schedule, forever.",
+    benefits: [
+      "Step-by-step structured curriculum",
+      "Lifetime access after purchase",
+      "Verified creator content",
+      "Learn anytime, on any device",
+    ],
+    tags: ["Self-paced", "Lifetime access", "Certificates"],
     imageSrc: "/showcase/course-preview.png",
     imageAlt: "Creonex course dashboard showing video player and lesson list",
     reversed: false,
   },
   {
-    id: "sessions",
-    label: "1:1 Expert Sessions",
-    icon: faCalendarCheck,
-    title: "Get personal guidance from experts",
+    id: "resources",
+    label: "Digital Resources & Toolkits",
+    icon: faBookOpen,
+    title: "Practical tools that accelerate learning",
     description:
-      "Book private sessions with creators to solve doubts, get mentorship, and accelerate your growth with focused, personalized attention.",
+      "Access templates, guides, e-books, frameworks, and ready-to-use resources built by creators to help you skip the basics and get to results faster.",
     benefits: [
-      "Direct expert interaction",
-      "Personalized guidance",
-      "Doubt solving sessions",
-      "Career and skill mentorship",
+      "Templates & frameworks ready to use",
+      "E-books and in-depth guides",
+      "Creator-built practical toolkits",
+      "Download and keep forever",
     ],
-    tags: ["30 or 60 min", "Book instantly", "Via video call"],
-    imageSrc: "/showcase/expert-session.png",
-    imageAlt: "Creonex expert booking interface with calendar and profile",
+    tags: ["Templates", "E-books", "Frameworks"],
+    imageSrc: "/showcase/resources-library.png",
+    imageAlt: "Creonex resource library with downloadable files and categories",
     reversed: true,
   },
   {
-    id: "resources",
-    label: "PDFs & Documentation",
-    icon: faFileLines,
-    title: "Access curated learning resources",
+    id: "communities",
+    label: "Exclusive Learning Communities",
+    icon: faUsers,
+    title: "Grow together with like-minded learners",
     description:
-      "Download premium notes, guides, templates, and documentation created by industry experts to support your learning at every step.",
+      "Connect with peers inside niche communities, participate in discussions, share progress, and learn collectively with others on the same path.",
     benefits: [
-      "Topic-wise resources",
-      "Expert-written guides",
-      "Templates & documents",
-      "Download anytime",
+      "Niche communities around your goal",
+      "Active discussions and peer support",
+      "Moderated by expert creators",
+      "Stay accountable and motivated",
     ],
-    tags: ["PDFs", "Templates", "Guides"],
+    tags: ["Niche groups", "Discussions", "Peer support"],
     imageSrc: "/showcase/resources-library.png",
-    imageAlt: "Creonex resource library with downloadable files and categories",
+    imageAlt: "Creonex community feed with discussions and member profiles",
     reversed: false,
+  },
+  {
+    id: "mentorship",
+    label: "Mentorship & Coaching Programs",
+    icon: faUserTie,
+    title: "Long-term support from experienced mentors",
+    description:
+      "Get ongoing guidance, a personalized learning roadmap, and accountability from experienced mentors who help you reach your goals consistently.",
+    benefits: [
+      "Personalized roadmaps for your goals",
+      "Regular check-ins and accountability",
+      "Long-term mentor relationship",
+      "Structured coaching programs",
+    ],
+    tags: ["Long-term", "1-on-1 coaching", "Roadmaps"],
+    imageSrc: "/showcase/course-preview.png",
+    imageAlt: "Creonex mentorship program dashboard with progress tracking",
+    reversed: true,
   },
 ];
 
@@ -197,14 +254,15 @@ export default function LearningShowcase(): React.ReactElement {
       <div className="page-container">
 
         <div className="ls-header mx-auto mb-20 max-w-2xl text-center md:mb-28">
-          <p className="text-label text-primary mb-4">Learning Resources</p>
+          <p className="text-label text-primary mb-4">Multiple Ways to Learn</p>
           <h2 className="text-h1 text-balance text-foreground">
-            Everything you need to{" "}
-            <span className="text-primary">master your skills</span>
+            Learn Your Way{" "}
+            <span className="text-primary">on Creonex</span>
           </h2>
           <p className="text-body mx-auto mt-5 max-w-lg text-balance text-muted-foreground">
-            Learn from expert creators through courses, personalized sessions, and
-            curated resources built for your growth.
+            Whether you want to gain a new skill, accelerate your career, or learn
+            directly from creators — Creonex gives you multiple ways to learn in
+            one place.
           </p>
         </div>
 
@@ -221,7 +279,7 @@ export default function LearningShowcase(): React.ReactElement {
             render={<Link href="/learner/courses" />}
             className="rounded-full px-8"
           >
-            Browse all courses
+            Explore all learning paths
             <FontAwesomeIcon icon={faArrowRight} className="ml-1 h-3.5 w-3.5" />
           </Button>
         </div>
