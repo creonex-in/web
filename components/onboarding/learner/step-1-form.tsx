@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useAuth } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faMagnifyingGlass,
+  faArrowRight,
   faSpinner,
   faUser,
 } from '@fortawesome/free-solid-svg-icons'
@@ -19,7 +19,7 @@ import { useSaveLearnerStep1 } from '@/hooks/use-onboarding'
 import { cn } from '@/lib/utils'
 
 export function LearnerStep1Form(): React.ReactElement {
-  const router = useRouter()
+  const { getToken } = useAuth()
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedGoal, setSelectedGoal] = useState<string | null>(null)
   const { mutateAsync, isPending } = useSaveLearnerStep1()
@@ -45,9 +45,13 @@ export function LearnerStep1Form(): React.ReactElement {
   const onSubmit = async (data: LearnerStep1Form) => {
     try {
       await mutateAsync(data)
+      // Backend sets onboarding_complete in Clerk metadata — force a fresh session
+      // token so the middleware doesn't bounce us back to onboarding.
+      await getToken({ skipCache: true }).catch(() => null)
       const match = document.cookie.match(/creonex_redirect_url=([^;]+)/)
       const redirectUrl = match ? decodeURIComponent(match[1]) : '/learner/dashboard'
-      router.push(redirectUrl)
+      // Full navigation so middleware reads the refreshed session cookie.
+      window.location.href = redirectUrl
     } catch {
       toast.error('Something went wrong. Please try again.')
     }
@@ -128,9 +132,9 @@ export function LearnerStep1Form(): React.ReactElement {
           {isPending ? (
             <FontAwesomeIcon icon={faSpinner} className="size-4 animate-spin" />
           ) : (
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="size-4" />
+            <FontAwesomeIcon icon={faArrowRight} className="size-4" />
           )}
-          {isPending ? 'Finding your mentors…' : 'Find my mentors'}
+          {isPending ? 'Setting up your account…' : 'Get started'}
         </Button>
       </form>
     </div>
