@@ -1,186 +1,86 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import gsap from "gsap";
-import { Draggable } from "gsap/Draggable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-import { cn } from "@/lib/utils";
-
-gsap.registerPlugin(Draggable);
+import Image from "next/image";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type Testimonial = {
+export interface Testimonial {
   id: string;
   name: string;
   niche: string;
   quote: string;
-  initials: string;
-};
-
-type Props = {
-  testimonials: Testimonial[];
-  label?: string;
-  heading: React.ReactNode;
-  description?: string;
-};
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function depthStyle(d: number, n: number) {
-  return { scale: 1 - d * 0.04, y: d * 10, zIndex: n - d };
+  avatarSrc?: string;
+  initials?: string;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+interface TestimonialsDeckProps {
+  heading: React.ReactNode;
+  label?: string; // maps to label/subheading
+  description?: string;
+  testimonials: Testimonial[];
+}
 
-export default function TestimonialsDeck({
-  testimonials,
-  label = "What they say",
-  heading,
+export default function TestimonialsDeck({ 
+  heading, 
+  label = "TESTIMONIALS", 
   description,
-}: Props): React.ReactElement {
-  const N           = testimonials.length;
-  const orderRef    = useRef<number[]>(testimonials.map((_, i) => i));
-  const [topIdx, setTopIdx] = useState(0);
-  const cardRefs    = useRef<(HTMLDivElement | null)[]>([]);
-  const draggableRef = useRef<Draggable | null>(null);
-  const busyRef     = useRef(false);
-
-  function attachDraggable() {
-    draggableRef.current?.kill();
-    const topCardIdx = orderRef.current[0];
-    const el = cardRefs.current[topCardIdx];
-    if (!el) return;
-
-    const [d] = Draggable.create(el, {
-      type: "x",
-      cursor: "grab",
-      activeCursor: "grabbing",
-      onDrag() {
-        gsap.set(el, { rotation: this.x / 20 });
-      },
-      onDragEnd() {
-        if (busyRef.current) return;
-        const hit = Math.abs(this.x) > 90 || Math.abs(this.velocityX) > 500;
-
-        if (!hit) {
-          gsap.to(el, { x: 0, rotation: 0, duration: 0.5, ease: "power3.out" });
-          return;
-        }
-
-        busyRef.current = true;
-        d.disable();
-
-        const goLeft = this.x < 0 || this.velocityX < -500;
-
-        gsap.to(el, {
-          x:        goLeft ? -560 : 560,
-          rotation: goLeft ? -18 : 18,
-          opacity:  0,
-          duration: 0.4,
-          ease:     "power2.in",
-          onComplete: () => {
-            const old      = orderRef.current;
-            const newOrder = [...old.slice(1), old[0]];
-            orderRef.current = newOrder;
-
-            newOrder.forEach((cardIdx, depth) => {
-              gsap.to(cardRefs.current[cardIdx], {
-                ...depthStyle(depth, N),
-                duration: 0.35,
-                ease:     "power2.out",
-              });
-            });
-
-            gsap.set(el, { x: 0, rotation: 0, opacity: 1, ...depthStyle(N - 1, N) });
-
-            setTopIdx(newOrder[0]);
-            busyRef.current = false;
-            gsap.delayedCall(0.3, attachDraggable);
-          },
-        });
-      },
-    });
-
-    draggableRef.current = d;
-  }
-
-  useEffect(() => {
-    orderRef.current.forEach((cardIdx, depth) => {
-      const el = cardRefs.current[cardIdx];
-      if (!el) return;
-      gsap.set(el, { x: 0, rotation: 0, opacity: 1, ...depthStyle(depth, N) });
-    });
-    attachDraggable();
-    return () => { draggableRef.current?.kill(); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  testimonials 
+}: TestimonialsDeckProps): React.ReactElement {
   return (
-    <section className="section-py overflow-hidden bg-background">
-      <div className="page-container flex flex-col items-center">
-
-        {/* Heading */}
-        <div className="mx-auto mb-14 max-w-2xl text-center">
-          <p className="text-label mb-4 text-primary">{label}</p>
-          <h2 className="text-h1 text-balance text-foreground">{heading}</h2>
+    <section className="bg-background pt-16 md:pt-24 pb-10 md:pb-16 border-t border-border/10">
+      <div className="page-container">
+        <div className="mx-auto max-w-6xl">
+        
+        {/* Header */}
+        <div className="mb-16 flex flex-col items-center text-center">
+          <p className="text-label text-primary mb-5">
+            {label}
+          </p>
+          <h2 className="text-h1 text-balance">
+            {heading}
+          </h2>
           {description && (
-            <p className="text-body mt-5 text-muted-foreground">{description}</p>
+            <p className="text-body mt-5 max-w-xl text-balance">
+              {description}
+            </p>
           )}
         </div>
 
-        {/* Draggable card deck */}
-        <div className="flex w-full flex-col items-center gap-6">
-          <div className="relative h-[280px] w-full max-w-[560px] overflow-visible">
-            {testimonials.map((item, i) => (
-              <div
-                key={item.id}
-                ref={(el) => { cardRefs.current[i] = el; }}
-                className="absolute inset-x-0 top-0 h-[220px] select-none touch-none rounded-2xl border border-border bg-card px-7 py-6 shadow-sm"
-              >
-                <FontAwesomeIcon
-                  icon={faQuoteLeft}
-                  className="mb-3 h-4 w-4 text-foreground/20"
-                />
-                <p className="text-body line-clamp-3 leading-relaxed text-foreground">
-                  &ldquo;{item.quote}&rdquo;
-                </p>
-                <div className="mt-4 flex items-center gap-3 border-t border-border pt-4">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-foreground">
-                    {item.initials}
+        {/* Masonry Grid */}
+        <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
+          
+          {testimonials.map((t) => (
+            <div key={t.id} className="mb-6 break-inside-avoid rounded-[15px] border border-border/50 bg-card p-8 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5">
+              <p className="text-body">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              
+              <div className="mt-8 flex items-center gap-4">
+                {t.avatarSrc ? (
+                  <div className="relative h-10 w-10 overflow-hidden rounded-full bg-muted border border-border/50 shrink-0">
+                    <Image src={t.avatarSrc} alt={t.name} fill className="object-cover" sizes="40px" />
                   </div>
-                  <div>
-                    <p className="text-body-sm font-semibold text-foreground">{item.name}</p>
-                    <p className="text-body-sm text-muted-foreground">{item.niche}</p>
+                ) : (
+                  <div className="h-10 w-10 overflow-hidden rounded-full bg-foreground flex items-center justify-center text-[12px] font-bold text-background shrink-0">
+                    {t.initials || t.name.substring(0, 2).toUpperCase()}
                   </div>
+                )}
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                  <p className="text-body-sm">{t.niche}</p>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Avatar strip */}
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-2">
-              {testimonials.map((item, i) => (
-                <div
-                  key={item.id}
-                  aria-label={item.name}
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-primary/10 text-xs font-semibold text-foreground transition-transform duration-200",
-                    i === topIdx && "z-10 scale-110 ring-2 ring-foreground ring-offset-1 ring-offset-background",
-                  )}
-                >
-                  {item.initials}
-                </div>
-              ))}
             </div>
-            <p className="text-body-sm text-muted-foreground">{N} featured</p>
+          ))}
+
+          {/* "You?" Card */}
+          <div className="mb-6 flex min-h-[200px] break-inside-avoid flex-col items-center justify-center rounded-[15px] border-2 border-dashed border-border bg-transparent p-8 text-muted-foreground transition-all duration-300 hover:border-primary/50 hover:bg-accent/30 cursor-pointer group">
+            <span className="text-3xl font-light text-muted-foreground/60 group-hover:text-primary transition-colors duration-300">+</span>
+            <span className="mt-2 text-sm font-medium group-hover:text-primary transition-colors duration-300">you?</span>
           </div>
 
-          <p className="text-label text-muted-foreground/40">drag to browse</p>
         </div>
-
+        </div>
       </div>
     </section>
   );

@@ -3,9 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
@@ -17,7 +15,6 @@ import {
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { Button } from "@/components/ui/button";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -111,7 +108,7 @@ function ShowcaseImage({ src, alt }: ShowcaseImageProps): React.ReactElement {
           alt={alt}
           fill
           className="object-cover object-top"
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="(max-width: 1024px) 100vw, 100vw"
           onError={() => setErrored(true)}
         />
       ) : (
@@ -156,10 +153,10 @@ function FeatureBlock({ feature }: FeatureBlockProps): React.ReactElement {
 
       <div className="ls-content flex flex-col gap-6">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-primary/20">
-            <FontAwesomeIcon icon={feature.icon} className="h-3.5 w-3.5 text-primary" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted ring-1 ring-border">
+            <FontAwesomeIcon icon={feature.icon} className="h-3.5 w-3.5 text-muted-foreground" />
           </div>
-          <span className="text-label text-primary">{feature.label}</span>
+          <span className="text-label text-muted-foreground">{feature.label}</span>
         </div>
 
         <h3 className="text-h2 text-balance text-foreground">{feature.title}</h3>
@@ -168,7 +165,7 @@ function FeatureBlock({ feature }: FeatureBlockProps): React.ReactElement {
         <ul className="space-y-3">
           {feature.benefits.map((benefit) => (
             <li key={benefit} className="flex items-center gap-3">
-              <FontAwesomeIcon icon={faCircleCheck} className="h-4 w-4 shrink-0 text-primary" />
+              <FontAwesomeIcon icon={faCircleCheck} className="h-4 w-4 shrink-0 text-muted-foreground" />
               <span className="text-body-sm text-foreground/90">{benefit}</span>
             </li>
           ))}
@@ -194,38 +191,6 @@ function FeatureBlock({ feature }: FeatureBlockProps): React.ReactElement {
 export default function LearningShowcase(): React.ReactElement {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      gsap.fromTo(
-        ".ls-header > *",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1, y: 0, duration: 0.7, stagger: 0.1,
-          ease: "power3.out", clearProps: "all",
-          scrollTrigger: { trigger: ".ls-header", start: "top 80%", once: true },
-        },
-      );
-
-      // gsap.utils.toArray scopes query to sectionRef — no document.querySelectorAll
-      gsap.utils.toArray<HTMLElement>(".ls-block", sectionRef.current).forEach((block) => {
-        const img     = block.querySelector(".ls-image");
-        const content = block.querySelector(".ls-content");
-        const targets = [img, content].filter(Boolean) as Element[];
-        if (!targets.length) return;
-
-        gsap.fromTo(
-          targets,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1, y: 0, duration: 0.75, stagger: 0.12,
-            ease: "power3.out", clearProps: "all",
-            scrollTrigger: { trigger: block, start: "top 78%", once: true },
-          },
-        );
-      });
-    },
-    { scope: sectionRef },
-  );
 
   return (
     <section ref={sectionRef} className="section-py bg-background">

@@ -255,6 +255,17 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
     }, [isMuted]);
 
     React.useEffect(() => {
+      const v = videoRef.current;
+      if (!v) return;
+      if (autoPlay) {
+        v.muted = true;
+        void v.play().catch((err) => {
+          console.warn("Autoplay blocked or failed:", err);
+        });
+      }
+    }, [autoPlay, src]);
+
+    React.useEffect(() => {
       const onFsChange = () => setIsFullscreen(!!document.fullscreenElement);
       document.addEventListener("fullscreenchange", onFsChange);
       return () => document.removeEventListener("fullscreenchange", onFsChange);
@@ -315,7 +326,6 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
           src={src}
           poster={poster}
           preload="metadata"
-          crossOrigin="anonymous"
           autoPlay={autoPlay}
           muted={muted}
           playsInline
@@ -364,7 +374,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
                 {/* Seek bar */}
                 <div className="flex items-center gap-3 text-sm">
-                  <span className="min-w-0 text-xs font-mono text-foreground/70">
+                  <span className="min-w-0 text-xs font-mono text-white/70">
                     {formatTime(currentTime)}
                   </span>
                   <div className="flex-1 relative group/progress">
@@ -396,7 +406,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                       aria-label="Seek"
                     />
                   </div>
-                  <span className="min-w-0 text-xs font-mono text-foreground/70">
+                  <span className="min-w-0 text-xs font-mono text-white/70">
                     {hasFiniteDuration ? formatTime(duration) : "--:--"}
                   </span>
                 </div>
@@ -408,7 +418,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                     <button
                       onClick={(e) => { e.stopPropagation(); skip(-10); }}
                       aria-label="Rewind 10 seconds"
-                      className="p-2 text-foreground/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
+                      className="p-2 text-white/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
                     >
                       <FontAwesomeIcon icon={faBackwardStep} className="h-4 w-4 rtl:-scale-x-100" />
                     </button>
@@ -427,7 +437,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                     <button
                       onClick={(e) => { e.stopPropagation(); stopPlayback(); }}
                       aria-label="Stop"
-                      className="p-2 text-foreground/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
+                      className="p-2 text-white/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
                     >
                       <FontAwesomeIcon icon={faStop} className="h-4 w-4" />
                     </button>
@@ -435,7 +445,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                     <button
                       onClick={(e) => { e.stopPropagation(); skip(10); }}
                       aria-label="Forward 10 seconds"
-                      className="p-2 text-foreground/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
+                      className="p-2 text-white/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
                     >
                       <FontAwesomeIcon icon={faForwardStep} className="h-4 w-4 rtl:-scale-x-100" />
                     </button>
@@ -445,7 +455,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                       <button
                         onClick={(e) => { e.stopPropagation(); toggleMute(); }}
                         aria-label={isMuted || volume === 0 ? "Unmute" : "Mute"}
-                        className="p-2 text-foreground/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
+                        className="p-2 text-white/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
                       >
                         <FontAwesomeIcon
                           icon={isMuted || volume === 0 ? faVolumeXmark : faVolumeHigh}
@@ -480,7 +490,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                   <button
                     onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }}
                     aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                    className="p-2 text-foreground/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
+                    className="p-2 text-white/70 hover:text-primary hover:bg-primary/15 rounded-lg transition-all duration-150"
                   >
                     <FontAwesomeIcon
                       icon={isFullscreen ? faCompress : faExpand}

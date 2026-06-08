@@ -7,12 +7,6 @@ import HeroSearch from "@/components/landing/shared/hero-search";
 
 gsap.registerPlugin(useGSAP);
 
-const STATS = [
-  { value: "1,800+", label: "Verified Experts" },
-  { value: "500+",   label: "Courses" },
-  { value: "10K+",   label: "Learners" },
-] as const;
-
 export default function UserHero(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -28,11 +22,21 @@ export default function UserHero(): React.ReactElement {
   );
 
   return (
-    <section className="relative z-10 pt-14 pb-6 md:pt-20 md:pb-10">
-      <div ref={containerRef} className="page-container">
+    <section className="relative z-20 pt-14 pb-6 md:pt-20 md:pb-10">
+
+      {/* Background container with overflow-hidden to prevent dot grid/glow bleed */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Cool Attraction: Highlighted Dotted Canvas Grid */}
+        <div className="absolute inset-0 bg-[radial-gradient(#9ca3af_1px,transparent_1px)] [background-size:24px_24px] opacity-65 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_40%,#000_40%,transparent_100%)] dark:bg-[radial-gradient(#4b5563_1px,transparent_1px)]" />
+
+        {/* Cool Attraction: Ambient Accent Glows */}
+        <div className="absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-accent/5 blur-[120px]" />
+      </div>
+
+      <div ref={containerRef} className="page-container relative z-10">
         <div className="mx-auto max-w-3xl text-center">
 
-          <h1 className="u-hero-item text-display text-balance text-foreground">
+          <h1 className="u-hero-item text-display text-balance text-foreground font-medium">
             India&apos;s{" "}
             <span className="text-primary">best creators,</span>
             <br />

@@ -61,13 +61,13 @@ interface Dims {
   cw: number; ch: number; stride: number; perspective: number; cull: number;
 }
 
-const DESKTOP: Dims = { cw: 268, ch: 396, stride: 302, perspective: 1100, cull: 4.6 };
+const DESKTOP: Dims = { cw: 310, ch: 460, stride: 350, perspective: 1200, cull: 4.6 };
 
 function getDims(vw: number): Dims {
   if (vw >= 1024) return DESKTOP;
-  if (vw >= 768) return { cw: 232, ch: 342, stride: 262, perspective: 1000, cull: 4.2 };
-  if (vw >= 480) return { cw: 188, ch: 276, stride: 212, perspective: 850, cull: 3.5 };
-  return { cw: 155, ch: 228, stride: 176, perspective: 720, cull: 2.8 };
+  if (vw >= 768) return { cw: 268, ch: 396, stride: 302, perspective: 1100, cull: 4.2 };
+  if (vw >= 480) return { cw: 210, ch: 310, stride: 240, perspective: 950, cull: 3.5 };
+  return { cw: 175, ch: 255, stride: 200, perspective: 800, cull: 2.8 };
 }
 
 const G_POS: [number, number][] = [
@@ -78,9 +78,8 @@ const G_HUE = [175, 179, 173, 178, 176, 180, 174, 177];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function CinematicGallery({ showViewProfile = false }: { showViewProfile?: boolean }): React.ReactElement {
+export default function CinematicGallery(): React.ReactElement {
   const [dims, setDims] = useState<Dims>(DESKTOP);
-  const [centerIdx, setCenterIdx] = useState(0);
 
   const dimsRef = useRef<Dims>(DESKTOP);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -88,9 +87,12 @@ export default function CinematicGallery({ showViewProfile = false }: { showView
   const currRef = useRef(0);
   const velRef = useRef(0);
   const dragging = useRef(false);
-  const prevCenterRef = useRef(0);
   const galleryRef = useRef<HTMLDivElement>(null);
   const dragProxyRef = useRef<HTMLDivElement>(null);
+
+  const centerNameRef = useRef<HTMLSpanElement>(null);
+  const centerLinkRef = useRef<HTMLAnchorElement>(null);
+  const centerCreatorRef = useRef<Creator | null>(null);
 
   // gsap.utils.wrap is GSAP's built-in helper for seamless looping. We keep two:
   // one to bound the scroll scalar into [0, SPAN), and one to map each card's
@@ -119,8 +121,7 @@ export default function CinematicGallery({ showViewProfile = false }: { showView
 
     // Per-card state to skip redundant style writes each frame.
     const culled: boolean[] = [];
-    const lastShadow: string[] = [];
-    const lastPE: string[] = []; // pointer-events isn't composited — gate it like box-shadow
+    const lastPE: string[] = []; // pointer-events isn't composited — gate it like opacity
 
     // ── Ticker loop ───────────────────────────────────────────────────────────
     const tick = () => {
@@ -154,16 +155,8 @@ export default function CinematicGallery({ showViewProfile = false }: { showView
       currRef.current += (scrollRef.current - currRef.current) * k;
       const cx = currRef.current;
 
-      // Track center creator — only when the "View profile" link needs it, and
-      // only on change. The card list is memoized, so this re-render can't re-diff
-      // the 40 cards; it only refreshes the link.
-      if (showViewProfile) {
-        const c = ((Math.round(cx / stride) % N_ORIG) + N_ORIG) % N_ORIG;
-        if (c !== prevCenterRef.current) {
-          prevCenterRef.current = c;
-          setCenterIdx(c);
-        }
-      }
+      let minAbsSlots = Infinity;
+      let centerIdx = 0;
 
       for (let i = 0; i < N; i++) {
         const card = cards[i];
@@ -174,6 +167,11 @@ export default function CinematicGallery({ showViewProfile = false }: { showView
         // teleports across the viewport.
         const offset = wrapOffsetRef.current(i * stride - cx);
         const absSlots = Math.abs(offset) / stride;
+
+        if (absSlots < minAbsSlots) {
+          minAbsSlots = absSlots;
+          centerIdx = i;
+        }
 
         if (absSlots > cull) {
           if (!culled[i]) {
@@ -201,16 +199,17 @@ export default function CinematicGallery({ showViewProfile = false }: { showView
           card.style.pointerEvents = pe;
           lastPE[i] = pe;
         }
+      }
 
-        // box-shadow triggers paint — only write it when it actually changes
-        // (glow is non-zero only for the near-center card).
-        const glow = Math.max(0, 1 - absSlots * 4) * 0.48;
-        const shadow = glow > 0.01
-          ? `0 0 ${Math.round(glow * 72)}px ${Math.round(glow * 18)}px oklch(0.543 0.093 177 / ${glow.toFixed(2)})`
-          : "none";
-        if (shadow !== lastShadow[i]) {
-          gsap.set(card, { boxShadow: shadow });
-          lastShadow[i] = shadow;
+      // Update center creator link and text dynamically (avoiding React re-renders for 120fps smooth performance)
+      const creator = DISPLAY[centerIdx];
+      if (centerCreatorRef.current !== creator && creator) {
+        centerCreatorRef.current = creator;
+        if (centerNameRef.current) {
+          centerNameRef.current.textContent = `View ${creator.name}`;
+        }
+        if (centerLinkRef.current) {
+          centerLinkRef.current.setAttribute("href", `/c/${creator.name.toLowerCase().replace(/\s+/g, "-")}`);
         }
       }
     };
@@ -338,28 +337,29 @@ export default function CinematicGallery({ showViewProfile = false }: { showView
                 alt={creator.name}
                 fill
                 className="object-cover"
-                sizes="(max-width: 480px) 155px, (max-width: 768px) 188px, (max-width: 1024px) 232px, 268px"
+                sizes="(max-width: 480px) 310px, (max-width: 768px) 376px, (max-width: 1024px) 464px, 536px"
                 draggable={false}
                 priority={i < 5}
               />
             )}
 
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 via-background/70 to-transparent px-4 pb-4 pt-20 backdrop-blur-[2px]">
-              <span className="text-label mb-1 block text-primary">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-4 pb-4 pt-20">
+              <span className="text-label mb-1 block text-white/90">
                 {creator.niche}
               </span>
-              <span className="text-h4 mb-2 block text-foreground">
+              <span className="text-h4 mb-2 block text-white font-bold">
                 {creator.name}
               </span>
-              <div className="flex items-center gap-3">
-                <span className="text-label text-muted-foreground">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-label text-white/70">
                   {creator.students} students
                 </span>
-                <span className="text-label text-muted-foreground opacity-40">·</span>
-                <span className="text-label text-muted-foreground">
+                <span className="text-label text-white/40">·</span>
+                <span className="text-label text-white/70">
                   {creator.courses} courses
                 </span>
               </div>
+              {/* Link removed here, moved outside below the center card */}
             </div>
           </div>
         );
@@ -396,20 +396,19 @@ export default function CinematicGallery({ showViewProfile = false }: { showView
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 md:w-52 bg-gradient-to-l from-background to-transparent" />
       </div>
 
-      {showViewProfile && (
-        <div className="page-container mt-8 flex items-center justify-center">
-          <Link
-            href={`/creators/${CREATORS[centerIdx].id}`}
-            className="group flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
-          >
-            View {CREATORS[centerIdx].name}&apos;s profile
-            <FontAwesomeIcon
-              icon={faArrowRight}
-              className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5"
-            />
-          </Link>
-        </div>
-      )}
+      {/* Center Creator Profile Link Button (outside the card, matching current centered card) */}
+      <div className="flex flex-col items-center justify-center mt-8 relative z-20 font-sans">
+        <Link
+          ref={centerLinkRef}
+          href={`/c/${CREATORS[4 % N_ORIG].name.toLowerCase().replace(/\s+/g, "-")}`}
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 group/btn"
+        >
+          <span ref={centerNameRef} className="text-white">
+            View {CREATORS[4 % N_ORIG].name}
+          </span>
+          <FontAwesomeIcon icon={faArrowRight} className="size-3 text-white transition-transform group-hover/btn:translate-x-1" />
+        </Link>
+      </div>
 
     </section>
   );

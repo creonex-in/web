@@ -6,8 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { CreatorDashboardButton } from "@/components/layout/creator-dashboard-button";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -21,6 +19,17 @@ import {
   faShieldHalved,
   faMagnifyingGlass,
   faFileLines,
+  faVideo,
+  faLaptopCode,
+  faAward,
+  faUserCheck,
+  faCreditCard,
+  faBriefcase,
+  faCommentDots,
+  faStar,
+  faRobot,
+  faFileInvoice,
+  faMicrophone,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +42,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import MobileNav from "@/components/layout/mobile-nav";
 import { cn } from "@/lib/utils";
-import { useGSAP } from "@gsap/react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -42,12 +50,15 @@ type NavItem = {
   label: string;
   description: string;
   href: string;
+  badge?: {
+    text: string;
+    variant: "new" | "coming-soon";
+  };
 };
 
 type NavConfig = {
   megaLabel: string;
-  megaLeft: { heading: string; items: NavItem[] };
-  megaRight: { heading: string; items: NavItem[] };
+  megaCols: { heading: string; items: NavItem[] }[];
   plainLinks: { label: string; href: string }[];
   ctaText: string;
   mobileLinks: { label: string; href: string }[];
@@ -57,53 +68,83 @@ type NavConfig = {
 
 const LEARNER_CONFIG: NavConfig = {
   megaLabel: "Explore",
-  megaLeft: {
-    heading: "Browse",
-    items: [
-      { icon: faCalendarCheck, label: "Sessions", description: "Book 1-on-1 time with verified experts", href: "#sessions" },
-      { icon: faBook, label: "Courses", description: "Self-paced learning with lifetime access", href: "#courses" },
-      { icon: faUsers, label: "Community", description: "Join expert-led paid communities", href: "#community" },
-    ],
-  },
-  megaRight: {
-    heading: "Discover",
-    items: [
-      { icon: faMagnifyingGlass, label: "Browse Topics", description: "Explore 1,800+ experts by category", href: "#explore" },
-      { icon: faCirclePlay, label: "How It Works", description: "From search to skill in 3 steps", href: "#how-it-works" },
-      { icon: faTag, label: "Pricing", description: "Transparent, no-surprise pricing", href: "#pricing" },
-    ],
-  },
+  megaCols: [
+    {
+      heading: "Learning Formats",
+      items: [
+        { icon: faBook, label: "Courses", description: "Structured self-paced video classes", href: "#courses" },
+        { icon: faCalendarCheck, label: "1:1 Sessions", description: "Book private sessions with top mentors", href: "#sessions" },
+        { icon: faVideo, label: "Webinars", description: "Join interactive live workshops", href: "#webinars" },
+        { icon: faUsers, label: "Communities", description: "Learn alongside ambitious peers", href: "#community" },
+        { icon: faFileLines, label: "Digital Goods", description: "Get premium roadmaps, notes & templates", href: "#resources" },
+        { icon: faLaptopCode, label: "Cohorts", description: "Intensive group bootcamps with labs", href: "#cohorts" },
+        { icon: faAward, label: "Masterclasses", description: "Advanced workshops by industry leaders", href: "#masterclasses", badge: { text: "Coming soon", variant: "coming-soon" } },
+      ],
+    },
+    {
+      heading: "Why Creonex",
+      items: [
+        { icon: faUserCheck, label: "Top 1% Mentors", description: "Learn from verified practitioners only", href: "#explore" },
+        { icon: faCreditCard, label: "UPI & Easy Checkout", description: "100% secure payments via UPI & Cards", href: "#payments" },
+        { icon: faBriefcase, label: "Job-Ready Projects", description: "Build portfolios employers actually trust", href: "#projects" },
+        { icon: faCommentDots, label: "Doubt Support", description: "Get direct feedback on your homework", href: "#support" },
+        { icon: faStar, label: "Verified Reviews", description: "Read honest reviews from past students", href: "#testimonials" },
+      ],
+    },
+    {
+      heading: "AI Learning Tools",
+      items: [
+        { icon: faRobot, label: "AI Career Path", description: "Get personalized roadmaps in seconds", href: "#ai-path", badge: { text: "NEW", variant: "new" } },
+        { icon: faFileInvoice, label: "AI Resume Review", description: "Optimize your CV for hiring filters", href: "#ai-resume", badge: { text: "NEW", variant: "new" } },
+        { icon: faMicrophone, label: "AI Mock Interviews", description: "Practice live interviews with real-time feedback", href: "#ai-interview", badge: { text: "NEW", variant: "new" } },
+      ],
+    },
+  ],
   plainLinks: [
-    { label: "For Creators", href: "/creators" },
+    { label: "Find Mentors", href: "/top-creators" },
     { label: "How It Works", href: "#how-it-works" },
   ],
   ctaText: "Get Started Free",
   mobileLinks: [
-    { label: "Browse Topics", href: "#explore" },
+    { label: "Find Mentors", href: "/top-creators" },
     { label: "How It Works", href: "#how-it-works" },
-    { label: "For Creators", href: "/creators" },
     { label: "Get Started", href: "/sign-up" },
   ],
 };
 
 const CREATOR_CONFIG: NavConfig = {
   megaLabel: "Features",
-  megaLeft: {
-    heading: "Earn",
-    items: [
-      { icon: faCalendarCheck, label: "Sessions", description: "Let learners book 1-on-1 time with you", href: "#sessions" },
-      { icon: faBook, label: "Courses", description: "Record once, earn every week", href: "#courses" },
-      { icon: faFileLines, label: "Digital Products", description: "Sell templates, guides, and resources", href: "#products" },
-    ],
-  },
-  megaRight: {
-    heading: "Platform",
-    items: [
-      { icon: faChartLine, label: "Analytics", description: "Track earnings and student growth", href: "#analytics" },
-      { icon: faShieldHalved, label: "Payments", description: "UPI payouts, invoices, auto-settlements", href: "#payments" },
-      { icon: faBolt, label: "How It Works", description: "Profile to first sale in minutes", href: "#how-it-works" },
-    ],
-  },
+  megaCols: [
+    {
+      heading: "Monetization Models",
+      items: [
+        { icon: faBook, label: "Courses", description: "Host and sell video courses", href: "#courses" },
+        { icon: faCalendarCheck, label: "1:1 Sessions", description: "Open booking slots for live calls", href: "#sessions" },
+        { icon: faVideo, label: "Webinars", description: "Launch free or paid workshops", href: "#webinars" },
+        { icon: faUsers, label: "Communities", description: "Build paid premium memberships", href: "#community" },
+        { icon: faFileLines, label: "Digital Products", description: "Sell PDF guides, templates & files", href: "#products" },
+        { icon: faAward, label: "Coaching", description: "Host long-term cohort coaching", href: "#coaching", badge: { text: "Coming soon", variant: "coming-soon" } },
+      ],
+    },
+    {
+      heading: "Platform Engine",
+      items: [
+        { icon: faLaptopCode, label: "Branded Pages", description: "No-code portfolio and landing pages", href: "#pages" },
+        { icon: faCreditCard, label: "Integrated Checkout", description: "Secure global checkout and payments", href: "#checkout" },
+        { icon: faChartLine, label: "Direct Payouts", description: "Receive payouts to bank in 48 hours", href: "#payouts" },
+        { icon: faShieldHalved, label: "DRM Protection", description: "Protect your intellectual property", href: "#drm" },
+        { icon: faBolt, label: "Integrations", description: "Connect with standard tools", href: "#integrations" },
+      ],
+    },
+    {
+      heading: "AI Creator Suite",
+      items: [
+        { icon: faRobot, label: "AI Website Builder", description: "Generate high-converting landing pages", href: "#ai-builder", badge: { text: "NEW", variant: "new" } },
+        { icon: faCommentDots, label: "AI Smart Agent", description: "Automate sales, support & student chats", href: "#ai-agents", badge: { text: "NEW", variant: "new" } },
+        { icon: faFileInvoice, label: "AI Content Copilot", description: "Write scripts, descriptions & curriculum", href: "#ai-copilot", badge: { text: "NEW", variant: "new" } },
+      ],
+    },
+  ],
   plainLinks: [
     { label: "How It Works", href: "#how-it-works" },
     { label: "For Learners", href: "/" },
@@ -121,8 +162,6 @@ function getNavConfig(pathname: string): NavConfig {
   return pathname === "/creators" ? CREATOR_CONFIG : LEARNER_CONFIG;
 }
 
-gsap.registerPlugin(ScrollTrigger);
-
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function MegaItem({ item }: { item: NavItem }): JSX.Element {
@@ -130,14 +169,30 @@ function MegaItem({ item }: { item: NavItem }): JSX.Element {
     <li>
       <Link
         href={item.href}
-        className="group flex items-center gap-3.5 rounded-xl px-3 py-3 transition-all duration-150 hover:bg-muted"
+        className="group flex items-start gap-3 rounded-xl px-2.5 py-2 transition-all duration-200 hover:bg-muted"
       >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-primary transition-all duration-150 group-hover:border-primary/30 group-hover:bg-primary/5">
-          <FontAwesomeIcon icon={item.icon} className="h-3.5 w-3.5" />
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-all duration-200 group-hover:border-foreground/20 group-hover:bg-background group-hover:text-foreground">
+          <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
         </div>
-        <div>
-          <p className="text-sm font-semibold text-foreground">{item.label}</p>
-          <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{item.description}</p>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 pt-0.5">
+            <span className="text-sm font-semibold text-foreground group-hover:text-foreground/90 leading-tight">
+              {item.label}
+            </span>
+            {item.badge && (
+              <span className={cn(
+                "text-[8px] font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded leading-none shrink-0",
+                item.badge.variant === "new"
+                  ? "bg-[#d2f34c] text-black font-black"
+                  : "bg-primary/10 text-primary"
+              )}>
+                {item.badge.text}
+              </span>
+            )}
+          </div>
+          <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground group-hover:text-muted-foreground/90">
+            {item.description}
+          </p>
         </div>
       </Link>
     </li>
@@ -146,23 +201,30 @@ function MegaItem({ item }: { item: NavItem }): JSX.Element {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+import { useEffect } from "react";
+
 export default function Navbar(): JSX.Element {
   const { isSignedIn, isLoaded } = useAuth();
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const config = getNavConfig(pathname);
 
-  useGSAP(() => {
+  useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
 
-    ScrollTrigger.create({
-      start: "20px top",
-      onEnter: () => header.setAttribute("data-scrolled", ""),
-      onLeaveBack: () => header.removeAttribute("data-scrolled"),
-    });
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        header.setAttribute("data-scrolled", "");
+      } else {
+        header.removeAttribute("data-scrolled");
+      }
+    };
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -170,7 +232,7 @@ export default function Navbar(): JSX.Element {
       ref={headerRef}
       className="sticky top-0 z-50 w-full border-b border-transparent bg-transparent transition-all duration-300 data-[scrolled]:border-border data-[scrolled]:bg-background/80 data-[scrolled]:shadow-sm data-[scrolled]:backdrop-blur-md"
     >
-      <nav className="page-container grid h-16 grid-cols-2 items-center gap-6 lg:grid-cols-3">
+      <nav className="page-container grid h-20 grid-cols-2 items-center gap-6 lg:grid-cols-3">
 
         {/* ── Col 1: Logo ─────────────────────────────────────────────────── */}
         <Link href="/" className="flex shrink-0 items-center gap-2">
@@ -204,32 +266,20 @@ export default function Navbar(): JSX.Element {
                 </NavigationMenuTrigger>
 
                 <NavigationMenuContent>
-                  <div className="w-[600px] p-2">
-                    <div className="mx-3 mb-2 h-0.5 w-10 rounded-full bg-primary" />
-                    <div className="grid grid-cols-2">
-
-                      <div className="p-3">
-                        <p className="mb-3 px-2 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground/60">
-                          {config.megaLeft.heading}
-                        </p>
-                        <ul className="space-y-0.5">
-                          {config.megaLeft.items.map((item) => (
-                            <MegaItem key={item.label} item={item} />
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="border-l border-border/60 p-3">
-                        <p className="mb-3 px-2 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground/60">
-                          {config.megaRight.heading}
-                        </p>
-                        <ul className="space-y-0.5">
-                          {config.megaRight.items.map((item) => (
-                            <MegaItem key={item.label} item={item} />
-                          ))}
-                        </ul>
-                      </div>
-
+                  <div className="w-[920px] p-4 bg-background rounded-2xl shadow-xl border border-border/50">
+                    <div className="grid grid-cols-3 gap-2">
+                      {config.megaCols.map((col, index) => (
+                        <div key={col.heading} className={cn("p-2", index > 0 && "border-l border-border/40")}>
+                          <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
+                            {col.heading}
+                          </p>
+                          <ul className="space-y-1">
+                            {col.items.map((item) => (
+                              <MegaItem key={item.label} item={item} />
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </NavigationMenuContent>

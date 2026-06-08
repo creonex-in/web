@@ -1,21 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCalendarDays,
   faClock,
   faIndianRupeeSign,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -25,7 +19,8 @@ type Session = {
   id: string;
   expert: { name: string; role: string; initials: string; avatar: string };
   topic: string;
-  date: string;
+  month: string;
+  day: string;
   time: string;
   price: number;
   status: SessionStatus;
@@ -42,43 +37,43 @@ const SESSIONS: Session[] = [
     id: "s1",
     expert: { name: "Sarah Johnson", role: "Senior Product Designer @ Google", initials: "SJ", avatar: "/creator-profiles/raj.png" },
     topic: "UI/UX Portfolio Review",
-    date: "June 14", time: "7:00 PM IST", price: 999,
+    month: "JUN", day: "14", time: "7:00 PM IST", price: 999,
     status: "Popular", category: "Design",
   },
   {
     id: "s2",
     expert: { name: "Rahul Verma", role: "Frontend Engineer @ Microsoft", initials: "RV", avatar: "/creator-profiles/raj.png" },
     topic: "React Interview Preparation",
-    date: "June 15", time: "6:30 PM IST", price: 799,
+    month: "JUN", day: "15", time: "6:30 PM IST", price: 799,
     status: "Few Spots Left", category: "Engineering",
   },
   {
     id: "s3",
     expert: { name: "Priya Sharma", role: "Engineering Manager @ Amazon", initials: "PS", avatar: "/creator-profiles/raj.png" },
     topic: "System Design Fundamentals",
-    date: "June 16", time: "8:00 PM IST", price: 1299,
+    month: "JUN", day: "16", time: "8:00 PM IST", price: 1299,
     status: "Trending", category: "Engineering",
   },
   {
     id: "s4",
     expert: { name: "Arjun Mehta", role: "Senior Software Engineer @ Adobe", initials: "AM", avatar: "/creator-profiles/raj.png" },
     topic: "Career Growth for Developers",
-    date: "June 17", time: "5:00 PM IST", price: 699,
+    month: "JUN", day: "17", time: "5:00 PM IST", price: 699,
     status: "New", category: "Career",
   },
 ];
 
 const STATUS_CLASS: Record<SessionStatus, string> = {
-  "Popular":        "border-primary/30 bg-primary/10 text-primary",
-  "Few Spots Left": "border-destructive/30 bg-destructive/10 text-destructive",
-  "Trending":       "border-primary/30 bg-primary/10 text-primary",
+  "Popular":        "border-foreground/20 bg-foreground/5 text-foreground",
+  "Few Spots Left": "border-destructive/20 bg-destructive/5 text-destructive",
+  "Trending":       "border-foreground/20 bg-foreground/5 text-foreground",
   "New":            "border-border bg-secondary text-secondary-foreground",
 };
 
 const STATUS_DOT: Record<SessionStatus, string> = {
-  "Popular":        "bg-primary",
+  "Popular":        "bg-foreground",
   "Few Spots Left": "animate-pulse bg-destructive",
-  "Trending":       "bg-primary",
+  "Trending":       "bg-foreground",
   "New":            "bg-muted-foreground",
 };
 
@@ -90,22 +85,22 @@ function ExpertAvatar({ expert }: { expert: Session["expert"] }): React.ReactEle
   return (
     <div className="relative shrink-0">
       {!errored ? (
-        <div className="relative h-12 w-12 overflow-hidden rounded-full border border-border">
+        <div className="relative h-10 w-10 overflow-hidden rounded-full border border-border/80 group-hover:border-foreground/40 transition-colors duration-300">
           <Image
             src={expert.avatar}
             alt={expert.name}
             fill
-            className="object-cover"
-            sizes="48px"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="40px"
             onError={() => setErrored(true)}
           />
         </div>
       ) : (
-        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-primary/10 text-xs font-bold text-primary">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-foreground/5 text-xs font-bold text-foreground group-hover:border-foreground/40 transition-colors duration-300">
           {expert.initials}
         </div>
       )}
-      <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-primary" />
+      <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-500" />
     </div>
   );
 }
@@ -114,73 +109,72 @@ function ExpertAvatar({ expert }: { expert: Session["expert"] }): React.ReactEle
 
 function SessionCard({ session }: { session: Session }): React.ReactElement {
   return (
-    <article className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-border bg-card p-5 [will-change:transform] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_8px_40px_oklch(0.543_0.093_177_/_0.12)] sm:p-6">
+    <article className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/85 bg-card/60 p-5 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-foreground/40 hover:bg-card hover:shadow-lg hover:shadow-foreground/5 animate-fade-up">
+      
+      {/* Subtle top light effect */}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-foreground/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      
+      <div className="flex flex-col gap-3">
+        {/* Top Header: Calendar Badge & Status Pill */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col items-center justify-center rounded-xl bg-foreground/5 px-2.5 py-1.5 text-foreground border border-border min-w-[52px]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{session.month}</span>
+            <span className="text-xl font-extrabold leading-none tracking-tight">{session.day}</span>
+          </div>
+          
+          <span className={cn(
+            "flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+            STATUS_CLASS[session.status],
+          )}>
+            <span className={cn("h-1.5 w-1.5 rounded-full", STATUS_DOT[session.status])} />
+            {session.status}
+          </span>
+        </div>
 
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        {/* Session Topic */}
+        <h3 className="text-base font-bold leading-snug text-foreground group-hover:text-foreground/85 transition-colors duration-200 line-clamp-2">
+          {session.topic}
+        </h3>
 
-      {/* Expert */}
-      <div className="flex min-w-0 items-center gap-3">
-        <ExpertAvatar expert={session.expert} />
-        <div className="min-w-0">
-          <p className="truncate text-sm font-semibold leading-tight text-foreground">
-            {session.expert.name}
-          </p>
-          <p className="truncate text-[11px] leading-snug text-muted-foreground">
-            {session.expert.role}
-          </p>
+        {/* Expert Profile */}
+        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/20 border border-border/30">
+          <ExpertAvatar expert={session.expert} />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold leading-tight text-foreground">
+              {session.expert.name}
+            </p>
+            <p className="truncate text-[11px] leading-snug text-muted-foreground mt-0.5">
+              {session.expert.role}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="h-px bg-border" />
-
-      {/* Topic */}
-      <div className="flex-1">
-        <p className="text-label mb-1.5 text-primary/60">Session</p>
-        <h3 className="text-sm font-semibold leading-snug text-foreground sm:text-base">
-          {session.topic}
-        </h3>
-      </div>
-
-      {/* Date / Time + Price */}
-      <div className="flex items-end justify-between gap-2">
-        <div className="flex flex-col gap-1">
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <FontAwesomeIcon icon={faCalendarDays} className="h-3 w-3 shrink-0 text-primary/50" />
-            {session.date}
-          </span>
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <FontAwesomeIcon icon={faClock} className="h-3 w-3 shrink-0 text-primary/50" />
+      {/* Footer: Time, Price & CTA */}
+      <div className="flex items-center justify-between gap-2 border-t border-border/50 pt-3.5 mt-5">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">Starts at</span>
+          <span className="flex items-center gap-1 text-xs text-foreground font-medium">
+            <FontAwesomeIcon icon={faClock} className="h-3.5 w-3.5 text-muted-foreground" />
             {session.time}
           </span>
         </div>
 
-        <div className="flex shrink-0 items-center gap-0.5 text-foreground">
-          <FontAwesomeIcon icon={faIndianRupeeSign} className="h-3 w-3" />
-          <span className="text-lg font-bold leading-none sm:text-xl">
-            {session.price.toLocaleString("en-IN")}
-          </span>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center text-foreground mr-1">
+            <FontAwesomeIcon icon={faIndianRupeeSign} className="h-3.5 w-3.5 text-foreground/80 mr-0.5" />
+            <span className="text-lg font-extrabold leading-none">
+              {session.price.toLocaleString("en-IN")}
+            </span>
+          </div>
+          
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-background transition-all duration-300 ease-in-out group-hover:w-[80px] group-hover:px-2">
+            <span className="max-w-0 opacity-0 group-hover:max-w-[40px] group-hover:opacity-100 group-hover:mr-1 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-[10px] font-bold uppercase tracking-widest leading-none">
+              Book
+            </span>
+            <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </div>
         </div>
-      </div>
-
-      {/* Status + CTA */}
-      <div className="flex items-center justify-between gap-2">
-        <span className={cn(
-          "flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
-          STATUS_CLASS[session.status],
-        )}>
-          <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", STATUS_DOT[session.status])} />
-          <span className="truncate">{session.status}</span>
-        </span>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          aria-label={`Book ${session.topic} with ${session.expert.name}`}
-          className="h-auto shrink-0 gap-1.5 p-0 text-xs text-primary hover:bg-transparent hover:text-primary/70 sm:text-sm"
-        >
-          Book
-          <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-        </Button>
       </div>
     </article>
   );
@@ -189,90 +183,90 @@ function SessionCard({ session }: { session: Session }): React.ReactElement {
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export default function UpcomingSessions(): React.ReactElement {
-  const sectionRef  = useRef<HTMLElement>(null);
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
 
   const filtered = activeFilter === "All"
     ? SESSIONS
     : SESSIONS.filter((s) => s.category === activeFilter);
 
-  useGSAP(
-    () => {
-      gsap.fromTo(".us-header",
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1, y: 0,
-          duration: 0.75,
-          ease: "power3.out",
-          clearProps: "all",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 78%",
-            once: true,
-        },
-      });
-    },
-    { scope: sectionRef },
-  );
-
   return (
-    <section ref={sectionRef} className="dark section-py relative bg-background">
+    <section className="dark section-py relative bg-background overflow-hidden">
+      
+      {/* CSS Animations style block */}
+      <style>{`
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-up {
+          animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+      `}</style>
 
-      {/* Smaller blobs — no overflow-hidden clipping cost, reduced blur radius */}
-      <div className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full bg-primary/6 blur-2xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-0 h-64 w-64 rounded-full bg-primary/6 blur-2xl" />
+      {/* Ambient Glow Effects */}
+      <div className="pointer-events-none absolute -left-40 top-1/4 h-[400px] w-[400px] rounded-full bg-foreground/2 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-40 bottom-1/4 h-[400px] w-[400px] rounded-full bg-foreground/2 blur-[120px]" />
 
-      <div className="page-container relative">
+      <div className="page-container relative z-10">
 
-        <div className="us-header mx-auto mb-10 max-w-xl text-center">
+        {/* Section Header */}
+        <div className="mx-auto mb-10 max-w-xl text-center">
           <div className="mb-3 flex items-center justify-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            <p className="text-label text-primary">Upcoming Sessions</p>
+            <span className="h-2 w-2 rounded-full bg-primary animate-ping" />
+            <p className="text-sm font-bold uppercase tracking-widest text-primary">Upcoming Sessions</p>
           </div>
           <h2 className="text-h1 text-balance text-foreground">
             Book your next{" "}
-            <span className="text-primary">learning session</span>
+            <span>learning session</span>
           </h2>
-          <p className="text-body mx-auto mt-4 max-w-sm text-muted-foreground">
+          <p className="text-body mx-auto mt-4 max-w-sm">
             Expert-led 1:1 sessions happening this week. Learn from professionals through personalized guidance.
           </p>
         </div>
 
-        {/* Filter pills */}
-        <div className="us-header mb-8 flex flex-wrap justify-center gap-2">
+        {/* Filter Bar */}
+        <div className="mb-10 flex flex-wrap justify-center gap-1.5 rounded-full border border-border/40 bg-muted/20 p-1.5 backdrop-blur-sm w-fit mx-auto">
           {FILTERS.map((filter) => (
-            <Button
+            <button
               key={filter}
-              size="sm"
-              variant={activeFilter === filter ? "default" : "secondary"}
               onClick={() => setActiveFilter(filter)}
               aria-pressed={activeFilter === filter}
-              className="rounded-full"
+              className={cn(
+                "rounded-full px-5 py-2 text-[10px] font-bold tracking-widest uppercase transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-foreground/50",
+                activeFilter === filter
+                  ? "bg-foreground text-background shadow-sm"
+                  : "bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
             >
               {filter}
-            </Button>
+            </button>
           ))}
         </div>
 
-        {/* Cards */}
-        {filtered.length === 1 ? (
-          <div className="flex justify-center">
-            <div className="w-full max-w-sm">
-              <SessionCard session={filtered[0]} />
+        {/* Grid Container */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 min-h-[300px]">
+          {filtered.slice(0, 3).map((session, index) => (
+            <div
+              key={session.id + "-" + activeFilter}
+              className="animate-fade-up h-full"
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
+              <SessionCard session={session} />
             </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-4">
-            {filtered.map((session) => (
-              <SessionCard key={session.id} session={session} />
-            ))}
-          </div>
-        )}
+          ))}
+        </div>
 
-        <div className="us-header mt-10 flex justify-center">
-          <Button size="lg" className="rounded-full px-8 font-semibold">
+        {/* Bottom CTA */}
+        <div className="mt-12 flex justify-center">
+          <Button size="lg" className="rounded-full px-8 font-semibold bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 shadow-lg">
             Explore more sessions
-            <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
+            <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5 ml-2" />
           </Button>
         </div>
 

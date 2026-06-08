@@ -101,13 +101,13 @@ function CardImage({ src, alt }: { src: string; alt: string }): React.ReactEleme
             alt={alt}
             fill
             className="object-cover object-top"
-            sizes="(max-width: 640px) 72vw, (max-width: 1024px) 65vw, 60vw"
+            sizes="(max-width: 640px) 144vw, (max-width: 1024px) 130vw, 120vw"
             onError={() => setErrored(true)}
           />
         ) : (
           <div className="absolute inset-0 flex flex-col gap-3 p-4">
             <div className="flex items-start gap-3">
-              <div className="h-8 w-8 shrink-0 rounded-lg bg-primary/15 ring-1 ring-primary/15" />
+              <div className="h-8 w-8 shrink-0 rounded-lg bg-white/10 ring-1 ring-white/10" />
               <div className="flex-1 space-y-2 pt-1">
                 <div className="h-1.5 w-3/4 rounded-full bg-white/10" />
                 <div className="h-1.5 w-1/2 rounded-full bg-white/6" />
@@ -115,12 +115,12 @@ function CardImage({ src, alt }: { src: string; alt: string }): React.ReactEleme
             </div>
             <div className="grid grid-cols-3 gap-2">
               <div className="col-span-2 h-12 rounded-lg border border-white/[0.06] bg-white/[0.03]" />
-              <div className="h-12 rounded-lg border border-primary/15 bg-primary/[0.08]" />
+              <div className="h-12 rounded-lg border border-white/[0.06] bg-white/[0.03]" />
             </div>
           </div>
         )}
       </div>
-      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
     </div>
   );
 }
@@ -182,7 +182,7 @@ export default function HowItWorks(): React.ReactElement {
           trigger: scroller,
           start: "top top",
           end: () => `+=${window.innerHeight * TRANSITIONS}`,
-          scrub: true,
+          scrub: 1, // Smooth catch-up easing
           invalidateOnRefresh: true,
           onRefreshInit: () => { measure(); setBase(); },
         },
@@ -193,7 +193,7 @@ export default function HowItWorks(): React.ReactElement {
       cards.slice(1).forEach((card, i) => {
         tl.fromTo(
           card,
-          { x: () => window.innerWidth },
+          { x: "100vw" },
           { x: () => gap * (i + 1), duration: 1 },
           i,
         );
@@ -233,15 +233,15 @@ export default function HowItWorks(): React.ReactElement {
               <div
                 key={step.id}
                 ref={(el) => { cardRefs.current[index] = el; }}
-                className="dark flex w-full max-w-md flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-2xl lg:invisible lg:col-start-1 lg:row-start-1 lg:max-h-[88vh] lg:w-[58vw] lg:max-w-none lg:will-change-transform"
+                className="dark flex w-full max-w-md flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-2xl lg:invisible lg:col-start-1 lg:row-start-1 lg:max-h-[88vh] lg:w-[780px] lg:max-w-none"
               >
                 {/* Top bar */}
                 <div className="flex items-center justify-between px-5 pb-3 pt-5">
                   <div className="flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/15">
-                      <FontAwesomeIcon icon={step.icon} className="h-2.5 w-2.5 text-primary" />
+                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-white/10">
+                      <FontAwesomeIcon icon={step.icon} className="h-2.5 w-2.5 text-white" />
                     </div>
-                    <span className="text-[11px] font-semibold uppercase tracking-widest text-primary/60">
+                    <span className="text-[11px] font-semibold uppercase tracking-widest text-white/60">
                       {step.tag}
                     </span>
                   </div>
@@ -274,7 +274,7 @@ export default function HowItWorks(): React.ReactElement {
           size="lg"
           nativeButton={false}
           render={<Link href="/signup" />}
-          className="rounded-full px-10"
+          className="rounded-full px-10 bg-foreground text-background hover:bg-foreground/90 transition-all duration-300"
         >
           Start Learning Today
           <FontAwesomeIcon icon={faArrowRight} className="ml-1 h-3.5 w-3.5" />
