@@ -17,7 +17,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { Button } from "@/components/ui/button";
-
+import { cn } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { motion } from "motion/react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -158,7 +165,7 @@ function ShowcaseImage({ src, alt }: ShowcaseImageProps): React.ReactElement {
   const [errored, setErrored] = useState(false);
 
   return (
-    <div className="ls-image relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-border/50 shadow-[0_16px_48px_-12px_oklch(0_0_0/0.10)] transition-shadow duration-300 hover:shadow-[0_24px_64px_-12px_oklch(0_0_0/0.16)]">
+    <div className="ls-image relative aspect-square w-full overflow-hidden rounded-2xl border border-border/50 shadow-[0_16px_48px_-12px_oklch(0_0_0/0.10)] transition-shadow duration-300 hover:shadow-[0_24px_64px_-12px_oklch(0_0_0/0.16)]">
       {!errored ? (
         <Image
           src={src}
@@ -194,70 +201,23 @@ function ShowcaseImage({ src, alt }: ShowcaseImageProps): React.ReactElement {
   );
 }
 
-// ── FeatureBlock ──────────────────────────────────────────────────────────────
-
-interface FeatureBlockProps {
-  feature: Feature;
-}
-
-function FeatureBlock({ feature }: FeatureBlockProps): React.ReactElement {
-  return (
-    <div className="ls-block grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-20">
-
-      <div className={feature.reversed ? "lg:order-last" : ""}>
-        <ShowcaseImage src={feature.imageSrc} alt={feature.imageAlt} />
-      </div>
-
-      <div className="ls-content flex flex-col gap-6">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted ring-1 ring-border">
-            <FontAwesomeIcon icon={feature.icon} className="h-3.5 w-3.5 text-muted-foreground" />
-          </div>
-          <span className="text-label text-muted-foreground">{feature.label}</span>
-        </div>
-
-        <h3 className="text-h2 text-balance text-foreground">{feature.title}</h3>
-        <p className="text-body text-muted-foreground">{feature.description}</p>
-
-        <ul className="space-y-3">
-          {feature.benefits.map((benefit) => (
-            <li key={benefit} className="flex items-center gap-3">
-              <FontAwesomeIcon icon={faCircleCheck} className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <span className="text-body-sm text-foreground/90">{benefit}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-wrap gap-2 pt-1">
-          {feature.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-border bg-muted/60 px-3.5 py-1 text-xs font-medium text-muted-foreground"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export default function LearningShowcase(): React.ReactElement {
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeValue, setActiveValue] = useState<string[]>(["sessions"]);
+  const [lastActiveId, setLastActiveId] = useState<string>("sessions");
 
+  const activeId = activeValue[0] || lastActiveId;
 
   return (
     <section ref={sectionRef} className="section-py bg-background">
       <div className="page-container">
 
-        <div className="ls-header mx-auto mb-20 max-w-2xl text-center md:mb-28">
+        <div className="ls-header mx-auto mb-16 max-w-2xl text-center md:mb-24">
           <p className="text-label text-primary mb-4">Multiple Ways to Learn</p>
           <h2 className="text-h1 text-balance text-foreground">
-            Learn Your Way{" "}
-            <span className="text-primary">on Creonex</span>
+            Learn Your Way on Creonex
           </h2>
           <p className="text-body mx-auto mt-5 max-w-lg text-balance text-muted-foreground">
             Whether you want to gain a new skill, accelerate your career, or learn
@@ -266,10 +226,124 @@ export default function LearningShowcase(): React.ReactElement {
           </p>
         </div>
 
-        <div className="flex flex-col gap-20 md:gap-32">
-          {FEATURES.map((feature) => (
-            <FeatureBlock key={feature.id} feature={feature} />
-          ))}
+        {/* 2-Column Responsive Layout - Vertically Centered, No Sticky scrolling */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-center">
+          
+          {/* Left Column: Image showcase on desktop, vertically centered, layout animated */}
+          <motion.div 
+            layout
+            transition={{ type: "spring", stiffness: 260, damping: 26 }}
+            className="hidden lg:block lg:col-span-5"
+          >
+            <div className="relative aspect-square w-full">
+              {FEATURES.map((feature) => {
+                const isActive = feature.id === activeId;
+                return (
+                  <div
+                    key={feature.id}
+                    className={cn(
+                      "absolute inset-0 transition-all duration-500 ease-out",
+                      isActive
+                        ? "opacity-100 scale-100 translate-y-0 pointer-events-auto z-10"
+                        : "opacity-0 scale-95 translate-y-2 pointer-events-none z-0"
+                    )}
+                  >
+                    <ShowcaseImage src={feature.imageSrc} alt={feature.imageAlt} />
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* Right Column: Accordion (Col span 7 to allocate more space for the text) */}
+          <div className="lg:col-span-7 w-full">
+            <Accordion
+              value={activeValue}
+              onValueChange={(val) => {
+                setActiveValue(val);
+                if (val.length > 0) {
+                  setLastActiveId(val[0]);
+                }
+              }}
+              className="space-y-4"
+            >
+              {FEATURES.map((feature) => {
+                const isActive = feature.id === activeId;
+                return (
+                  <AccordionItem
+                    key={feature.id}
+                    value={feature.id}
+                    className={cn(
+                      "rounded-2xl border border-border/60 bg-card/40 px-5 transition-all duration-300",
+                      isActive
+                        ? "border-border bg-muted/20 shadow-[0_4px_20px_rgba(0,0,0,0.02)]"
+                        : "hover:border-border hover:bg-muted/10"
+                    )}
+                  >
+                    <AccordionTrigger className="w-full py-5 text-left text-foreground hover:no-underline transition-all duration-300">
+                      <div className="flex items-start gap-4 pr-4">
+                        <div
+                          className={cn(
+                            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border/60 bg-muted/55 transition-all duration-300",
+                            isActive && "bg-muted/15 border-foreground/10 text-foreground"
+                          )}
+                        >
+                          <FontAwesomeIcon icon={feature.icon} className="h-4 w-4" />
+                        </div>
+                        <div className="flex flex-col gap-0.5 text-left">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">
+                            {feature.label}
+                          </span>
+                          <span className="text-base md:text-lg font-bold tracking-tight text-foreground">
+                            {feature.title}
+                          </span>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+
+                    <AccordionContent className="pt-1 pb-6 pl-14 text-muted-foreground">
+                      <div className="flex flex-col gap-5">
+                        {/* Mobile-only Image */}
+                        <div className="lg:hidden w-full">
+                          <ShowcaseImage src={feature.imageSrc} alt={feature.imageAlt} />
+                        </div>
+
+                        <p className="text-body-sm text-muted-foreground leading-relaxed">
+                          {feature.description}
+                        </p>
+
+                        <ul className="space-y-2.5">
+                          {feature.benefits.map((benefit) => (
+                            <li key={benefit} className="flex items-center gap-3">
+                              <FontAwesomeIcon
+                                icon={faCircleCheck}
+                                className="h-4 w-4 shrink-0 text-muted-foreground"
+                              />
+                              <span className="text-body-sm text-foreground/85">
+                                {benefit}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          {feature.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-full border border-border/80 bg-muted/40 px-3 py-0.5 text-[11px] font-medium text-muted-foreground"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </div>
+
         </div>
 
         <div className="mt-16 flex justify-center">
@@ -288,3 +362,4 @@ export default function LearningShowcase(): React.ReactElement {
     </section>
   );
 }
+

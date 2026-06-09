@@ -1,17 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { motion, useScroll, useTransform } from "motion/react";
 
-gsap.registerPlugin(ScrollTrigger);
-
-// ── Data ──────────────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface Milestone {
   phase: string;
@@ -79,135 +76,21 @@ const MILESTONES: Milestone[] = [
 export default function CreatorTimeline(): React.ReactElement {
   const sectionRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const endingRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
-    const isMobile = window.innerWidth < 1024;
+  // 1. Progress track line grows downward with scroll
+  const { scrollYProgress: lineScroll } = useScroll({
+    target: timelineRef,
+    offset: ["start 70%", "end 65%"],
+  });
+  const scaleY = useTransform(lineScroll, [0, 1], [0, 1]);
 
-    const ctx = gsap.context(() => {
-
-      // ── 1. Line grows downward with scroll ──────────────────────────────────
-      gsap.fromTo(
-        lineRef.current,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: timelineRef.current,
-            start: "top 70%",
-            end: "bottom 65%",
-            scrub: 2,
-          },
-        },
-      );
-
-      // ── 2. Image — subtle parallax float (desktop) ──────────────────────────
-      if (!isMobile && imageRef.current) {
-        gsap.to(imageRef.current, {
-          y: -40,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top center",
-            end: "bottom center",
-            scrub: true,
-          },
-        });
-      }
-
-      // ── 3. Card reveals + dot activation ────────────────────────────────────
-      cardRefs.current.forEach((card, i) => {
-        if (!card) return;
-
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            y: isMobile ? 16 : 28,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.75,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 87%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-
-        const dot = dotRefs.current[i];
-        if (dot) {
-          ScrollTrigger.create({
-            trigger: card,
-            start: "top 62%",
-            end: "bottom 28%",
-            onEnter: () =>
-              gsap.to(dot, {
-                scale: 1.55,
-                boxShadow: "0 0 0 5px oklch(0.543 0.093 177 / 0.18)",
-                duration: 0.4,
-                ease: "power2.out",
-                overwrite: true,
-              }),
-            onLeave: () =>
-              gsap.to(dot, {
-                scale: 1,
-                boxShadow: "0 0 0 0px oklch(0.543 0.093 177 / 0)",
-                duration: 0.35,
-                overwrite: true,
-              }),
-            onEnterBack: () =>
-              gsap.to(dot, {
-                scale: 1.55,
-                boxShadow: "0 0 0 5px oklch(0.543 0.093 177 / 0.18)",
-                duration: 0.4,
-                ease: "power2.out",
-                overwrite: true,
-              }),
-            onLeaveBack: () =>
-              gsap.to(dot, {
-                scale: 1,
-                boxShadow: "0 0 0 0px oklch(0.543 0.093 177 / 0)",
-                duration: 0.35,
-                overwrite: true,
-              }),
-          });
-        }
-      });
-
-      // ── 4. Ending — cinematic fade-up ───────────────────────────────────────
-      if (endingRef.current) {
-        gsap.fromTo(
-          endingRef.current,
-          { opacity: 0, y: 36 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: endingRef.current,
-              start: "top 88%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-      }
-
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  // ── Render ─────────────────────────────────────────────────────────────────
+  // 2. Profile photo subtle parallax float on desktop
+  const { scrollYProgress: imageScroll } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const imageY = useTransform(imageScroll, [0, 1], [20, -40]);
 
   return (
     <section
@@ -234,11 +117,11 @@ export default function CreatorTimeline(): React.ReactElement {
         </div>
 
         {/* ── Two-column grid — items-center vertically centers the image ──────── */}
-        <div className="mx-auto grid max-w-5xl items-center lg:grid-cols-[300px_1fr] xl:grid-cols-[340px_1fr] lg:gap-20 xl:gap-28">
+        <div className="mx-auto grid max-w-5xl items-center lg:grid-cols-[300px_1fr] xl:grid-cols-[340px_1fr] lg:gap-36 xl:gap-48">
 
           {/* ──────────────── LEFT: creator image (centered by grid) ─────────── */}
           <div className="hidden lg:block">
-            <div ref={imageRef}>
+            <motion.div style={{ y: imageY }}>
 
               {/* Photo */}
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-border shadow-sm">
@@ -285,7 +168,7 @@ export default function CreatorTimeline(): React.ReactElement {
                 Illustrative journey. Creonex is built for creators ready to take this path.
               </p>
 
-            </div>
+            </motion.div>
           </div>
 
           {/* ──────────────── RIGHT: timeline milestones ─────────────────────── */}
@@ -308,27 +191,29 @@ export default function CreatorTimeline(): React.ReactElement {
               </div>
             </div>
 
-            {/* Progress line track — extends into gap toward card */}
+            {/* Progress line track — stops exactly at the last step dot */}
             <div
               aria-hidden
-              className="pointer-events-none absolute left-[6px] top-0 -bottom-[60px] md:-bottom-[92px] lg:-bottom-16 w-px overflow-hidden bg-border"
+              className="pointer-events-none absolute left-[6px] top-2.5 bottom-[210px] lg:bottom-[184px] w-px overflow-hidden bg-border"
             >
-              <div
-                ref={lineRef}
-                className="absolute inset-0 origin-top bg-primary"
+              <motion.div
+                style={{ scaleY, originY: 0 }}
+                className="absolute inset-0 bg-primary"
               />
             </div>
 
             {/* Milestones */}
             {MILESTONES.map((m, i) => (
-              <div
+              <motion.div
                 key={i}
-                ref={(el) => { cardRefs.current[i] = el; }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: Math.min(i * 0.05, 0.2) }}
                 className="group relative pb-7 pl-10 last:pb-0"
               >
                 {/* Dot */}
                 <div
-                  ref={(el) => { dotRefs.current[i] = el; }}
                   className={
                     i === MILESTONES.length - 1
                       ? "absolute left-0 top-1.5 h-3 w-3 rounded-full bg-primary ring-4 ring-primary/20 shadow-[0_0_14px_4px_rgba(0,137,123,0.28)]"
@@ -355,7 +240,7 @@ export default function CreatorTimeline(): React.ReactElement {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
 
           </div>
@@ -365,7 +250,14 @@ export default function CreatorTimeline(): React.ReactElement {
         {/* end grid */}
 
         {/* ── Ending — centered below the full grid ────────────────────────────── */}
-        <div ref={endingRef} className="mx-auto mt-10 flex max-w-5xl justify-center md:mt-14">
+        <motion.div 
+          ref={endingRef} 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mx-auto mt-10 flex max-w-7xl justify-center md:mt-14"
+        >
           <div className="relative w-full max-w-2xl">
 
             {/* Card */}
@@ -396,7 +288,7 @@ export default function CreatorTimeline(): React.ReactElement {
                   render={<Link href="/signup" />}
                   className="[a]:hover:bg-primary hover:-translate-y-0.5"
                 >
-                  Begin for free
+                  Start your page
                   <FontAwesomeIcon
                     icon={faArrowRight}
                     className="ml-2 transition-transform duration-300 group-hover/button:translate-x-1"
@@ -406,7 +298,7 @@ export default function CreatorTimeline(): React.ReactElement {
             </div>
 
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>

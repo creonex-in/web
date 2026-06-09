@@ -27,10 +27,10 @@ export default function CreatorLandingPage(): React.ReactElement {
         <FeaturedCreators />
         <MonetizeSection />
         <CollaborationMarketplace />
+        <CreatorTimeline />
         <IndiaFirstPayments />
         <HowItWorks />
         <MobileAppSection />
-        <CreatorTimeline />
         <Testimonials />
         <Faqs />
       </main>

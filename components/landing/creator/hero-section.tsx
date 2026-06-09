@@ -126,7 +126,7 @@ export default function HeroSection(): React.ReactElement {
               render={<Link href="/signup" />}
               className="h-14 w-full sm:w-auto rounded-full bg-foreground px-10 text-base font-normal text-background hover:bg-primary hover:text-white transition-colors duration-300 shadow-md"
             >
-              Start for Free
+              Start your's
               <FontAwesomeIcon icon={faArrowRight} className="ml-2 h-3.5 w-3.5" />
             </Button>
             <Button

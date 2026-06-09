@@ -198,10 +198,10 @@ export default function MonetizeSection(): React.ReactElement {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto font-sans">
-                    <Button nativeButton={false} render={<Link href="/signup" />} className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20 w-full sm:w-auto">
+                    <Button size="lg" nativeButton={false} render={<Link href="/signup" />} className="h-14 rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20 w-full sm:w-auto">
                       Start Building
                     </Button>
-                    <Button nativeButton={false} render={<Link href="#demo" />} variant="outline" className="rounded-full px-8 font-bold border-border bg-transparent hover:bg-muted text-foreground w-full sm:w-auto">
+                    <Button size="lg" nativeButton={false} render={<Link href="#demo" />} variant="outline" className="h-14 rounded-full px-8 font-bold border-border bg-transparent hover:bg-muted text-foreground w-full sm:w-auto">
                       Learn More
                     </Button>
                   </div>

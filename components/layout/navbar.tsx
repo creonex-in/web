@@ -104,7 +104,7 @@ const LEARNER_CONFIG: NavConfig = {
     { label: "Find Mentors", href: "/top-creators" },
     { label: "How It Works", href: "#how-it-works" },
   ],
-  ctaText: "Get Started Free",
+  ctaText: "Get Started",
   mobileLinks: [
     { label: "Find Mentors", href: "/top-creators" },
     { label: "How It Works", href: "#how-it-works" },

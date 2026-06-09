@@ -274,7 +274,7 @@ export default function HowItWorks(): React.ReactElement {
           size="lg"
           nativeButton={false}
           render={<Link href="/signup" />}
-          className="rounded-full px-10 bg-foreground text-background hover:bg-foreground/90 transition-all duration-300"
+          className="rounded-full px-10 bg-primary text-white"
         >
           Start Learning Today
           <FontAwesomeIcon icon={faArrowRight} className="ml-1 h-3.5 w-3.5" />

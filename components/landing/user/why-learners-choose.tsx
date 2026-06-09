@@ -1,77 +1,161 @@
 "use client";
 
-const FEATURES = [
-  {
-    number: "01",
-    title: "Personalized Learning",
-    description: "Connect directly with creators and experts who match your learning goals.",
-    themeClass: "bg-[#eef2ff] dark:bg-indigo-950/30 border-[#c7d2fe] dark:border-indigo-500/30 hover:border-indigo-400/60",
-    tagClass: "bg-indigo-100 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/40",
-  },
-  {
-    number: "02",
-    title: "Verified Experts",
-    description: "Every creator goes through a quality review process before joining the platform.",
-    themeClass: "bg-[#ecfdf5] dark:bg-emerald-950/30 border-[#a7f3d0] dark:border-emerald-500/30 hover:border-emerald-400/60",
-    tagClass: "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/40",
-  },
-  {
-    number: "03",
-    title: "Outcome-Focused Learning",
-    description: "Gain practical skills, career guidance, and actionable insights instead of passive content consumption.",
-    themeClass: "bg-[#faf5ff] dark:bg-purple-950/30 border-[#e9d5ff] dark:border-purple-500/30 hover:border-purple-400/60",
-    tagClass: "bg-purple-100 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/40",
-  },
-];
+import Image from "next/image";
+import { Timeline } from "@/components/ui/timeline";
 
 export default function WhyLearnersChoose(): React.ReactElement {
-  return (
-    <section className="py-20 md:py-28 bg-background border-b border-border/40 relative overflow-hidden">
-      {/* Premium ambient glow background */}
-      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 translate-x-1/2 translate-y-1/2 w-[400px] h-[400px] rounded-full bg-foreground/5 blur-[120px] pointer-events-none" />
-
-      <div className="page-container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+  const data = [
+    {
+      title: "01",
+      content: (
+        <div key="step-1" className="w-full">
+          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Personalized</span>
+          </div>
+          <h4 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Personalized Learning</h4>
+          <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
+            Connect directly with creators and experts who match your learning goals. Skip the generic video repositories and engage in interactive, outcome-driven learning.
+          </p>
           
-          {/* Left Column: Sticky Title & Concept */}
-          <div className="lg:col-span-5 flex flex-col justify-center text-center lg:text-left lg:sticky lg:top-28 lg:self-start">
-            <span className="text-label text-primary block mb-4 tracking-widest font-sans">WHY CREONEX</span>
-            <h2 className="text-3xl md:text-4xl lg:text-[44px] lg:leading-[1.15] font-bold tracking-tight text-foreground font-display mb-6">
-              Designed to help you actually grow.
-            </h2>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed font-light max-w-lg mx-auto lg:mx-0 font-sans">
-              Skip the generic video repositories. Creonex connects you directly with top-tier practitioners to gain real-world outcomes.
-            </p>
+          {/* 2x2 Standard Grid */}
+          <div className="grid grid-cols-2 gap-4 w-full">
+            <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-border/20">
+               <Image 
+                 src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&w=800&q=80" 
+                 alt="1-on-1 virtual call learning" 
+                 fill 
+                 className="object-cover hover:scale-105 transition-transform duration-500" 
+               />
+            </div>
+            <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-border/20">
+               <Image 
+                 src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80" 
+                 alt="Mentorship and code review discussion" 
+                 fill 
+                 className="object-cover hover:scale-105 transition-transform duration-500" 
+               />
+            </div>
+            <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-border/20">
+               <Image 
+                 src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80" 
+                 alt="Interactive student notebook workspace" 
+                 fill 
+                 className="object-cover hover:scale-105 transition-transform duration-500" 
+               />
+            </div>
+            <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-border/20">
+               <Image 
+                 src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=800&q=80" 
+                 alt="Virtual teacher tutorial board" 
+                 fill 
+                 className="object-cover hover:scale-105 transition-transform duration-500" 
+               />
+            </div>
           </div>
-
-          {/* Right Column: Clean Vertical Stack List */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-5 md:space-y-6 font-sans">
-            {FEATURES.map((feature, idx) => (
-              <div 
-                key={idx} 
-                className={`group flex gap-6 p-6 md:p-8 rounded-[2rem] border transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_10px_30px_rgba(0,0,0,0.02)] dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] ${feature.themeClass}`}
-              >
-                {/* Minimalist Number Icon */}
-                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl font-mono text-sm font-bold shrink-0 transition-all duration-300 group-hover:scale-105 shadow-sm ${feature.tagClass}`}>
-                  {feature.number}
-                </div>
-
-                {/* Content Block */}
-                <div>
-                  <h3 className="text-lg md:text-xl font-bold text-foreground mb-2 font-display transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed font-light">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
         </div>
-      </div>
+      ),
+    },
+    {
+      title: "02",
+      content: (
+        <div key="step-2" className="w-full">
+          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Verified</span>
+          </div>
+          <h4 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Verified Experts</h4>
+          <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
+            Every creator goes through a quality review process before joining the platform. Learn only from practitioners actively working in the industry.
+          </p>
+          
+          {/* Top Heavy Grid */}
+          <div className="grid grid-cols-2 gap-4 w-full">
+             <div className="col-span-2 relative aspect-[21/9] rounded-xl overflow-hidden shadow-sm border border-border/20">
+                <Image 
+                  src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=1200&q=80" 
+                  alt="Verified designer prototyping at office" 
+                  fill 
+                  className="object-cover hover:scale-105 transition-transform duration-500" 
+                />
+             </div>
+             <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-border/20">
+                <Image 
+                  src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&w=800&q=80" 
+                  alt="Active programmer writing code" 
+                  fill 
+                  className="object-cover hover:scale-105 transition-transform duration-500" 
+                />
+             </div>
+             <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-border/20">
+                <Image 
+                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" 
+                  alt="Active workplace workstation" 
+                  fill 
+                  className="object-cover hover:scale-105 transition-transform duration-500" 
+                />
+             </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "03",
+      content: (
+        <div key="step-3" className="w-full">
+          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Outcomes</span>
+          </div>
+          <h4 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Outcome-Focused Learning</h4>
+          <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
+            Gain practical skills, career guidance, and actionable insights instead of passive content consumption. Walk away with clear outcomes.
+          </p>
+          
+          {/* Asymmetric Bento Grid */}
+          <div className="grid grid-cols-2 gap-4 w-full h-[400px] md:h-[500px]">
+             <div className="row-span-2 relative rounded-xl overflow-hidden shadow-sm border border-border/20">
+                <Image 
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" 
+                  alt="Outcome tracking panel and analytics chart" 
+                  fill 
+                  className="object-cover hover:scale-105 transition-transform duration-500" 
+                />
+             </div>
+             <div className="relative rounded-xl overflow-hidden shadow-sm border border-border/20">
+                <Image 
+                  src="https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&w=800&q=80" 
+                  alt="Hands-on designer crafting project layout" 
+                  fill 
+                  className="object-cover hover:scale-105 transition-transform duration-500" 
+                />
+             </div>
+             <div className="relative rounded-xl overflow-hidden shadow-sm border border-border/20">
+                <Image 
+                  src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" 
+                  alt="Finished application code outcomes" 
+                  fill 
+                  className="object-cover hover:scale-105 transition-transform duration-500" 
+                />
+             </div>
+          </div>
+        </div>
+      ),
+    },
+  ];
+
+  const header = (
+    <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
+      <p className="text-label text-primary mb-4">Why Learners Choose Creonex</p>
+      <h2 className="text-h1 text-balance text-foreground mb-6 leading-tight">
+        Designed to help you<br className="hidden md:block" /> actually grow.
+      </h2>
+      <p className="text-body mx-auto max-w-2xl leading-relaxed text-muted-foreground">
+        Skip the generic video repositories. Creonex connects you directly with top-tier practitioners to gain real-world outcomes.
+      </p>
+    </div>
+  );
+
+  return (
+    <section className="bg-background pt-0 pb-24 overflow-hidden relative">
+      <Timeline data={data} header={header} />
     </section>
   );
 }

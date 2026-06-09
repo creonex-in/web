@@ -31,7 +31,7 @@ export default function LearnerLandingPage(): React.ReactElement {
         <CinematicGallery />
         <LearningShowcase />
         <HowItWorks />
-        <UpcomingSessions />
+        {/* <UpcomingSessions /> */}
         <PaymentsTrust />
         <Testimonials />
         <Faqs />

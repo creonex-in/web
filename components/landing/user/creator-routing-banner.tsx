@@ -23,7 +23,7 @@ export default function CreatorRoutingBanner(): React.ReactElement {
           href="/creators"
           className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 text-xs font-semibold text-background transition-colors duration-200 hover:bg-foreground/75"
         >
-          Glow on Creonex
+          Grow on Creonex
           <FontAwesomeIcon icon={faArrowRight} className="size-3" />
         </Link>
 
