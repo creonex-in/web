@@ -22,10 +22,10 @@ export default function MobileAppSection(): React.ReactElement {
       <div className="absolute bottom-10 right-1/4 translate-x-1/3 w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
 
       <div className="page-container relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+        <div className="flex flex-col lg:flex-row items-center justify-evenly gap-8 lg:gap-10">
           
           {/* Left Side: Minimal Copy */}
-          <div className="flex-1 max-w-xl text-center lg:text-left">
+          <div className="flex-1 max-w-xl  text-center lg:text-left">
             <p className="text-label text-primary mb-5 flex items-center gap-2 justify-center lg:justify-start font-sans">
                <FontAwesomeIcon icon={faMobileScreenButton} className="w-3.5 h-3.5" />
                Coming 2026
@@ -74,7 +74,7 @@ export default function MobileAppSection(): React.ReactElement {
           </div>
 
           {/* Right Side: Ultra-Minimal Abstract Mockup with Hardware Frame */}
-          <div className="flex-1 w-full max-w-md relative flex justify-center lg:justify-end">
+          <div className="flex-1 w-full max-w-md relative flex justify-center  lg:justify-end">
             {/* Phone background ambient glow */}
             <div className="absolute top-1/2 left-1/2 lg:left-2/3 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-100/60 dark:bg-indigo-950/20 rounded-full blur-[80px] pointer-events-none" />
 
