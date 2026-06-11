@@ -10,40 +10,31 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 
-const BADGES: { id: string; name: string; icon: IconDefinition; gradient: string }[] = [
-  { id: '1', name: 'Top 1%',          icon: faCrown,        gradient: 'from-amber-400 to-orange-500'  },
-  { id: '2', name: "People's Choice", icon: faHeart,        gradient: 'from-pink-400 to-rose-500'     },
-  { id: '3', name: 'Community Care',  icon: faUsers,        gradient: 'from-blue-400 to-indigo-500'   },
-  { id: '4', name: 'Bestseller',      icon: faFire,         gradient: 'from-orange-400 to-red-500'    },
-  { id: '5', name: 'Elite Advisor',   icon: faShieldHalved, gradient: 'from-emerald-400 to-teal-500'  },
-  { id: '6', name: 'Trusted Pro',     icon: faCircleCheck,  gradient: 'from-cyan-400 to-blue-500'     },
-  { id: '7', name: 'Top Speaker',     icon: faMicrophone,   gradient: 'from-violet-400 to-purple-600' },
-  { id: '8', name: '5-Star Rated',    icon: faStar,         gradient: 'from-yellow-400 to-amber-500'  },
+const BADGES: { id: string; name: string; icon: IconDefinition }[] = [
+  { id: '1', name: 'Top 1%',          icon: faCrown        },
+  { id: '2', name: "People's Choice", icon: faHeart        },
+  { id: '3', name: 'Community Care',  icon: faUsers        },
+  { id: '4', name: 'Bestseller',      icon: faFire         },
+  { id: '5', name: 'Elite Advisor',   icon: faShieldHalved },
+  { id: '6', name: 'Trusted Pro',     icon: faCircleCheck  },
+  { id: '7', name: 'Top Speaker',     icon: faMicrophone   },
+  { id: '8', name: '5-Star Rated',    icon: faStar         },
 ]
 
 const VISIBLE = 4
 
-function BadgeTile({ name, icon, gradient, size = 'sm' }: {
+function BadgeTile({ name, icon, size = 'sm' }: {
   name: string
   icon: IconDefinition
-  gradient: string
   size?: 'sm' | 'lg'
 }): React.ReactElement {
   return (
-    <div className="flex flex-col items-center gap-1">
-      <div className={cn(
-        'rounded-xl flex items-center justify-center shadow-sm bg-gradient-to-br shrink-0',
-        size === 'sm' ? 'w-12 h-12' : 'w-16 h-16',
-        gradient,
-      )}>
-        <FontAwesomeIcon icon={icon} className={cn('text-white', size === 'sm' ? 'size-[18px]' : 'size-6')} />
-      </div>
-      <span className={cn(
-        'font-semibold text-gray-400 text-center leading-tight truncate',
-        size === 'sm' ? 'text-[8.5px] w-12' : 'text-[10px] w-16',
-      )}>
-        {name}
-      </span>
+    <div className={cn(
+      "inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-zinc-200/70 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/60 text-zinc-750 dark:text-zinc-300 shadow-[0_1px_2px_rgba(0,0,0,0.01)] transition-colors duration-200 cursor-default",
+      size === 'sm' ? 'text-[11px] h-[26px]' : 'text-[12.5px] h-[32px] px-3.5 py-1.5'
+    )}>
+      <FontAwesomeIcon icon={icon} className={cn("text-zinc-400 dark:text-zinc-500 shrink-0", size === 'sm' ? 'size-3' : 'size-3.5')} />
+      <span className="font-semibold tracking-tight whitespace-nowrap">{name}</span>
     </div>
   )
 }
@@ -55,31 +46,28 @@ export function BadgesButton(): React.ReactElement {
 
   return (
     <>
-      <div className="flex items-end gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {visible.map((b) => (
-          <BadgeTile key={b.id} name={b.name} icon={b.icon} gradient={b.gradient} />
+          <BadgeTile key={b.id} name={b.name} icon={b.icon} />
         ))}
         {remaining > 0 && (
-          <div className="flex flex-col items-center gap-1">
-            <button
-              onClick={() => setOpen(true)}
-              className="w-12 h-12 rounded-xl bg-gray-100 hover:bg-gray-200 active:scale-95 transition-all flex items-center justify-center text-[12px] font-bold text-gray-500 shrink-0"
-            >
-              +{remaining}
-            </button>
-            <span className="text-[8.5px] text-gray-400 font-semibold">more</span>
-          </div>
+          <button
+            onClick={() => setOpen(true)}
+            className="inline-flex items-center justify-center h-[26px] px-3 rounded-full border border-zinc-200/75 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/60 hover:bg-zinc-100/80 dark:hover:bg-zinc-800/60 active:scale-95 transition-all text-[11px] font-bold text-zinc-500 dark:text-zinc-400 cursor-pointer shadow-[0_1px_2px_rgba(0,0,0,0.01)]"
+          >
+            +{remaining} more
+          </button>
         )}
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-sm">
+        <DialogContent className="sm:max-w-md bg-card text-foreground border border-border">
           <DialogHeader>
-            <DialogTitle className="text-base font-bold">Badges</DialogTitle>
+            <DialogTitle className="text-base font-bold text-foreground">All Creator Badges</DialogTitle>
           </DialogHeader>
-          <div className="grid grid-cols-4 gap-4 py-2">
+          <div className="flex flex-wrap gap-2 py-4 justify-start">
             {BADGES.map((b) => (
-              <BadgeTile key={b.id} name={b.name} icon={b.icon} gradient={b.gradient} size="lg" />
+              <BadgeTile key={b.id} name={b.name} icon={b.icon} size="lg" />
             ))}
           </div>
         </DialogContent>
@@ -87,3 +75,4 @@ export function BadgesButton(): React.ReactElement {
     </>
   )
 }
+

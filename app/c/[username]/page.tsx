@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { BadgesButton } from './badges-button'
 import { BookSessionBar } from './book-session-bar'
+import TestimonialsDeck from '@/components/landing/shared/testimonials-deck'
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -105,51 +106,43 @@ const faqs: { q: string; a: string }[] = [
 
 function OfferingCard({ item }: { item: OfferingCard }): React.ReactElement {
   return (
-    <div className="flex flex-col group rounded-[16px] overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 bg-white cursor-pointer p-1.5 pb-3">
-      <div className="relative aspect-[4/3] rounded-[12px] overflow-hidden bg-gray-100 mb-3">
-        <Image src={item.image} alt={item.title} fill className="object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+    <div className="flex flex-col group rounded-[16px] overflow-hidden border border-border hover:border-primary/45 hover:shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all duration-200 bg-card cursor-pointer p-2">
+      <div className="relative aspect-[16/10] rounded-[10px] overflow-hidden bg-muted mb-2.5">
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="object-cover group-hover:scale-[1.02] transition-transform duration-355 ease-out"
+        />
         {item.badge && item.badgeVariant && (
-          <span className={cn('absolute top-3 left-3 text-[10px] font-bold px-2.5 py-[4px] rounded-full uppercase tracking-wide shadow-sm', badgeStyles[item.badgeVariant])}>
+          <span className={cn(
+            'absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
+            item.badgeVariant === 'urgency' ? 'bg-red-50 dark:bg-red-955/60 text-red-650 dark:text-red-400 border border-red-100/50 dark:border-red-900/40' :
+            item.badgeVariant === 'open' ? 'bg-emerald-50 dark:bg-emerald-955/60 text-emerald-650 dark:text-emerald-400 border border-emerald-100/50 dark:border-emerald-900/40' :
+            item.badgeVariant === 'new' ? 'bg-blue-50 dark:bg-blue-955/60 text-blue-655 dark:text-blue-400 border border-blue-100/50 dark:border-blue-900/40' :
+            'bg-amber-50 dark:bg-amber-955/60 text-amber-655 dark:text-amber-400 border border-amber-100/50 dark:border-amber-900/40'
+          )}>
             {item.badge}
           </span>
         )}
       </div>
-      <div className="px-2 flex flex-col flex-1">
-        <div className="flex items-start justify-between gap-2 mb-1">
-          <p className="text-[14px] font-bold text-gray-900 leading-snug line-clamp-2">{item.title}</p>
-          <span className="font-bold text-[14px] text-gray-900 whitespace-nowrap">₹{item.price.toLocaleString()}</span>
-        </div>
-        <p className="text-[12px] text-gray-500 mb-3 font-medium">{item.category}</p>
-        <div className="flex items-center justify-between text-[12px] text-gray-500 mt-auto pt-2 border-t border-gray-50">
-          <span className="flex items-center gap-1.5">
-            <FontAwesomeIcon icon={faStar} className="size-3.5 text-amber-400" />
-            <span className="font-bold text-gray-700">{item.rating}</span>
-          </span>
-          <span className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 font-medium"><FontAwesomeIcon icon={faHeart} className="size-3.5 text-red-400" />{item.likes}</span>
-            <span className="flex items-center gap-1.5 font-medium"><FontAwesomeIcon icon={faEye} className="size-3.5" />{item.views}</span>
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
+      <div className="px-1 flex flex-col flex-1">
+        <p className="text-[12.5px] font-bold text-foreground leading-snug line-clamp-2 mb-1 group-hover:text-primary transition-colors">
+          {item.title}
+        </p>
+        <p className="text-[10.5px] text-muted-foreground font-medium mb-3.5">{item.category}</p>
 
-
-function ReviewCard({ review }: { review: Review }): React.ReactElement {
-  return (
-    <div className="rounded-[16px] border border-gray-200/80 p-6 bg-white flex flex-col gap-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
-      <p className="text-[14px] leading-[1.6] text-gray-700 font-medium">
-        {review.text}
-      </p>
-
-      <div className="flex items-center gap-3">
-        <div className="h-9 w-9 rounded-full bg-[#111] flex items-center justify-center text-[11px] font-bold text-white shrink-0">
-          {review.initials}
-        </div>
-        <div>
-          <p className="text-[13px] font-bold text-gray-900 leading-tight mb-0.5">{review.name}</p>
-          <p className="text-[12px] text-gray-400 font-medium leading-tight">{review.role}</p>
+        <div className="mt-auto pt-2 border-t border-border/60 flex items-center justify-between">
+          <span className="font-extrabold text-[13px] text-foreground">₹{item.price.toLocaleString()}</span>
+          <div className="flex items-center gap-1.5 text-[10.5px] text-muted-foreground font-semibold">
+            <span className="flex items-center gap-0.5 text-amber-500">
+              <FontAwesomeIcon icon={faStar} className="size-3" />
+              {item.rating}
+            </span>
+            <span className="text-border dark:text-zinc-750">•</span>
+            <span className="text-muted-foreground font-medium">{item.views}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -160,93 +153,142 @@ function ReviewCard({ review }: { review: Review }): React.ReactElement {
 
 export default function CreatorProfilePage(): React.ReactElement {
   return (
-    <div className="min-h-screen bg-white pb-20 sm:pb-0 font-sans">
-      {/* ══════════ 1. HERO ══════════ */}
-      <div className="w-full h-[160px] sm:h-[220px] relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #fce7f3 0%, #e0e7ff 40%, #ddd6fe 70%, #c7d2fe 100%)' }}>
-        <div className="absolute top-1/2 left-[32%] -translate-x-1/2 -translate-y-1/2 w-[260px] h-[160px] rounded-full bg-violet-500/30 blur-[40px]" />
-        <div className="absolute top-1/2 left-[22%] -translate-x-1/2 -translate-y-1/2 w-[180px] h-[120px] rounded-full bg-indigo-500/30 blur-[30px]" />
+    <div className="min-h-screen theme-creator bg-background text-foreground pb-20 sm:pb-0 font-sans w-full overflow-x-hidden">
+      {/* ══════════ 1. HERO BANNER ══════════ */}
+      <div className="w-full h-[140px] sm:h-[180px] relative overflow-hidden bg-muted border-b border-border">
+        {/* Ambient glows */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-purple-500/10 opacity-70" />
+        <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] dark:bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:20px_20px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black,transparent)]" />
       </div>
 
-      <div className="page-container mx-auto relative">
-        {/* Profile Header */}
-        <div className="px-5 sm:px-10 pb-2">
-          <div className="flex flex-col md:flex-row md:items-end justify-between -mt-[64px] sm:-mt-[96px] relative z-10 gap-6 md:gap-0">
-
-            {/* Left side (Avatar + Info) */}
-            <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6">
-              <div className="w-[128px] h-[128px] sm:w-[192px] sm:h-[192px] rounded-[32px] sm:rounded-[40px] border-[6px] sm:border-[8px] border-white shadow-sm bg-gray-200 overflow-hidden shrink-0 relative">
-                <Image src={creator.avatar} alt={creator.name} fill className="object-cover" />
-              </div>
-
-              <div className="pb-1.5 flex-1">
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-1.5">
-                  <div className="flex items-center gap-2.5">
-                    <h1 className="text-[24px] sm:text-[28px] font-extrabold text-gray-900 tracking-tight leading-none">{creator.name}</h1>
-                    <span className="bg-[#111] text-white text-[10px] font-bold px-2 py-[3px] rounded-[6px] flex items-center gap-1 shrink-0 mt-0.5">
-                      PRO <FontAwesomeIcon icon={faBolt} className="size-[9px] text-amber-400" />
-                    </span>
-                  </div>
-                  <button className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-gray-500 hover:text-gray-900 transition-colors hover:bg-gray-100 cursor-pointer">
-                    <FontAwesomeIcon icon={faShareNodes} className="size-4" />
-                  </button>
-                </div>
-                <p className="text-[14px] sm:text-[15px] text-gray-500 leading-snug mb-3 font-medium max-w-lg">
-                  {creator.bio} <br className="hidden sm:block" />
-                  based in {creator.location}
-                </p>
-
-                <div className="flex items-center gap-3.5 mb-5">
-                  <a href="#" className="text-gray-400 hover:text-[#1DA1F2] transition-colors"><FontAwesomeIcon icon={faTwitter} className="size-4 sm:size-5" /></a>
-                  <a href="#" className="text-gray-400 hover:text-[#0A66C2] transition-colors"><FontAwesomeIcon icon={faLinkedin} className="size-4 sm:size-5" /></a>
-                  <a href="#" className="text-gray-400 hover:text-[#FF0000] transition-colors"><FontAwesomeIcon icon={faYoutube} className="size-4 sm:size-5" /></a>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <button className="bg-[#111] hover:bg-black text-white px-6 py-2 rounded-[10px] text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center">
-                    Follow
-                  </button>
-                  <button className="bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-6 py-2 rounded-[10px] text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center">
-                    Get in touch
-                  </button>
-                  <button className="sm:hidden flex items-center justify-center w-9 h-9 rounded-[10px] bg-gray-50 border border-gray-200 text-gray-500 transition-colors">
-                    <FontAwesomeIcon icon={faShareNodes} className="size-4" />
-                  </button>
-                </div>
-              </div>
+      {/* ══════════ 2. PROFILE HEADER ══════════ */}
+      <div className="w-full bg-background pt-0 pb-6 border-b border-border/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Avatar Container: Overlapping banner */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between -mt-[50px] sm:-mt-[70px] relative z-10 mb-6 gap-6 sm:gap-0">
+            <div className="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] rounded-[24px] sm:rounded-[32px] border-[5px] border-background shadow-md bg-muted overflow-hidden shrink-0 relative">
+              <Image src={creator.avatar} alt={creator.name} fill className="object-cover" />
             </div>
 
-            {/* Right side (Badges & Stats) */}
-            <div className="flex flex-col md:items-end gap-6 md:pb-2 pt-4 md:pt-0 w-full md:w-auto">
-              <div className="flex flex-col md:items-end w-full">
-                <BadgesButton />
-              </div>
+            {/* Follow & Get in touch buttons */}
+            <div className="flex items-center gap-2.5 self-start sm:self-auto">
+              <button className="bg-primary hover:bg-primary/95 active:scale-98 text-primary-foreground px-6 py-2.5 rounded-full text-[13.5px] font-bold transition-all shadow-sm cursor-pointer">
+                Follow
+              </button>
+              <button className="bg-card hover:bg-muted active:scale-98 text-foreground border border-border px-6 py-2.5 rounded-full text-[13.5px] font-bold transition-all shadow-sm cursor-pointer">
+                Get in touch
+              </button>
+              <button className="flex items-center justify-center w-10 h-10 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground transition-colors cursor-pointer shadow-sm">
+                <FontAwesomeIcon icon={faShareNodes} className="size-3.5" />
+              </button>
+            </div>
+          </div>
 
-              <div className="flex items-center gap-6 sm:gap-8 md:gap-10">
-                <div className="text-left md:text-center">
-                  <p className="text-[12px] text-gray-400 font-bold mb-1">Students</p>
-                  <p className="text-[20px] sm:text-[24px] font-extrabold text-gray-900 leading-none">{creator.students}</p>
+          {/* Name & Bio section */}
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2.5 mb-2.5 flex-wrap">
+                <h1 className="text-[24px] sm:text-[28px] font-extrabold text-foreground tracking-tight leading-none font-display">
+                  {creator.name}
+                </h1>
+                <span className="bg-slate-900 dark:bg-zinc-800 text-white text-[9px] font-bold px-2 py-[2.5px] rounded-[5px] flex items-center gap-1 shrink-0 mt-0.5 border border-slate-800 dark:border-zinc-700">
+                  PRO <FontAwesomeIcon icon={faBolt} className="size-[8px] text-amber-400" />
+                </span>
+              </div>
+              <p className="text-[14px] sm:text-[15px] text-foreground leading-relaxed font-semibold mb-3">
+                {creator.bio}
+              </p>
+              <p className="text-[12px] sm:text-[13px] text-muted-foreground font-semibold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                based in {creator.location}
+              </p>
+            </div>
+
+            {/* Badges & Stats */}
+            <div className="flex flex-col sm:items-end gap-5">
+              <BadgesButton />
+              <div className="flex items-center gap-6 sm:gap-10">
+                <div>
+                  <p className="text-[10px] text-muted-foreground font-bold mb-0.5 uppercase tracking-wider">Students</p>
+                  <p className="text-[18px] sm:text-[22px] font-extrabold text-foreground leading-none">{creator.students}</p>
                 </div>
-                <div className="text-left md:text-center">
-                  <p className="text-[12px] text-gray-400 font-bold mb-1">Sessions</p>
-                  <p className="text-[20px] sm:text-[24px] font-extrabold text-gray-900 leading-none">{creator.sessions}</p>
+                <div className="border-l border-border h-8" />
+                <div>
+                  <p className="text-[10px] text-muted-foreground font-bold mb-0.5 uppercase tracking-wider">Sessions</p>
+                  <p className="text-[18px] sm:text-[22px] font-extrabold text-foreground leading-none">{creator.sessions}</p>
                 </div>
-                <div className="text-left md:text-center">
-                  <p className="text-[12px] text-gray-400 font-bold mb-1">Rating</p>
-                  <p className="text-[20px] sm:text-[24px] font-extrabold text-gray-900 leading-none flex items-baseline gap-1">
-                    {creator.rating} <span className="text-[14px] text-gray-400 font-bold">/5</span>
+                <div className="border-l border-border h-8" />
+                <div>
+                  <p className="text-[10px] text-muted-foreground font-bold mb-0.5 uppercase tracking-wider">Rating</p>
+                  <p className="text-[18px] sm:text-[22px] font-extrabold text-foreground leading-none flex items-baseline gap-1">
+                    {creator.rating} <span className="text-[12px] text-muted-foreground font-bold">/5</span>
                   </p>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
+      </div>
 
-        {/* ══════════ 2. TABS & OFFERINGS ══════════ */}
-        <div className="mt-6">
+      {/* ══════════ 3. INTRO / ABOUT ══════════ */}
+      <div className="w-full bg-background py-12 border-b border-border/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* Left side: Bio & Placed companies */}
+            <div className="w-full lg:col-span-7 space-y-8">
+              <div>
+                <h2 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-3">About the Coach</h2>
+                <div className="space-y-4 text-[14px] sm:text-[14.5px] text-muted-foreground leading-relaxed font-medium">
+                  {creator.bioLong.map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3">Students Placed At</p>
+                <div className="flex flex-wrap gap-2">
+                  {companies.map((c) => (
+                    <span key={c} className="px-3 py-1.5 bg-muted/40 border border-border rounded-full text-[12px] font-semibold text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.01)] cursor-default">
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right side: Video, Skills */}
+            <div className="w-full lg:col-span-5 flex flex-col gap-6">
+              <div className="rounded-[18px] overflow-hidden bg-black aspect-[16/10] relative group shadow-sm border border-border">
+                <video controls className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" src="/videos/demo.mp4" poster={creator.avatar} />
+                <div className="absolute top-3.5 left-3.5 bg-black/40 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1 rounded-full pointer-events-none">
+                  Intro Video
+                </div>
+              </div>
+
+              <div className="bg-muted/30 border border-border rounded-[18px] p-5">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-4">Core Expertise</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {creator.skills.map((s) => (
+                    <div key={s.label} className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-card shadow-sm flex items-center justify-center border border-border shrink-0">
+                        <FontAwesomeIcon icon={s.icon} className="size-3 text-foreground" />
+                      </div>
+                      <span className="text-[12.5px] font-semibold text-foreground">{s.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ══════════ 4. TABS & OFFERINGS (SERVICES BELOW INTRO) ══════════ */}
+      <div className="w-full bg-muted/5 py-12 border-b border-border/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="all">
-            <div className="border-b border-gray-100 px-5 sm:px-10 overflow-x-auto no-scrollbar">
-              <TabsList className="h-auto gap-6 sm:gap-8 bg-transparent p-0 justify-start min-w-max flex pb-px">
+            <div className="overflow-x-auto scrollbar-hide mb-8">
+              <TabsList className="h-auto gap-2 bg-muted/50 dark:bg-muted/30 p-1 justify-start flex rounded-full w-fit max-w-full">
                 {[
                   { value: 'all', label: 'All Services', count: courses.length + sessions.length + groups.length },
                   { value: 'sessions', label: '1:1 Calls', count: sessions.length },
@@ -256,184 +298,125 @@ export default function CreatorProfilePage(): React.ReactElement {
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="rounded-none px-0 py-3.5 text-[14px] font-bold text-gray-400 data-[state=active]:text-gray-900 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-[2.5px] data-[state=active]:border-gray-900 transition-all flex-none h-auto"
+                    className="rounded-full px-4 sm:px-5 py-2 text-[12.5px] sm:text-[13px] font-bold text-muted-foreground data-[state=active]:text-background dark:data-[state=active]:text-foreground data-[state=active]:bg-foreground dark:data-[state=active]:bg-background transition-all cursor-pointer whitespace-nowrap"
                   >
                     {tab.label}
-                    {tab.count > 0 && <sup className="ml-0.5 text-[10px] font-semibold">{tab.count}</sup>}
+                    {tab.count > 0 && <span className="ml-1.5 text-[10px] opacity-75 font-semibold">({tab.count})</span>}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </div>
 
-            <div className="bg-gray-50/30 pt-8 pb-12">
-              <TabsContent value="all" className="mt-0 px-5 sm:px-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="mt-0">
+              <TabsContent value="all" className="mt-0">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
                   {[...sessions, ...courses, ...groups].map((item) => <OfferingCard key={item.id} item={item} />)}
                 </div>
               </TabsContent>
-              <TabsContent value="sessions" className="mt-0 px-5 sm:px-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <TabsContent value="sessions" className="mt-0">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
                   {sessions.map((item) => <OfferingCard key={item.id} item={item} />)}
                 </div>
               </TabsContent>
-              <TabsContent value="courses" className="mt-0 px-5 sm:px-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <TabsContent value="courses" className="mt-0">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
                   {courses.map((item) => <OfferingCard key={item.id} item={item} />)}
                 </div>
               </TabsContent>
-              <TabsContent value="groups" className="mt-0 px-5 sm:px-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <TabsContent value="groups" className="mt-0">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
                   {groups.map((item) => <OfferingCard key={item.id} item={item} />)}
                 </div>
               </TabsContent>
             </div>
           </Tabs>
         </div>
+      </div>
 
-        {/* ══════════ 3. ABOUT (Editorial Premium) ══════════ */}
-        <div className="px-5 sm:px-10 py-16 sm:py-24 bg-white border-t border-gray-100">
-          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-            
-            {/* Left: Huge typography */}
-            <div className="lg:w-[45%] shrink-0">
-              <span className="inline-block px-3.5 py-1.5 bg-gray-100 text-gray-900 text-[10px] font-extrabold uppercase tracking-widest rounded-full mb-6">
-                About the creator
+      {/* ══════════ 5. CTA BANNER ══════════ */}
+      <div className="w-full bg-background py-12 border-b border-border/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-card border border-border rounded-[20px] p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between relative overflow-hidden shadow-sm">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="mb-6 md:mb-0 max-w-xl relative z-10">
+              <h3 className="text-[17px] sm:text-[19px] font-bold mb-2 text-foreground font-display">Book a 1:1 Session with Arjun</h3>
+              <p className="text-[13px] text-muted-foreground font-medium leading-relaxed">
+                Get a personalised career review, portfolio feedback, and a step-by-step action plan to land your dream design role.
+              </p>
+            </div>
+            <button className="bg-primary text-primary-foreground hover:bg-primary/95 active:scale-98 transition-all px-8 py-3.5 rounded-full text-[13.5px] font-bold flex items-center justify-center gap-2 shrink-0 self-start md:self-auto cursor-pointer shadow-sm relative z-10">
+              <FontAwesomeIcon icon={faCalendarCheck} className="size-3.5" />
+              Book Session — ₹2,500
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ══════════ 6. TESTIMONIALS (SHARED IMPORT) ══════════ */}
+      <TestimonialsDeck
+        testimonials={reviews.map((r) => ({
+          id: r.id,
+          name: r.name,
+          niche: `${r.role} (formerly ${r.before} ➔ ${r.after})`,
+          quote: r.text,
+          initials: r.initials,
+        }))}
+        label="Testimonials"
+        heading={
+          <>
+            Success stories,{" "}
+            <span className="text-muted-foreground">real results.</span>
+          </>
+        }
+        description="Read about the direct career breakthroughs and salary increments achieved by design coaching candidates."
+      />
+
+      {/* ══════════ 7. FAQ ══════════ */}
+      <div className="w-full bg-background py-14 border-t border-border/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-14">
+            {/* Left Column: Heading */}
+            <div className="md:w-[30%] shrink-0">
+              <span className="bg-muted text-muted-foreground text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-3.5 inline-block border border-border/60">
+                Support
               </span>
-              <h2 className="text-3xl sm:text-[40px] lg:text-[44px] font-extrabold text-gray-900 tracking-tight leading-[1.05] mb-8">
-                The coach who&apos;s been in the room
+              <h2 className="text-2xl sm:text-[26px] font-bold text-foreground tracking-tight mb-2.5 font-display">
+                Frequently Asked Questions
               </h2>
-              <div className="space-y-5 text-[15px] sm:text-[16px] text-gray-600 leading-relaxed font-medium">
-                {creator.bioLong.map((para, i) => (
-                  <p key={i}>{para}</p>
+              <p className="text-[13px] text-muted-foreground font-medium leading-relaxed max-w-[240px]">
+                Guiding you through our coaching procedures and services
+              </p>
+            </div>
+
+            {/* Right Column: Accordion */}
+            <div className="flex-1 flex flex-col">
+              <Accordion multiple={false} className="space-y-1">
+                {faqs.map((f, i) => (
+                  <AccordionItem
+                    key={i}
+                    value={`faq-${i}`}
+                    className="border-b border-border py-1 last:border-b-0"
+                  >
+                    <AccordionTrigger className="text-[13.5px] font-semibold text-foreground hover:text-primary py-3.5 text-left hover:no-underline">
+                      {f.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-[13px] text-muted-foreground leading-relaxed pb-4.5 font-medium">
+                      {f.a}
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </div>
-            </div>
+              </Accordion>
 
-            {/* Right: Skills, Companies & Video Bento */}
-            <div className="flex-1 flex flex-col gap-4 w-full">
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Premium Video Block */}
-                <div className="rounded-[20px] overflow-hidden bg-black aspect-[4/3] sm:aspect-auto sm:h-[220px] relative group shadow-[0_4px_20px_rgb(0,0,0,0.08)]">
-                  <video controls className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" src="/videos/demo.mp4" poster={creator.avatar} />
-                  <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-bold px-3 py-1.5 rounded-full pointer-events-none">
-                    Intro Video
-                  </div>
-                </div>
-
-                {/* Companies Block */}
-                <div className="bg-[#fafafa] border border-gray-100 rounded-[20px] p-6 flex flex-col justify-center">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-5">Students Placed At</p>
-                  <div className="flex flex-wrap gap-2">
-                    {companies.map((c) => (
-                      <span key={c} className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-[12px] font-bold text-gray-700 shadow-sm cursor-default">
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Skills Block */}
-                <div className="bg-[#fafafa] border border-gray-100 rounded-[20px] p-6 flex flex-col justify-center">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-5">Core Expertise</p>
-                  <div className="flex flex-col gap-3.5">
-                    {creator.skills.map((s) => (
-                      <div key={s.label} className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center border border-gray-100 shrink-0">
-                          <FontAwesomeIcon icon={s.icon} className="size-3.5 text-gray-900" />
-                        </div>
-                        <span className="text-[13.5px] font-bold text-gray-800">{s.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* CTA Block */}
-                <div className="bg-gray-900 rounded-[20px] p-6 flex flex-col justify-between text-white relative overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.08)]">
-                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-                  <div>
-                    <h3 className="text-[18px] font-extrabold mb-2 relative z-10">Book a 1:1 Session</h3>
-                    <p className="text-[13px] text-gray-400 font-medium mb-6 relative z-10 leading-snug">Get a personalised action plan to land your dream design role.</p>
-                  </div>
-                  <button className="w-full bg-white text-black hover:bg-gray-100 rounded-[10px] px-4 py-3 text-[13px] font-extrabold transition-all active:scale-95 flex items-center justify-center gap-2 relative z-10">
-                    <FontAwesomeIcon icon={faCalendarCheck} className="size-3.5" />
-                    Book Session — ₹2,500
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-
-        {/* ══════════ 5. REVIEWS ══════════ */}
-        <div className="px-5 sm:px-10 py-16 sm:py-24 bg-[#fafafa] border-t border-gray-100">
-          <div className="flex flex-col items-center text-center mb-12 sm:mb-16">
-            <span className="bg-gray-200/60 text-gray-500 text-[10px] font-extrabold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5">
-              Testimonials
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-gray-900 tracking-tight">
-              What people are saying
-            </h2>
-          </div>
-          
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 max-w-6xl mx-auto">
-            {reviews.map((r) => (
-              <div key={r.id} className="break-inside-avoid mb-6">
-                <ReviewCard review={r} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ══════════ 6. FAQ ══════════ */}
-        <div className="px-5 sm:px-10 py-16 sm:py-24 bg-[#fafafa]">
-          <div className="max-w-5xl mx-auto bg-white border border-gray-200/60 rounded-[24px] p-6 sm:p-12 md:p-14 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)]">
-            <div className="flex flex-col md:flex-row gap-8 md:gap-16">
-              
-              {/* Left Column: Heading */}
-              <div className="md:w-[35%] shrink-0">
-                <h2 className="text-3xl sm:text-[34px] font-semibold text-gray-900 tracking-tight mb-3">
-                  FAQs
-                </h2>
-                <p className="text-[14px] text-gray-500 font-medium leading-relaxed max-w-[240px]">
-                  Guiding you through our procedures and services
+              <div className="mt-8 text-center md:text-right">
+                <p className="text-[11px] text-muted-foreground font-semibold">
+                  Still got questions? <a href="mailto:hi@creonex.in" className="text-primary underline hover:text-primary/80 transition-colors">hi@creonex.in</a>
                 </p>
               </div>
-
-              {/* Right Column: Accordion */}
-              <div className="flex-1 flex flex-col">
-                <Accordion multiple={false} className="space-y-3">
-                  {faqs.map((f, i) => (
-                    <AccordionItem
-                      key={i}
-                      value={`faq-${i}`}
-                      className="bg-[#fafafa] border border-gray-200/70 rounded-[10px] px-5 overflow-hidden transition-colors hover:bg-gray-50"
-                    >
-                      <AccordionTrigger className="text-[14px] font-medium text-gray-900 py-4 text-left hover:no-underline">
-                        {f.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-[13.5px] text-gray-600 leading-relaxed pb-4 font-normal">
-                        {f.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-                
-                <div className="mt-8 text-center md:text-right">
-                  <p className="text-[11px] text-gray-400 font-medium">
-                    Still got questions? <a href="#" className="underline hover:text-gray-700 transition-colors">hi@creonex.in</a>
-                  </p>
-                </div>
-              </div>
             </div>
-          </div>
-        </div>
 
+        </div>
       </div>
+    </div>
 
       <BookSessionBar name={creator.name} />
     </div>
